@@ -129,10 +129,18 @@ exports/
 
 ## 🛠 Utilities in `utils/`
 
-- `stat_tests_utils.py` → Wrapper for t-tests, chi², normality tests
-- `distribution_utils.py` → Fit, sample, evaluate PDFs/CDFs
-- `sim_utils.py` → Bootstrap, permutation tests, sampling logic
-- `viz_utils.py` → ECDF, diagnostic plots, CI bands
+- **`stats_tests_utils.py`** → Wrapper for t-tests, chi², normality tests, rank-based methods
+- **`distribution_utils.py`** → Fit, sample, evaluate PDFs/CDFs for multiple distributions
+- **`sim_utils.py`** → Bootstrap, permutation tests, resampling utilities
+- **`viz_utils.py`** → ECDF, diagnostic plots, confidence bands, linear algebra plots
+- **`inference_utils.py`** → Compute SEM, confidence intervals, t-tests from summary stats
+- **`linear_algebra_utils.py`** → Matrix generation, eigen decomposition, SVD, least squares solutions
+- **`optimization_utils.py`** → Solve constrained and unconstrained optimization problems
+- **`pdf_ecdf_utils.py`** → Manual ECDF computation, PDF–ECDF overlays, fit quality visualization
+- **`power_utils.py`** → Statistical power analysis, effect size estimation, sample size planning
+- **`interpolation_utils.py`** → Curve fitting, splines, polynomial interpolation
+
+---
 
 All results export to `exports/` automatically with timestamp/version control.
 
