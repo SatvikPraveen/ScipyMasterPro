@@ -9,12 +9,12 @@ We welcome contributions that improve **functionality, performance, documentatio
 
 ## 📌 How You Can Contribute
 
-* 🛠 **New Features** – Add utilities, helper functions, or workflow enhancements.
-* 📚 **Documentation** – Improve the README, cheatsheets, or add learning notes.
-* 🧪 **Notebooks** – Create or improve Jupyter notebooks with practical demonstrations.
-* 🐞 **Bug Fixes** – Identify and fix issues in code, visualizations, or logic.
-* 🎨 **UX Improvements** – Enhance Streamlit dashboards, plots, or exports.
-* 🧹 **Refactoring** – Clean up code for readability and maintainability.
+- 🛠 **New Features** – Add utilities, helper functions, or workflow enhancements.
+- 📚 **Documentation** – Improve the README, cheatsheets, or add learning notes.
+- 🧪 **Notebooks** – Create or improve Jupyter notebooks with practical demonstrations.
+- 🐞 **Bug Fixes** – Identify and fix issues in code, visualizations, or logic.
+- 🎨 **UX Improvements** – Enhance Streamlit dashboards, plots, or exports.
+- 🧹 **Refactoring** – Clean up code for readability and maintainability.
 
 ---
 
@@ -26,7 +26,7 @@ We welcome contributions that improve **functionality, performance, documentatio
 2. **Clone Your Fork**
 
    ```bash
-   git clone https://github.com/<your-username>/SciPyMasterPro.git
+   git clone https://github.com/SatvikPraveen/SciPyMasterPro.git
    cd SciPyMasterPro
    ```
 
@@ -59,12 +59,14 @@ We welcome contributions that improve **functionality, performance, documentatio
    ```bash
    git checkout -b feature/your-feature-name
    ```
+
 2. Follow **PEP8 coding style** and keep code modular.
 3. Add **docstrings** for all new functions or modules.
 4. If your contribution changes outputs or adds new functionality:
 
-   * Update the relevant **Jupyter notebooks** or **Streamlit app pages** to demonstrate usage.
-   * Update **cheatsheets or utility references** if necessary.
+   - Update the relevant **Jupyter notebooks** or **Streamlit app pages** to demonstrate usage.
+   - Update **cheatsheets or utility references** if necessary.
+
 5. Use **descriptive commit messages** and keep commits focused.
 
 ---
@@ -73,18 +75,21 @@ We welcome contributions that improve **functionality, performance, documentatio
 
 1. **Test your changes locally**:
 
-   * Run the Streamlit app (`streamlit run streamlit_app/app.py`)
-   * Open and validate relevant notebooks in JupyterLab.
+   - Run the Streamlit app (`streamlit run streamlit_app/app.py`)
+   - Open and validate relevant notebooks in JupyterLab.
+
 2. Check that:
 
-   * No existing functionality is broken.
-   * Exports, plots, and computed outputs remain correct.
+   - No existing functionality is broken.
+   - Exports, plots, and computed outputs remain correct.
+
 3. Push your branch and open a PR to the `main` branch of this repository.
 4. Include in your PR:
 
-   * A **clear description** of what you changed or added.
-   * Any **dependencies** introduced (if applicable).
-   * Screenshots or sample outputs (for UI or visualization changes).
+   - A **clear description** of what you changed or added.
+   - Any **dependencies** introduced (if applicable).
+   - Screenshots or sample outputs (for UI or visualization changes).
+
 5. Wait for code review and feedback. 🎉
 
 ---
@@ -93,9 +98,9 @@ We welcome contributions that improve **functionality, performance, documentatio
 
 We follow a **friendly and inclusive collaboration style**:
 
-* Respect all contributors and their time.
-* Keep discussions constructive and focused on the project.
-* Credit others where due.
+- Respect all contributors and their time.
+- Keep discussions constructive and focused on the project.
+- Credit others where due.
 
 ---
 
