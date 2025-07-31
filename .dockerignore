@@ -1,0 +1,42 @@
+# ---------------------------
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ---------------------------
+# Virtual environments
+env/
+venv/
+scipy_env/
+.scipy_env/
+.venv/
+ENV/
+
+# ---------------------------
+# OS junk files
+.DS_Store
+
+# ---------------------------
+# Git metadata
+.git
+.gitignore
+
+# ---------------------------
+# Cache and logs
+*.log
+*.cache
+*.egg-info
+*.pytest_cache
+
+# ---------------------------
+# Optional: Large raw data
+data/raw/*
+# (Keep synthetic_data/ because it’s part of the project)
+# synthetic_data/*
+
+# ---------------------------
+# Docker config files
+Dockerfile
+.dockerignore

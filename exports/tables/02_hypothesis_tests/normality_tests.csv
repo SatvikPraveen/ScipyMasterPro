@@ -1,0 +1,4 @@
+,statistic,p-value,critical_values,significance_levels,fit_success,fit_message
+shapiro,0.9986092190571162,0.6272578290246378,,,,
+dagostino,2.575517854321579,0.27588837674285993,,,,
+anderson,0.3474697767348971,,"[0.574, 0.653, 0.784, 0.914, 1.088]","[15.0, 10.0, 5.0, 2.5, 1.0]",True,`anderson` successfully fit the distribution to the data.
