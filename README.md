@@ -20,15 +20,15 @@ This project helps you build deep fluency with `scipy.stats`, `scipy.optimize`, 
 
 ## 🚀 Key Features
 
-✅ 10 concept-driven Jupyter notebooks
-✅ Interactive **Streamlit web application** for live statistical exploration
-✅ All statistical logic done with pure **SciPy** (no heavy reliance on statsmodels)
-✅ Modular utility functions for resampling, optimization, diagnostics
-✅ Synthetic data generator for reproducible, controlled experiments
-✅ Shared notebooks comparing **SciPy vs Statsmodels**
-✅ Markdown cheatsheet and mastery checklist for fast recall
-✅ **Docker-ready** for seamless environment setup (Jupyter + Streamlit in one container)
-✅ Perfect for **interview prep**, **portfolio building**, and **teaching use cases**
+✅ 10 concept-driven Jupyter notebooks <br>
+✅ Interactive **Streamlit web application** for live statistical exploration <br>
+✅ All statistical logic done with pure **SciPy** (no heavy reliance on statsmodels) <br>
+✅ Modular utility functions for resampling, optimization, diagnostics <br>
+✅ Synthetic data generator for reproducible, controlled experiments <br>
+✅ Shared notebooks comparing **SciPy vs Statsmodels** <br>
+✅ Markdown cheatsheet and mastery checklist for fast recall <br>
+✅ **Docker-ready** for seamless environment setup (Jupyter + Streamlit in one container) <br>
+✅ Perfect for **interview prep**, **portfolio building**, and **teaching use cases** <br>
 
 ---
 
