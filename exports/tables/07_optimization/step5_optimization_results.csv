@@ -1,0 +1,4 @@
+Type,Solver,Success,x,y,Result
+Scalar Convex,Brent,True,3.0,,0.0
+Scalar Nonconvex,Brent,True,2.2431,,-0.4714
+Multivariate,tr_interior_point,True,0.75,2.25,0.125

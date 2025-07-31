@@ -1,0 +1,6 @@
+Method,Power
+Manual Z-test (2-tailed),0.7568949314261415
+Manual T-test (2-tailed),0.7349869793274558
+Manual Z-test (1-tailed),0.8441017478536621
+Manual T-test (1-tailed),0.8313415730341543
+Statsmodels,0.735804983039647

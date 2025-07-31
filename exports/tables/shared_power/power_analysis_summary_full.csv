@@ -1,0 +1,9 @@
+Method,Power,Cohen's d,Interpretation
+Manual Z-test (2-tailed),0.7568949314261415,,
+Manual T-test (2-tailed),0.7349869793274558,,
+Manual Z-test (1-tailed),0.8441017478536621,,
+Manual T-test (1-tailed),0.8313415730341543,,
+Statsmodels,0.735804983039647,,
+,,0.2,Small effect
+,,0.5,Medium effect
+,,0.8,Large effect

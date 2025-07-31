@@ -1,0 +1,87 @@
+# ===========================
+# Python Cache Files
+# ===========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# ===========================
+# Virtual Environments
+# ===========================
+venv/
+env/
+scipy_env/
+.scipy_env*/
+*.venv
+
+# ===========================
+# OS & Editor Files
+# ===========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ===========================
+# Logs & Temporary Files
+# ===========================
+*.log
+*.tmp
+*.bak
+*.cache
+*.pytest_cache/
+*.coverage
+coverage.xml
+
+# ===========================
+# Build Artifacts
+# ===========================
+*.egg-info/
+dist/
+build/
+
+# ===========================
+# Jupyter Notebook Checkpoints
+# ===========================
+.ipynb_checkpoints/
+
+# ===========================
+# Data Files (Optional Exclusions)
+# Note: We are keeping project data files (exports, datasets)
+# ===========================
+# data/raw/*
+# tests/output/*
+
+# ===========================
+# Docker-related
+# ===========================
+*.pid
+*.sock
+
+# ===========================
+# Ignore large local test files
+# (you can whitelist specific data files if needed)
+# ===========================
+*.h5
+*.parquet
+
+# ===========================
+# Streamlit cache
+# ===========================
+.streamlit/
+
+# ===========================
+# Environment variables & secrets
+# ===========================
+.env
+.env.local
+*.secrets
+
+# ===========================
+# Others (Optional)
+# ===========================
+nohup.out
