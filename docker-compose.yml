@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scipymasterpro-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./shared_notebooks:/app/shared_notebooks
+      - ./exports:/app/exports
+      - ./synthetic_data:/app/synthetic_data
+      - ./utils:/app/utils
+    environment:
+      - JUPYTER_ENABLE_LAB=yes
+      - PYTHONUNBUFFERED=1
+    command: >
+      bash -c "jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/lab"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - scipymasterpro
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: scipymasterpro-streamlit
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./streamlit_app:/app/streamlit_app
+      - ./exports:/app/exports
+      - ./synthetic_data:/app/synthetic_data
+      - ./utils:/app/utils
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: >
+      bash -c "streamlit run streamlit_app/app.py --server.port=8501 --server.headless=true --server.address=0.0.0.0"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - scipymasterpro
+    depends_on:
+      jupyter:
+        condition: service_healthy
+
+networks:
+  scipymasterpro:
+    driver: bridge
+
+volumes:
+  notebooks:
+  exports:
+  synthetic_data:

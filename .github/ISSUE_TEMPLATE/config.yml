@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/SatvikPraveen/ScipyMasterPro/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 📚 Documentation
+    url: https://github.com/SatvikPraveen/ScipyMasterPro#readme
+    about: Read the project documentation
+  - name: 🐍 SciPy Documentation
+    url: https://docs.scipy.org/doc/scipy/
+    about: Official SciPy documentation
