@@ -15,7 +15,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     build-essential \
     python3-dev \
-    libatlas-base-dev \
+    libopenblas-dev \
     gfortran \
     curl \
     && rm -rf /var/lib/apt/lists/*
@@ -50,7 +50,4 @@ EXPOSE 8888
 # ------------------------------
 # Run both Streamlit and Jupyter
 # ------------------------------
-CMD bash -c "\
-    streamlit run streamlit_app/app.py --server.port=8501 --server.headless=true & \
-    jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root \
-"
+CMD ["bash", "-c", "streamlit run streamlit_app/app.py --server.port=8501 --server.headless=true & jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root"]
