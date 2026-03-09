@@ -140,7 +140,7 @@ def export_all_datasets():
     cat_counts = generate_categorical_counts()
     cat_counts.to_csv("synthetic_data/exports/categorical_counts.csv", header=True)
 
-    print("✅ All synthetic datasets exported successfully!")
+    print("All synthetic datasets exported successfully!")
 
 
 if __name__ == "__main__":
