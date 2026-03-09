@@ -1,0 +1,175 @@
+repos:
+  # Basic file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^(exports/|notebooks/|\.ipynb_checkpoints/)
+      - id: end-of-file-fixer
+        exclude: ^(exports/|notebooks/|\.ipynb_checkpoints/)
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom tags in YAML
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: debug-statements
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+      - id: name-tests-test
+        args: ['--pytest-test-first']
+        exclude: ^tests/conftest\.py$
+
+  # Python code formatting
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3.11
+        args: ['--line-length=100']
+        exclude: ^(notebooks/|shared_notebooks/|exports/)
+
+  # Import sorting
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ['--profile', 'black', '--line-length', '100']
+        exclude: ^(notebooks/|shared_notebooks/|exports/)
+
+  # Linting with pylint
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.0.3
+    hooks:
+      - id: pylint
+        args:
+          - --max-line-length=100
+          - --disable=C0330,C0326,too-few-public-methods,missing-module-docstring
+          - --good-names=i,j,k,df,ax,fig,x,y,z,e,f,g,n,p,q,r,t,v
+        exclude: ^(tests/|notebooks/|shared_notebooks/|exports/)
+        additional_dependencies:
+          - numpy
+          - pandas
+          - scipy
+          - matplotlib
+          - seaborn
+          - streamlit
+
+  # Type checking with mypy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        args: [--ignore-missing-imports, --warn-unused-configs]
+        exclude: ^(tests/|notebooks/|shared_notebooks/|exports/)
+        additional_dependencies:
+          - types-all
+          - numpy
+          - pandas
+
+  # Flake8 linting
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args:
+          - --max-line-length=100
+          - --extend-ignore=E203,E266,E501,W503,F403,F401
+          - --max-complexity=18
+        exclude: ^(notebooks/|shared_notebooks/|exports/|__init__\.py$)
+
+  # Security checks
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.5
+    hooks:
+      - id: bandit
+        args: ['-c', 'pyproject.toml']
+        additional_dependencies: ['bandit[toml]']
+        exclude: ^(tests/|notebooks/|shared_notebooks/)
+
+  # Jupyter notebook cleaning
+  - repo: https://github.com/nbQA-dev/nbQA
+    rev: 1.7.1
+    hooks:
+      - id: nbqa-black
+        args: ['--line-length=100']
+        files: ^(notebooks/|shared_notebooks/).*\.ipynb$
+      - id: nbqa-isort
+        args: ['--profile=black']
+        files: ^(notebooks/|shared_notebooks/).*\.ipynb$
+
+  # Markdown linting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.38.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix']
+        exclude: ^(CHANGELOG\.md|exports/)
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        args:
+          - --format
+          - parsable
+          - --strict
+
+  # Check for common spelling mistakes
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        args:
+          - --skip=*.ipynb,*.csv,*.json,exports/*,venv/*,.git/*
+          - --ignore-words-list=nd,jupyter
+
+  # Security vulnerability scanning
+  - repo: https://github.com/Lucas-C/pre-commit-hooks-safety
+    rev: v1.3.3
+    hooks:
+      - id: python-safety-dependencies-check
+        files: requirements.*\.txt$
+
+# Configuration
+default_language_version:
+  python: python3.11
+
+# Stages
+default_stages: [commit]
+
+# Global file excludes
+exclude: |
+  (?x)^(
+      venv/.*|
+      \.venv/.*|
+      env/.*|
+      \.env/.*|
+      __pycache__/.*|
+      \.pytest_cache/.*|
+      \.mypy_cache/.*|
+      \.git/.*|
+      \.ipynb_checkpoints/.*|
+      exports/.*|
+      dist/.*|
+      build/.*|
+      .*\.egg-info/.*
+  )$
+
+# CI configuration
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+
+    For more information, see https://pre-commit.ci
+  autofix_prs: true
+  autoupdate_branch: ''
+  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_schedule: weekly
+  skip: [pylint, mypy]  # Skip slow checks in CI
+  submodules: false

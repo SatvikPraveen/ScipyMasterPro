@@ -1,0 +1,171 @@
+site_name: ScipyMasterPro Documentation
+site_description: Comprehensive SciPy mastery toolkit with notebooks, utilities, and interactive app
+site_author: Satvik Praveen
+site_url: https://satvikpraveen.github.io/ScipyMasterPro/
+
+repo_name: SatvikPraveen/ScipyMasterPro
+repo_url: https://github.com/SatvikPraveen/ScipyMasterPro
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - toc.integrate
+  icon:
+    repo: fontawesome/brands/github
+    edit: material/pencil
+    view: material/eye
+
+nav:
+  - Home: index.md
+  - User Guide:
+      - Notebooks: user_guide/notebooks.md
+      - Streamlit App: user_guide/streamlit_app.md
+      - Utilities: user_guide/utilities.md
+      - Synthetic Data: user_guide/synthetic_data.md
+  - API Reference:
+      - Statistical Tests: api_reference/stats_tests.md
+      - Distribution Utils: api_reference/distribution.md
+      - Optimization: api_reference/optimization.md
+      - Linear Algebra: api_reference/linear_algebra.md
+      - Visualization: api_reference/visualization.md
+      - Inference: api_reference/inference.md
+      - Simulation: api_reference/simulation.md
+      - Power Analysis: api_reference/power.md
+  - Tutorials:
+      - Getting Started: tutorials/getting_started.md
+      - Statistical Testing: tutorials/statistical_testing.md
+      - Distribution Fitting: tutorials/distribution_fitting.md
+      - Bootstrap Methods: tutorials/bootstrap.md
+  - Developer Guide:
+      - Setup: developer/setup.md
+      - Testing: developer/testing.md
+      - Code Style: developer/code_style.md
+      - CI/CD: developer/cicd.md
+  - About:
+      - Contributing: ../CONTRIBUTING.md
+      - Changelog: ../CHANGELOG.md
+      - License: ../LICENSE
+      - Security: ../SECURITY.md
+
+plugins:
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            members_order: source
+            heading_level: 2
+  - autorefs
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      title: On this page
+  
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+extra:
+  version:
+    provider: mike
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/SatvikPraveen
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/scipymasterpro/
+  analytics:
+    provider: google
+    property: !ENV GOOGLE_ANALYTICS_KEY
+  consent:
+    title: Cookie consent
+    description: >
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+copyright: >
+  Copyright &copy; 2026 Satvik Praveen –
+  <a href="#__consent">Change cookie settings</a>

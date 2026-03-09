@@ -8,13 +8,67 @@ from scipy.optimize import curve_fit
 # 1. Interpolation Functions
 # --------------------------
 
-def linear_interpolate(x, y):
+def linear_interpolate(
+    x: "np.ndarray", y: "np.ndarray"
+) -> object:
+    """
+    Create a linear piecewise interpolation function.
+
+    Parameters
+    ----------
+    x : array-like
+        1D array of x-coordinates (must be monotonically increasing).
+    y : array-like
+        1D array of y-values at each x point.
+
+    Returns
+    -------
+    scipy.interpolate.interp1d
+        Callable interpolator. Raises ValueError outside the x range.
+    """
     return interp1d(x, y, kind='linear')
 
-def cubic_interpolate(x, y):
+def cubic_interpolate(
+    x: "np.ndarray", y: "np.ndarray"
+) -> object:
+    """
+    Create a cubic spline interpolation function.
+
+    Parameters
+    ----------
+    x : array-like
+        1D array of x-coordinates (must be monotonically increasing).
+    y : array-like
+        1D array of y-values at each x point.
+
+    Returns
+    -------
+    scipy.interpolate.interp1d
+        Callable cubic interpolator. Smoother than linear but may oscillate.
+    """
     return interp1d(x, y, kind='cubic')
 
-def spline_interpolate(x, y, s=0):
+def spline_interpolate(
+    x: "np.ndarray", y: "np.ndarray", s: float = 0
+) -> object:
+    """
+    Fit a univariate smoothing spline to data.
+
+    Parameters
+    ----------
+    x : array-like
+        1D array of x-coordinates.
+    y : array-like
+        1D array of y-values.
+    s : float, default=0
+        Smoothing factor. s=0 means the spline interpolates exactly.
+        Larger s allows more deviation from data points for smoother fit.
+
+    Returns
+    -------
+    scipy.interpolate.UnivariateSpline
+        Callable spline object.
+    """
     return UnivariateSpline(x, y, s=s)
 
 def multivariate_interpolate(points, values, xi, method='linear'):
@@ -51,11 +105,49 @@ def fit_curve(func, xdata, ydata, p0=None, maxfev=5000, bounds=(-np.inf, np.inf)
 
 
 
-def exponential_model(x, a, b, c):
+def exponential_model(x: "np.ndarray", a: float, b: float, c: float) -> "np.ndarray":
+    """
+    Exponential model: f(x) = a * exp(b * x) + c.
+
+    Parameters
+    ----------
+    x : array-like
+        Input values.
+    a : float
+        Amplitude scaling factor.
+    b : float
+        Exponential growth/decay rate.
+    c : float
+        Vertical offset.
+
+    Returns
+    -------
+    np.ndarray
+        Computed values.
+    """
     return a * np.exp(b * x) + c
 
 
-def gaussian_model(x, mu, sigma, A):
+def gaussian_model(x: "np.ndarray", mu: float, sigma: float, A: float) -> "np.ndarray":
+    """
+    Gaussian (normal bell curve) model: f(x) = A * exp(-(x - mu)^2 / (2 * sigma^2)).
+
+    Parameters
+    ----------
+    x : array-like
+        Input values.
+    mu : float
+        Center (mean) of the Gaussian.
+    sigma : float
+        Width (standard deviation).
+    A : float
+        Peak amplitude.
+
+    Returns
+    -------
+    np.ndarray
+        Computed values.
+    """
     return A * np.exp(-(x - mu)**2 / (2 * sigma**2))
 
 

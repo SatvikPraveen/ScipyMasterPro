@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
@@ -5,10 +7,59 @@ import pandas as pd
 import plotly.express as px
 
 
-def apply_theme(style="whitegrid", palette="Set2", context="notebook", font_scale=1.1):
+def apply_theme(
+    style: str = "whitegrid",
+    palette: str = "Set2",
+    context: str = "notebook",
+    font_scale: float = 1.1,
+) -> None:
+    """
+    Apply a global Seaborn theme for consistent plot styling.
+
+    Parameters
+    ----------
+    style : str, default='whitegrid'
+        Seaborn style: 'whitegrid', 'darkgrid', 'white', 'dark', or 'ticks'.
+    palette : str, default='Set2'
+        Color palette name (any valid Seaborn or Matplotlib palette).
+    context : str, default='notebook'
+        Scaling context: 'paper', 'notebook', 'talk', or 'poster'.
+    font_scale : float, default=1.1
+        Scaling factor for all font elements.
+    """
     sns.set_theme(style=style, palette=palette, context=context, font_scale=font_scale)
 
-def plot_histograms(df, columns, bins=30, title=None, figsize=(12, 6), palette="Set2"):
+def plot_histograms(
+    df: "pd.DataFrame",
+    columns: list[str],
+    bins: int = 30,
+    title: str | None = None,
+    figsize: tuple[int, int] = (12, 6),
+    palette: str = "Set2",
+) -> "plt.Figure":
+    """
+    Plot side-by-side histograms with KDE overlays for multiple columns.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame.
+    columns : list of str
+        Column names to plot.
+    bins : int, default=30
+        Number of histogram bins.
+    title : str, optional
+        Overall figure title.
+    figsize : tuple of (int, int), default=(12, 6)
+        Figure dimensions.
+    palette : str, default='Set2'
+        Seaborn color palette name.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+        Figure object for saving or further customization.
+    """
     fig, axs = plt.subplots(1, len(columns), figsize=figsize)
     for i, col in enumerate(columns):
         sns.histplot(df[col], bins=bins, kde=True, ax=axs[i], color=sns.color_palette(palette)[i % len(columns)])
@@ -20,7 +71,33 @@ def plot_histograms(df, columns, bins=30, title=None, figsize=(12, 6), palette="
     return fig
 
 
-def plot_boxplots(df, columns, title=None, figsize=(8, 5), palette="Set2"):
+def plot_boxplots(
+    df: "pd.DataFrame",
+    columns: list[str],
+    title: str | None = None,
+    figsize: tuple[int, int] = (8, 5),
+    palette: str = "Set2",
+) -> "plt.Figure":
+    """
+    Plot a combined boxplot for multiple columns.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame.
+    columns : list of str
+        Columns to include in the boxplot.
+    title : str, optional
+        Plot title. Defaults to 'Boxplots'.
+    figsize : tuple of (int, int), default=(8, 5)
+        Figure dimensions.
+    palette : str, default='Set2'
+        Seaborn color palette.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
     fig, ax = plt.subplots(figsize=figsize)
     sns.boxplot(data=df[columns], palette=palette, orient="v", ax=ax)
     ax.set_title(title or "Boxplots")
@@ -29,11 +106,53 @@ def plot_boxplots(df, columns, title=None, figsize=(8, 5), palette="Set2"):
     return fig
 
 
-def plot_pairplot(df, hue=None, diag_kind="kde", palette="Spectral"):
+def plot_pairplot(
+    df: "pd.DataFrame",
+    hue: str | None = None,
+    diag_kind: str = "kde",
+    palette: str = "Spectral",
+) -> "sns.PairGrid":
+    """
+    Create a Seaborn pairplot to visualize pairwise relationships.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame with numeric columns.
+    hue : str, optional
+        Column name for color grouping.
+    diag_kind : str, default='kde'
+        Type of plot for diagonal: 'kde' or 'hist'.
+    palette : str, default='Spectral'
+        Color palette for hue groupings.
+
+    Returns
+    -------
+    seaborn.PairGrid
+        PairGrid object containing the pairplot.
+    """
     return sns.pairplot(df, hue=hue, diag_kind=diag_kind, palette=palette)
 
 
-def plot_correlation_heatmap(df, annot=True, cmap="coolwarm"):
+def plot_correlation_heatmap(
+    df: "pd.DataFrame", annot: bool = True, cmap: str = "coolwarm"
+) -> "plt.Figure":
+    """
+    Plot a correlation heatmap for all numeric columns.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame.
+    annot : bool, default=True
+        Whether to annotate each cell with the correlation value.
+    cmap : str, default='coolwarm'
+        Colormap for the heatmap.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
     corr = df.corr()
     fig, ax = plt.subplots(figsize=(8, 6))
     sns.heatmap(corr, annot=annot, cmap=cmap, ax=ax)
@@ -41,13 +160,41 @@ def plot_correlation_heatmap(df, annot=True, cmap="coolwarm"):
     return fig
 
 
-def save_and_show_plot(fig, filename):
+def save_and_show_plot(fig: "plt.Figure", filename: str) -> None:
+    """
+    Save a matplotlib figure to disk and display it.
+
+    Parameters
+    ----------
+    fig : matplotlib.figure.Figure
+        Figure to save.
+    filename : str
+        File path to save (e.g., 'output/plot.png'). Format is inferred from extension.
+    """
     fig.savefig(filename, bbox_inches="tight")
     plt.show()
 
 
 # ECDF Plotter
-def plot_ecdf(df, column, color="darkorange"):
+def plot_ecdf(
+    df: "pd.DataFrame", column: str, color: str = "darkorange"
+) -> "plt.Figure":
+    """
+    Plot the Empirical Cumulative Distribution Function (ECDF) for a column.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame.
+    column : str
+        Column name to compute ECDF for.
+    color : str, default='darkorange'
+        Line/marker color.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
     data = df[column]
     x = np.sort(data)
     y = np.arange(1, len(x) + 1) / len(x)
@@ -62,7 +209,30 @@ def plot_ecdf(df, column, color="darkorange"):
 
 
 # PDF Overlay Plot
-def plot_pdf_overlay(data, dist_obj, params, title="PDF Overlay"):
+def plot_pdf_overlay(
+    data: "np.ndarray",
+    dist_obj: object,
+    params: tuple,
+    title: str = "PDF Overlay",
+) -> "plt.Figure":
+    """
+    Plot a histogram with a fitted distribution PDF overlaid.
+
+    Parameters
+    ----------
+    data : array-like
+        Observed data.
+    dist_obj : scipy.stats continuous_rv_generic
+        Fitted distribution object.
+    params : tuple
+        Fitted distribution parameters.
+    title : str, default='PDF Overlay'
+        Plot title.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
 
     x = np.linspace(min(data), max(data), 200)
     fig, ax = plt.subplots(figsize=(7, 4))
@@ -102,7 +272,30 @@ def plot_pdf_overlay(data, dist_obj, params, title="PDF Overlay"):
 
 
 # CDF vs ECDF Overlay Plot
-def plot_cdf_overlay(data, dist_obj, params, title="CDF vs ECDF"):
+def plot_cdf_overlay(
+    data: "np.ndarray",
+    dist_obj: object,
+    params: tuple,
+    title: str = "CDF vs ECDF",
+) -> "plt.Figure":
+    """
+    Plot the Empirical CDF alongside the theoretical CDF of a fitted distribution.
+
+    Parameters
+    ----------
+    data : array-like
+        Observed data.
+    dist_obj : scipy.stats continuous_rv_generic
+        Fitted distribution object.
+    params : tuple
+        Fitted distribution parameters.
+    title : str, default='CDF vs ECDF'
+        Plot title.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
 
     sorted_data = np.sort(data)
     ecdf = np.arange(1, len(sorted_data) + 1) / len(sorted_data)
@@ -213,7 +406,36 @@ def plot_qq(data, title="Q–Q Plot (Normal)", figsize=(6, 5), marker_color="#1f
 # -------------------------------------------
 # 🟣 VIOLIN + SWARM OVERLAY
 # -------------------------------------------
-def plot_violin_swarm(df, x_col, y_col, title="Violin + Swarm", figsize=(7, 5), palette="Set2"):
+def plot_violin_swarm(
+    df: "pd.DataFrame",
+    x_col: str,
+    y_col: str,
+    title: str = "Violin + Swarm",
+    figsize: tuple[int, int] = (7, 5),
+    palette: str = "Set2",
+) -> "plt.Figure":
+    """
+    Create a combined violin + swarm plot for distribution visualization.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Input DataFrame.
+    x_col : str
+        Categorical column for x-axis grouping.
+    y_col : str
+        Numeric column for y-axis values.
+    title : str, default='Violin + Swarm'
+        Plot title.
+    figsize : tuple of (int, int), default=(7, 5)
+        Figure dimensions.
+    palette : str, default='Set2'
+        Color palette for violins.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
     fig, ax = plt.subplots(figsize=figsize)
     sns.violinplot(data=df, x=x_col, y=y_col, inner=None, palette=palette, ax=ax)
     sns.swarmplot(data=df, x=x_col, y=y_col, color="k", size=2, alpha=0.6, ax=ax)
@@ -226,7 +448,33 @@ def plot_violin_swarm(df, x_col, y_col, title="Violin + Swarm", figsize=(7, 5), 
 # -------------------------------------------
 # 🔹 RANKED BARPLOT DISTRIBUTIONS
 # -------------------------------------------
-def plot_ranked_barplots(x_ranked, y_ranked, title1="x_ranked", title2="y_ranked", figsize=(12, 5)):
+def plot_ranked_barplots(
+    x_ranked: "np.ndarray",
+    y_ranked: "np.ndarray",
+    title1: str = "x_ranked",
+    title2: str = "y_ranked",
+    figsize: tuple[int, int] = (12, 5),
+) -> "plt.Figure":
+    """
+    Plot side-by-side frequency bar charts for two ranked (e.g., Likert-scale) datasets.
+
+    Parameters
+    ----------
+    x_ranked : array-like
+        First ranked dataset (ordinal / Likert scale values).
+    y_ranked : array-like
+        Second ranked dataset.
+    title1 : str, default='x_ranked'
+        Title for left subplot.
+    title2 : str, default='y_ranked'
+        Title for right subplot.
+    figsize : tuple of (int, int), default=(12, 5)
+        Figure dimensions.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
     fig, ax = plt.subplots(1, 2, figsize=figsize)
     sns.set(style="whitegrid")
 
@@ -252,7 +500,30 @@ def plot_ranked_barplots(x_ranked, y_ranked, title1="x_ranked", title2="y_ranked
 # -------------------------------------------
 # 🔹 BOX PLOT FOR RANKED DISTRIBUTIONS
 # -------------------------------------------
-def plot_ranked_boxplot(x_ranked, y_ranked, figsize=(7, 5), title="Boxplot of Ranked Distributions"):
+def plot_ranked_boxplot(
+    x_ranked: "np.ndarray",
+    y_ranked: "np.ndarray",
+    figsize: tuple[int, int] = (7, 5),
+    title: str = "Boxplot of Ranked Distributions",
+) -> "plt.Figure":
+    """
+    Plot a side-by-side boxplot for two ranked datasets.
+
+    Parameters
+    ----------
+    x_ranked : array-like
+        First ranked dataset.
+    y_ranked : array-like
+        Second ranked dataset.
+    figsize : tuple of (int, int), default=(7, 5)
+        Figure dimensions.
+    title : str, default='Boxplot of Ranked Distributions'
+        Plot title.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
     df_ranked = pd.DataFrame({
         "x_ranked": x_ranked,
         "y_ranked": y_ranked
@@ -265,9 +536,29 @@ def plot_ranked_boxplot(x_ranked, y_ranked, figsize=(7, 5), title="Boxplot of Ra
     return fig
 
 
-def plot_multi_distribution_overlay(data, distribution_list, title="Multi-Distribution Fit", bins=40):
+def plot_multi_distribution_overlay(
+    data: "np.ndarray",
+    distribution_list: list,
+    title: str = "Multi-Distribution Fit",
+    bins: int = 40,
+) -> "plt.Figure":
     """
     Plot histogram of data and overlay PDFs of multiple fitted distributions.
+
+    Parameters
+    ----------
+    data : array-like
+        Observed data.
+    distribution_list : list of scipy.stats continuous_rv_generic
+        List of distribution objects to fit and overlay.
+    title : str, default='Multi-Distribution Fit'
+        Plot title.
+    bins : int, default=40
+        Number of histogram bins.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
     """
     fig, ax = plt.subplots(figsize=(8, 5))
     sns.histplot(data, bins=bins, stat="density", color="gray", alpha=0.4, label="Data")
@@ -287,20 +578,29 @@ def plot_multi_distribution_overlay(data, distribution_list, title="Multi-Distri
 # -------------------------------------------
 # 📈 ECDF COMPARISON PLOT
 # -------------------------------------------
-def plot_ecdf_comparison_multi(ecdf_data, title="ECDF Comparison", figsize=None, palette=None):
+def plot_ecdf_comparison_multi(
+    ecdf_data: dict,
+    title: str = "ECDF Comparison",
+    figsize: tuple[int, int] | None = None,
+    palette: list | None = None,
+) -> "plt.Figure":
     """
     Plot ECDF curves for multiple datasets on a single figure.
 
     Parameters
     ----------
     ecdf_data : dict
-        Dictionary of the form {label: (x_values, y_values)}
-    title : str, optional
-        Plot title
-    figsize : tuple, optional
-        Figure size (width, height). Defaults to adaptive size based on dataset count.
-    palette : list, optional
-        List of colors to use for each dataset
+        Dictionary of the form {label: (x_values, y_values)}.
+    title : str, default='ECDF Comparison'
+        Plot title.
+    figsize : tuple of (int, int), optional
+        Figure size. Defaults to adaptive size based on dataset count.
+    palette : list of colors, optional
+        List of colors to use for each dataset. Defaults to Seaborn 'husl'.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
     """
     n_curves = len(ecdf_data)
     if figsize is None:
@@ -331,20 +631,32 @@ def plot_ecdf_comparison_multi(ecdf_data, title="ECDF Comparison", figsize=None,
 # -------------------------------------------
 # 🎨 SAMPLING DISTRIBUTIONS COMPARISON PLOT
 # -------------------------------------------
-def plot_sampling_distributions(samples_dict, 
-                                title="Sampling Distributions Comparison", 
-                                bins=20, 
-                                figsize=(12, 6), 
-                                colors=None):
+def plot_sampling_distributions(
+    samples_dict: dict,
+    title: str = "Sampling Distributions Comparison",
+    bins: int = 20,
+    figsize: tuple[int, int] = (12, 6),
+    colors: list | None = None,
+) -> "plt.Figure":
     """
-    Plot multiple sampling distributions side by side for comparison.
+    Plot multiple sampling distributions overlaid as density histograms.
 
-    Parameters:
-    - samples_dict: dict where { "label": sample_array }
-    - title: figure title
-    - bins: number of histogram bins
-    - figsize: size of the figure
-    - colors: list of colors for histograms
+    Parameters
+    ----------
+    samples_dict : dict
+        Dictionary of the form {'label': sample_array}.
+    title : str, default='Sampling Distributions Comparison'
+        Plot title.
+    bins : int, default=20
+        Number of histogram bins.
+    figsize : tuple of (int, int), default=(12, 6)
+        Figure dimensions.
+    colors : list, optional
+        List of colors per sample. Defaults to Seaborn 'Set2' palette.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
     """
     if colors is None:
         colors = sns.color_palette("Set2", len(samples_dict))
@@ -367,13 +679,32 @@ def plot_sampling_distributions(samples_dict,
 # -----------------------------------------------------
 # 🎨 BOOTSTRAP PLOT WITH CI AND TRUE STATISTIC
 # -----------------------------------------------------
-def plot_bootstrap_distribution(estimates, ci_bounds=None, true_stat=None, 
-                                title="Bootstrap Distribution", bins=30):
+def plot_bootstrap_distribution(
+    estimates: "np.ndarray",
+    ci_bounds: tuple[float, float] | None = None,
+    true_stat: float | None = None,
+    title: str = "Bootstrap Distribution",
+    bins: int = 30,
+) -> "plt.Figure":
     """
-    Plot bootstrap distribution with colorful, informative highlights:
-    - Histogram with gradient-like color
-    - CI bounds in distinct contrasting colors
-    - True statistic highlighted with a bold, distinct line
+    Plot bootstrap distribution with CI bounds and true statistic highlighted.
+
+    Parameters
+    ----------
+    estimates : array-like
+        Bootstrap sample estimates (e.g., bootstrap means).
+    ci_bounds : tuple of (float, float), optional
+        (lower, upper) confidence interval bounds to highlight.
+    true_stat : float, optional
+        The original sample statistic to mark with a vertical line.
+    title : str, default='Bootstrap Distribution'
+        Plot title.
+    bins : int, default=30
+        Number of histogram bins.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
     """
     fig, ax = plt.subplots(figsize=(9, 5))
     
