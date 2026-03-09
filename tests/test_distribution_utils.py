@@ -7,17 +7,17 @@ AIC/BIC information criteria, and multi-distribution comparison.
 
 import numpy as np
 import pytest
-from scipy.stats import norm, gamma, expon, lognorm
+from scipy.stats import expon, gamma, lognorm, norm
 
 from utils.distribution_utils import (
-    fit_distribution,
-    compute_pdf,
-    compute_cdf,
-    perform_ks_test,
-    fit_multiple_distributions,
-    compute_nll,
     compute_aic,
     compute_bic,
+    compute_cdf,
+    compute_nll,
+    compute_pdf,
+    fit_distribution,
+    fit_multiple_distributions,
+    perform_ks_test,
 )
 
 

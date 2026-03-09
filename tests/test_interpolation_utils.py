@@ -11,15 +11,15 @@ import numpy as np
 import pytest
 
 from utils.interpolation_utils import (
-    linear_interpolate,
     cubic_interpolate,
-    spline_interpolate,
-    fit_curve,
     exponential_model,
+    fit_curve,
     gaussian_model,
-    safe_gaussian_fit,
     interpolate_2d,
+    linear_interpolate,
     rbf_interpolation,
+    safe_gaussian_fit,
+    spline_interpolate,
 )
 
 

@@ -2,6 +2,7 @@ import numpy as np
 import scipy.stats as stats
 from statsmodels.stats.power import TTestPower
 
+
 # ✅ 1. Compute Standard Error of the Mean
 def compute_sem(std_dev: float, n: int) -> float:
     """
@@ -47,7 +48,7 @@ def confidence_interval(
     """
     sem = compute_sem(std_dev, n)
     df = n - 1
-    t_crit = stats.t.ppf((1 + confidence) / 2., df)
+    t_crit = stats.t.ppf((1 + confidence) / 2.0, df)
     margin = t_crit * sem
     return (mean - margin, mean + margin)
 
@@ -80,15 +81,13 @@ def z_confidence_interval(
     Use this when population variance is known (e.g., large samples or known process).
     For unknown variance, use confidence_interval() which uses the t-distribution.
     """
-    z_crit = stats.norm.ppf((1 + confidence) / 2.)
+    z_crit = stats.norm.ppf((1 + confidence) / 2.0)
     margin = z_crit * (pop_std / np.sqrt(n))
     return (mean - margin, mean + margin)
 
 
 # ✅ 4. Compute t-statistic from summary stats
-def compute_t_stat(
-    sample_mean: float, pop_mean: float, sample_std: float, n: int
-) -> float:
+def compute_t_stat(sample_mean: float, pop_mean: float, sample_std: float, n: int) -> float:
     """
     Compute the one-sample t-statistic from summary statistics.
 
@@ -141,9 +140,7 @@ def manual_t_test(
 
 
 # ✅ 6. Margin of Error (can be reused for survey/interval calc)
-def margin_of_error(
-    std_dev: float, n: int, confidence: float = 0.95
-) -> float:
+def margin_of_error(std_dev: float, n: int, confidence: float = 0.95) -> float:
     """
     Compute the margin of error for a t-based confidence interval.
 
@@ -162,7 +159,7 @@ def margin_of_error(
         Margin of error (half-width of the confidence interval).
     """
     sem = compute_sem(std_dev, n)
-    t_crit = stats.t.ppf((1 + confidence) / 2., n - 1)
+    t_crit = stats.t.ppf((1 + confidence) / 2.0, n - 1)
     return t_crit * sem
 
 
@@ -173,4 +170,3 @@ def compute_sample_size(effect_size, alpha=0.05, power=0.8):
     """
     analysis = TTestPower()
     return analysis.solve_power(effect_size=effect_size, alpha=alpha, power=power)
-

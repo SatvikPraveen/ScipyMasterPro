@@ -1,38 +1,39 @@
 # streamlit_app/pages/09_interpolation_curvefitting.py
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
 
-import streamlit as st
 import numpy as np
 import pandas as pd
-from sklearn.metrics import root_mean_squared_error, r2_score
-
+import streamlit as st
+from sklearn.metrics import r2_score, root_mean_squared_error
 from streamlit_utils import sidebar_section
+
 from utils.interpolation_utils import (
-    linear_interpolate,
     cubic_interpolate,
-    spline_interpolate,
-    fit_curve,
     exponential_model,
+    fit_curve,
     gaussian_model,
-    safe_gaussian_fit,
     interpolate_2d,
-    rbf_interpolation
+    linear_interpolate,
+    rbf_interpolation,
+    safe_gaussian_fit,
+    spline_interpolate,
 )
 from utils.viz_utils import (
-    plot_interpolation_comparison,
+    plot_all_fits_comparison,
     plot_curve_fits_with_bands,
     plot_gaussian_fit_with_band,
-    plot_polynomial_fit,
-    plot_weighted_vs_unweighted_fit,
+    plot_interpolation_comparison,
     plot_multivariate_griddata,
+    plot_polynomial_fit,
     plot_rbf_interpolation,
     plot_residuals_comparison,
-    plot_all_fits_comparison
+    plot_weighted_vs_unweighted_fit,
 )
 
 # -------------------------------
@@ -41,7 +42,9 @@ from utils.viz_utils import (
 st.title("🧩 Curve Fitting & Interpolation Explorer")
 sidebar_section("Interpolation & Curve Fitting Settings")
 
-demo_type = st.sidebar.selectbox("Select Demo", ["1D Curve Fitting & Interpolation", "2D Surface Interpolation"])
+demo_type = st.sidebar.selectbox(
+    "Select Demo", ["1D Curve Fitting & Interpolation", "2D Surface Interpolation"]
+)
 num_points = st.sidebar.slider("Number of Data Points", 10, 200, 50)
 
 # -------------------------------
@@ -74,10 +77,9 @@ if demo_type == "1D Curve Fitting & Interpolation":
     rmse_cub = root_mean_squared_error(y, cub_fn(x))
     rmse_spl = root_mean_squared_error(y, spl_fn(x))
 
-    interp_metrics = pd.DataFrame({
-        "Method": ["Linear", "Cubic", "Spline"],
-        "RMSE": [rmse_lin, rmse_cub, rmse_spl]
-    })
+    interp_metrics = pd.DataFrame(
+        {"Method": ["Linear", "Cubic", "Spline"], "RMSE": [rmse_lin, rmse_cub, rmse_spl]}
+    )
     st.markdown("### 📊 Interpolation Metrics")
     st.dataframe(interp_metrics)
 
@@ -88,13 +90,16 @@ if demo_type == "1D Curve Fitting & Interpolation":
     popt_gauss, pcov_gauss = safe_gaussian_fit(x, y)
     y_gauss = gaussian_model(x_new, *popt_gauss)
 
-    fig_curve = plot_curve_fits_with_bands(x, y, x_new, y_exp, y_exp-0.5, y_exp+0.5, y_gauss)
+    fig_curve = plot_curve_fits_with_bands(x, y, x_new, y_exp, y_exp - 0.5, y_exp + 0.5, y_gauss)
     st.pyplot(fig_curve, use_container_width=True)
 
     # Weighted fit
     weights = np.linspace(1, 3, len(x))
     from scipy.optimize import curve_fit
-    popt_weighted, _ = curve_fit(exponential_model, x, y, sigma=1/weights, absolute_sigma=True, maxfev=10000)
+
+    popt_weighted, _ = curve_fit(
+        exponential_model, x, y, sigma=1 / weights, absolute_sigma=True, maxfev=10000
+    )
     y_weighted = exponential_model(x_new, *popt_weighted)
 
     fig_weighted = plot_weighted_vs_unweighted_fit(x, y, x_new, y_exp, y_weighted)
@@ -120,19 +125,37 @@ if demo_type == "1D Curve Fitting & Interpolation":
     st.pyplot(fig_all, use_container_width=True)
 
     # Metrics
-    summary = pd.DataFrame({
-        "Technique": ["Linear", "Cubic", "Spline", "Exponential", "Weighted Exp", "Gaussian", "Polynomial"],
-        "RMSE": [rmse_lin, rmse_cub, rmse_spl,
-                 root_mean_squared_error(y, exponential_model(x, *popt_exp)),
-                 root_mean_squared_error(y, exponential_model(x, *popt_weighted)),
-                 root_mean_squared_error(y, gaussian_model(x, *popt_gauss)),
-                 root_mean_squared_error(y, np.poly1d(coeffs)(x))],
-        "R2_Score": [np.nan, np.nan, np.nan,
-                     r2_score(y, exponential_model(x, *popt_exp)),
-                     r2_score(y, exponential_model(x, *popt_weighted)),
-                     r2_score(y, gaussian_model(x, *popt_gauss)),
-                     r2_score(y, np.poly1d(coeffs)(x))]
-    })
+    summary = pd.DataFrame(
+        {
+            "Technique": [
+                "Linear",
+                "Cubic",
+                "Spline",
+                "Exponential",
+                "Weighted Exp",
+                "Gaussian",
+                "Polynomial",
+            ],
+            "RMSE": [
+                rmse_lin,
+                rmse_cub,
+                rmse_spl,
+                root_mean_squared_error(y, exponential_model(x, *popt_exp)),
+                root_mean_squared_error(y, exponential_model(x, *popt_weighted)),
+                root_mean_squared_error(y, gaussian_model(x, *popt_gauss)),
+                root_mean_squared_error(y, np.poly1d(coeffs)(x)),
+            ],
+            "R2_Score": [
+                np.nan,
+                np.nan,
+                np.nan,
+                r2_score(y, exponential_model(x, *popt_exp)),
+                r2_score(y, exponential_model(x, *popt_weighted)),
+                r2_score(y, gaussian_model(x, *popt_gauss)),
+                r2_score(y, np.poly1d(coeffs)(x)),
+            ],
+        }
+    )
     st.markdown("### 📑 Summary of Fitting Techniques")
     st.dataframe(summary)
 
@@ -164,15 +187,19 @@ else:
 # -------------------------------
 st.markdown("## ✅ Summary")
 if demo_type == "1D Curve Fitting & Interpolation":
-    st.markdown("""
+    st.markdown(
+        """
     - Compared **linear, cubic, and spline interpolation**.
     - Fitted **exponential, Gaussian, weighted, and polynomial models**.
     - Visualized residuals and overlay of all fits for quality check.
     - Displayed **RMSE and R² metrics** for all fitting methods.
-    """)
+    """
+    )
 else:
-    st.markdown("""
+    st.markdown(
+        """
     - Interpolated random 2D data using **linear griddata** and **RBF kernels**.
     - Visualized surfaces interactively.
     - Displayed approximation errors against the true function.
-    """)
+    """
+    )

@@ -9,10 +9,10 @@ import numpy as np
 import pytest
 
 from utils.power_utils import (
-    compute_power_z,
-    compute_power_t,
-    statsmodels_power,
     compute_cohens_d,
+    compute_power_t,
+    compute_power_z,
+    statsmodels_power,
 )
 
 
@@ -105,9 +105,7 @@ class TestStatsmodelsPower:
 
     @pytest.mark.parametrize("alternative", ["two-sided", "larger", "smaller"])
     def test_alternative_hypothesis_variants(self, alternative):
-        power = statsmodels_power(
-            effect_size=0.5, alpha=0.05, n=50, alternative=alternative
-        )
+        power = statsmodels_power(effect_size=0.5, alpha=0.05, n=50, alternative=alternative)
         assert 0.0 <= power <= 1.0
 
 

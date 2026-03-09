@@ -1,29 +1,30 @@
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
 
-import streamlit as st
-import pandas as pd
 import numpy as np
-from scipy.stats import norm, gamma, lognorm, beta, expon, kstest
-from statsmodels.distributions.empirical_distribution import ECDF
+import pandas as pd
 import plotly.graph_objects as go
+import streamlit as st
+from scipy.stats import beta, expon, gamma, kstest, lognorm, norm
+from statsmodels.distributions.empirical_distribution import ECDF
 
-from utils.distribution_utils import (
-    fit_distribution,
-    fit_multiple_distributions,
-    fit_distributions_all_columns,
-    compute_pdf,
-    compute_cdf,
-    perform_ks_test
-)
 from streamlit_app.ui_components import (
+    add_sidebar_notes,
     load_synthetic_distribution_data,
     select_distribution_column,
-    add_sidebar_notes
+)
+from utils.distribution_utils import (
+    compute_cdf,
+    compute_pdf,
+    fit_distribution,
+    fit_distributions_all_columns,
+    fit_multiple_distributions,
+    perform_ks_test,
 )
 
 # -------------------------------------
@@ -46,7 +47,7 @@ dist_map = {
     "Gamma": gamma,
     "Lognormal": lognorm,
     "Beta": beta,
-    "Exponential": expon
+    "Exponential": expon,
 }
 dist_name = st.sidebar.selectbox("Choose Distribution", list(dist_map.keys()))
 dist = dist_map[dist_name]
@@ -68,7 +69,7 @@ param_labels = {
     "gamma": ["shape (a)", "loc", "scale"],
     "lognorm": ["shape (s)", "loc", "scale"],
     "beta": ["alpha (a)", "beta (b)", "loc", "scale"],
-    "expon": ["loc", "scale"]
+    "expon": ["loc", "scale"],
 }
 
 labels = param_labels.get(dist.name, [f"param_{i}" for i in range(len(params))])
@@ -83,12 +84,11 @@ pdf_vals = dist.pdf(x, *params)
 
 # Plot PDF overlay
 fig_pdf = go.Figure()
-fig_pdf.add_trace(go.Histogram(x=data, histnorm='probability density',
-                               name='Data', opacity=0.6))
-fig_pdf.add_trace(go.Scatter(x=x, y=pdf_vals, mode='lines',
-                             name=f'{dist_name} PDF', line=dict(color='red')))
-fig_pdf.update_layout(title=f"{dist_name} PDF Overlay",
-                      xaxis_title="Value", yaxis_title="Density")
+fig_pdf.add_trace(go.Histogram(x=data, histnorm="probability density", name="Data", opacity=0.6))
+fig_pdf.add_trace(
+    go.Scatter(x=x, y=pdf_vals, mode="lines", name=f"{dist_name} PDF", line=dict(color="red"))
+)
+fig_pdf.update_layout(title=f"{dist_name} PDF Overlay", xaxis_title="Value", yaxis_title="Density")
 st.plotly_chart(fig_pdf, use_container_width=True)
 
 # -------------------------------------
@@ -98,12 +98,13 @@ ecdf = ECDF(data)
 cdf_vals = dist.cdf(x, *params)
 
 fig_cdf = go.Figure()
-fig_cdf.add_trace(go.Scatter(x=x, y=ecdf(x), mode='lines',
-                             name="ECDF", line=dict(color='blue')))
-fig_cdf.add_trace(go.Scatter(x=x, y=cdf_vals, mode='lines',
-                             name=f'{dist_name} CDF', line=dict(color='green')))
-fig_cdf.update_layout(title=f"{dist_name} CDF vs ECDF",
-                      xaxis_title="Value", yaxis_title="Probability")
+fig_cdf.add_trace(go.Scatter(x=x, y=ecdf(x), mode="lines", name="ECDF", line=dict(color="blue")))
+fig_cdf.add_trace(
+    go.Scatter(x=x, y=cdf_vals, mode="lines", name=f"{dist_name} CDF", line=dict(color="green"))
+)
+fig_cdf.update_layout(
+    title=f"{dist_name} CDF vs ECDF", xaxis_title="Value", yaxis_title="Probability"
+)
 st.plotly_chart(fig_cdf, use_container_width=True)
 
 # KS Test for goodness-of-fit
@@ -128,20 +129,19 @@ st.download_button(
     "⬇️ Download Fit Results (CSV)",
     data=results_df.to_csv(index=False),
     file_name=f"{col}_fit_results.csv",
-    mime="text/csv"
+    mime="text/csv",
 )
 
 # Multi-distribution overlay
 fig_multi = go.Figure()
-fig_multi.add_trace(go.Histogram(x=data, histnorm='probability density',
-                                 name='Data', opacity=0.5))
+fig_multi.add_trace(go.Histogram(x=data, histnorm="probability density", name="Data", opacity=0.5))
 for d in distribution_list:
     params_d = fit_distribution(data, d)
     pdf_d = d.pdf(x, *params_d)
-    fig_multi.add_trace(go.Scatter(x=x, y=pdf_d, mode='lines',
-                                   name=f"{d.name.capitalize()} PDF"))
-fig_multi.update_layout(title=f"{col}: Multiple Distribution Fits",
-                        xaxis_title="Value", yaxis_title="Density")
+    fig_multi.add_trace(go.Scatter(x=x, y=pdf_d, mode="lines", name=f"{d.name.capitalize()} PDF"))
+fig_multi.update_layout(
+    title=f"{col}: Multiple Distribution Fits", xaxis_title="Value", yaxis_title="Density"
+)
 st.plotly_chart(fig_multi, use_container_width=True)
 
 # -------------------------------------
@@ -156,17 +156,19 @@ st.download_button(
     "⬇️ Download PDF & CDF Values",
     data=export_df.to_csv(index=False),
     file_name=f"{col}_{dist_name}_pdf_cdf.csv",
-    mime="text/csv"
+    mime="text/csv",
 )
 
 # -------------------------------------
 # SUMMARY
 # -------------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(f"""
+st.markdown(
+    f"""
 - **Fit parametric distributions** (Normal, Gamma, Lognorm, Beta, Exponential) to your data  
 - Visualize **PDF overlays** and **ECDF vs CDF fits**  
 - Run **KS test** for statistical goodness-of-fit  
 - Compare multiple distributions to identify the **best candidate model**  
 - Export fitted values for further analysis  
-""")
+"""
+)

@@ -1,13 +1,6 @@
 import numpy as np
 import pandas as pd
-from scipy.stats import (norm, 
-                         beta, 
-                         gamma, 
-                         expon, 
-                         lognorm, 
-                         kstest,
-                         anderson
-    )
+from scipy.stats import anderson, beta, expon, gamma, kstest, lognorm, norm
 
 
 def fit_distribution(data: "np.ndarray", dist_name: str) -> tuple:
@@ -127,9 +120,7 @@ def compute_cdf(
 
 
 # Perform Goodness-of-Fit Test (e.g., KS)
-def perform_ks_test(
-    data: "np.ndarray", dist_obj: object, params: tuple
-) -> dict[str, float]:
+def perform_ks_test(data: "np.ndarray", dist_obj: object, params: tuple) -> dict[str, float]:
     """
     Perform a Kolmogorov-Smirnov goodness-of-fit test.
 
@@ -153,9 +144,7 @@ def perform_ks_test(
 
 
 # Wrapper to Fit Multiple Distributions
-def fit_multiple_distributions(
-    data: "np.ndarray", dist_list: list
-) -> list[dict]:
+def fit_multiple_distributions(data: "np.ndarray", dist_list: list) -> list[dict]:
     """
     Fit multiple distributions to the same dataset and compare KS test results.
 
@@ -181,17 +170,16 @@ def fit_multiple_distributions(
         try:
             params = dist.fit(data)
             D, p = kstest(data, dist.name, args=params)
-            results.append({
-                "distribution": dist.name,
-                "params": params,
-                "KS_stat": round(D, 4),
-                "p_value": round(p, 4)
-            })
+            results.append(
+                {
+                    "distribution": dist.name,
+                    "params": params,
+                    "KS_stat": round(D, 4),
+                    "p_value": round(p, 4),
+                }
+            )
         except Exception as e:
-            results.append({
-                "distribution": dist.name,
-                "error": str(e)
-            })
+            results.append({"distribution": dist.name, "error": str(e)})
     return results
 
 
@@ -259,7 +247,7 @@ def compute_bic(nll: float, k: int, n: int) -> float:
     return k * np.log(n) + 2 * nll
 
 
-def perform_anderson_darling(data, dist='norm'):
+def perform_anderson_darling(data, dist="norm"):
     """
     Perform Anderson-Darling test (default: normality test).
     Returns statistic and critical values.
@@ -268,13 +256,11 @@ def perform_anderson_darling(data, dist='norm'):
     return {
         "statistic": result.statistic,
         "critical_values": result.critical_values.tolist(),
-        "significance_levels": result.significance_level.tolist()
+        "significance_levels": result.significance_level.tolist(),
     }
 
 
-def fit_multiple_distributions_extended(
-    data: "np.ndarray", distribution_list: list
-) -> list[dict]:
+def fit_multiple_distributions_extended(data: "np.ndarray", distribution_list: list) -> list[dict]:
     """
     Fit multiple distributions and compute AIC, BIC, KS test, and Anderson-Darling test.
 
@@ -310,23 +296,24 @@ def fit_multiple_distributions_extended(
         ks_stat, ks_p = kstest(data, dist.name, args=params)
 
         # Anderson-Darling (only for normal)
-        ad_result = perform_anderson_darling(data, dist='norm') if dist.name == 'norm' else None
+        ad_result = perform_anderson_darling(data, dist="norm") if dist.name == "norm" else None
 
-        results.append({
-            "distribution": dist.name,
-            "params": params,
-            "nll": nll,
-            "aic": compute_aic(nll, k),
-            "bic": compute_bic(nll, k, n),
-            "ks_stat": ks_stat,
-            "ks_pvalue": ks_p,
-            "ad_stat": ad_result["statistic"] if ad_result else None
-        })
+        results.append(
+            {
+                "distribution": dist.name,
+                "params": params,
+                "nll": nll,
+                "aic": compute_aic(nll, k),
+                "bic": compute_bic(nll, k, n),
+                "ks_stat": ks_stat,
+                "ks_pvalue": ks_p,
+                "ad_stat": ad_result["statistic"] if ad_result else None,
+            }
+        )
     return results
 
-def fit_distributions_all_columns(
-    df: "pd.DataFrame", distribution_list: list
-) -> "pd.DataFrame":
+
+def fit_distributions_all_columns(df: "pd.DataFrame", distribution_list: list) -> "pd.DataFrame":
     """
     Fit multiple distributions to every numeric column in a DataFrame.
 

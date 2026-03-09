@@ -1,20 +1,19 @@
 # streamlit_app/pages/05_bootstrap_simulation.py
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
 
-import streamlit as st
 import numpy as np
 import pandas as pd
+import streamlit as st
+
+from streamlit_app.streamlit_utils import load_dataset, sidebar_section
 from utils.sim_utils import bootstrap_statistic, compute_bootstrap_ci, summarize_bootstrap
 from utils.viz_utils import plot_bootstrap_distribution
-from streamlit_app.streamlit_utils import (
-    load_dataset,
-    sidebar_section
-)
 
 # -------------------------------
 # 📌 Page Config
@@ -27,18 +26,14 @@ sidebar_section("Bootstrap Settings")
 # 🎛️ User Inputs
 # -------------------------------
 dataset_name = st.sidebar.selectbox(
-    "Select Dataset",
-    ["bootstrap_sample_data.csv", "mixed_distributions.csv"]
+    "Select Dataset", ["bootstrap_sample_data.csv", "mixed_distributions.csv"]
 )
 
 # Load dataset early to dynamically populate features
 df = load_dataset(dataset_name)
 
 # Filter available numeric columns dynamically
-available_features = (
-    df.select_dtypes(include=np.number).columns.tolist()
-    if not df.empty else []
-)
+available_features = df.select_dtypes(include=np.number).columns.tolist() if not df.empty else []
 
 # Provide safe fallback if no numeric columns found
 if not available_features:
@@ -70,7 +65,9 @@ data = df[feature].dropna()
 # -------------------------------
 # 🔁 Perform Bootstrapping
 # -------------------------------
-st.markdown(f"### 🔄 Bootstrapping **{statistic_choice}** for `{feature}` ({n_iterations} iterations)")
+st.markdown(
+    f"### 🔄 Bootstrapping **{statistic_choice}** for `{feature}` ({n_iterations} iterations)"
+)
 
 if statistic_choice == "Mean":
     true_val = data.mean()
@@ -101,16 +98,14 @@ st.download_button(
     "⬇️ Download Bootstrap Summary (CSV)",
     data=summary_df.to_csv(index=False),
     file_name=f"{feature}_{statistic_choice.lower()}_bootstrap_summary.csv",
-    mime="text/csv"
+    mime="text/csv",
 )
 
 # -------------------------------
 # 📉 Plot Bootstrap Distribution
 # -------------------------------
 fig = plot_bootstrap_distribution(
-    boot_samples,
-    ci_bounds,
-    title=f"Bootstrap {statistic_choice} Distribution (CI {ci_level}%)"
+    boot_samples, ci_bounds, title=f"Bootstrap {statistic_choice} Distribution (CI {ci_level}%)"
 )
 st.pyplot(fig, use_container_width=True)
 
@@ -118,11 +113,13 @@ st.pyplot(fig, use_container_width=True)
 # ✅ Summary Section
 # -------------------------------
 st.markdown("## ✅ Interpretation")
-st.markdown(f"""
+st.markdown(
+    f"""
 - Bootstrapping resamples data **with replacement** to estimate the distribution of a statistic.  
 - Here we calculated **{statistic_choice}** across `{n_iterations}` resamples.  
 - **True Value:** `{true_val:.4f}`  
 - **{ci_level}% Confidence Interval:** `({ci_bounds[0]:.4f}, {ci_bounds[1]:.4f})`  
 - Non-parametric approach → no distribution assumptions.  
 - You can **download summary results** above for reporting.
-""")
+"""
+)

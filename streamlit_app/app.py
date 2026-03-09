@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
@@ -9,17 +10,14 @@ import streamlit as st
 # -----------------------------
 # 🎨 Page Config
 # -----------------------------
-st.set_page_config(
-    page_title="🧠 SciPyMasterPro",
-    layout="wide",
-    page_icon="📊"
-)
+st.set_page_config(page_title="🧠 SciPyMasterPro", layout="wide", page_icon="📊")
 
 # -----------------------------
 # 🌟 Custom CSS for Styling
 # -----------------------------
 
-st.markdown("""
+st.markdown(
+    """
     <style>
     /* Sidebar background and text color */
     section[data-testid="stSidebar"] {
@@ -62,20 +60,25 @@ st.markdown("""
         font-weight: 600;
     }
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 
 # -----------------------------
 # 🏷️ Title and Description
 # -----------------------------
 st.markdown("<h1 class='main-title'>🔬 SciPyMasterPro</h1>", unsafe_allow_html=True)
-st.markdown("""
+st.markdown(
+    """
 <div class='description'>
 Welcome to <b>SciPyMasterPro</b> – an interactive, modular learning platform to master <br>
 <b>statistics, simulation, and distribution fitting</b> using <b>SciPy</b> & <b>Statsmodels</b>. <br><br>
 👉 <i>Navigate using the sidebar to explore statistical modules.</i>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # -----------------------------
 # 🎛 Sidebar Navigation

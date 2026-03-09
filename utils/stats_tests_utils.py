@@ -1,30 +1,26 @@
 from __future__ import annotations
 
 import numpy as np
-from scipy.stats import (
-        skew, 
-        kurtosis,
-        levene, # Variance Equality Tests
-        bartlett, # Variance Equality Tests
-        fligner, # Variance Equality Tests
-        ttest_1samp, # One-sample t-test
-        ttest_ind, # Two-sample t-test (equal/unequal variance)
-        ttest_rel, # Paired t-test
-        shapiro, # Normality Tests
-        normaltest, # Normality Tests
-        anderson, # Normality Tests
-        mannwhitneyu, # Mann-Whitney U Test
-        wilcoxon,
-        spearmanr,
-        kendalltau,
-        rankdata,
-        levene,
-        shapiro
-    )
-
-import numpy as np
 import pandas as pd
 from scipy import stats
+from scipy.stats import anderson  # Normality Tests
+from scipy.stats import bartlett  # Variance Equality Tests
+from scipy.stats import fligner  # Variance Equality Tests
+from scipy.stats import levene  # Variance Equality Tests
+from scipy.stats import mannwhitneyu  # Mann-Whitney U Test
+from scipy.stats import normaltest  # Normality Tests
+from scipy.stats import shapiro  # Normality Tests
+from scipy.stats import ttest_1samp  # One-sample t-test
+from scipy.stats import ttest_ind  # Two-sample t-test (equal/unequal variance)
+from scipy.stats import ttest_rel  # Paired t-test
+from scipy.stats import (
+    kendalltau,
+    kurtosis,
+    rankdata,
+    skew,
+    spearmanr,
+    wilcoxon,
+)
 
 
 def compute_skewness_kurtosis(
@@ -56,17 +52,12 @@ def compute_skewness_kurtosis(
     """
     result: dict[str, dict[str, float]] = {}
     for col in columns:
-        result[col] = {
-            "skewness": skew(df[col]),
-            "kurtosis": kurtosis(df[col], fisher=True)
-        }
+        result[col] = {"skewness": skew(df[col]), "kurtosis": kurtosis(df[col], fisher=True)}
     return result
 
 
 # Summary Stats Function
-def summarize_descriptive_statistics(
-    df: "pd.DataFrame", columns: list[str]
-) -> "pd.DataFrame":
+def summarize_descriptive_statistics(df: "pd.DataFrame", columns: list[str]) -> "pd.DataFrame":
     """
     Compute a descriptive statistics summary table for selected columns.
 
@@ -91,23 +82,23 @@ def summarize_descriptive_statistics(
     >>> list(summary.columns)
     ['Mean', 'Median', 'Std Dev', 'Min', 'Max', 'Variance', 'Std Error']
     """
-    summary = df[columns].agg(['mean', 'median', 'std', 'min', 'max', 'var', 'sem']).T
-    summary = summary.rename(columns={
-        'mean': 'Mean',
-        'median': 'Median',
-        'std': 'Std Dev',
-        'min': 'Min',
-        'max': 'Max',
-        'var': 'Variance',
-        'sem': 'Std Error'
-    })
+    summary = df[columns].agg(["mean", "median", "std", "min", "max", "var", "sem"]).T
+    summary = summary.rename(
+        columns={
+            "mean": "Mean",
+            "median": "Median",
+            "std": "Std Dev",
+            "min": "Min",
+            "max": "Max",
+            "var": "Variance",
+            "sem": "Std Error",
+        }
+    )
     return summary
 
 
 # One-sample t-test
-def run_one_sample_ttest(
-    data: "np.ndarray", popmean: float
-) -> dict[str, float]:
+def run_one_sample_ttest(data: "np.ndarray", popmean: float) -> dict[str, float]:
     """
     Perform a one-sample t-test to determine if the sample mean differs from a population mean.
 
@@ -162,9 +153,7 @@ def run_two_sample_ttest(
 
 
 # Paired t-test
-def run_paired_ttest(
-    before: "np.ndarray", after: "np.ndarray"
-) -> dict[str, float]:
+def run_paired_ttest(before: "np.ndarray", after: "np.ndarray") -> dict[str, float]:
     """
     Perform a paired (related samples) t-test.
 
@@ -209,18 +198,12 @@ def run_normality_tests(data: "np.ndarray") -> dict[str, object]:
     D'Agostino's test is preferred for larger samples.
     Anderson-Darling provides critical values rather than a p-value.
     """
-    results = {
-        "shapiro": shapiro(data),
-        "dagostino": normaltest(data),
-        "anderson": anderson(data)
-    }
+    results = {"shapiro": shapiro(data), "dagostino": normaltest(data), "anderson": anderson(data)}
     return results
 
 
 # Variance Equality Tests
-def run_variance_tests(
-    data1: "np.ndarray", data2: "np.ndarray"
-) -> dict[str, object]:
+def run_variance_tests(data1: "np.ndarray", data2: "np.ndarray") -> dict[str, object]:
     """
     Test equality of variances between two samples using three methods.
 
@@ -242,7 +225,7 @@ def run_variance_tests(
     return {
         "levene": levene(data1, data2),
         "bartlett": bartlett(data1, data2),
-        "fligner": fligner(data1, data2)
+        "fligner": fligner(data1, data2),
     }
 
 
@@ -263,13 +246,10 @@ def format_test_result(result_dict: dict[str, float], test_name: str) -> None:
         print(f"  {k}: {v:.4f}")
 
 
-
 # -------------------------------------------
 # 📏 EFFECT SIZE UTILITIES (parametric & nonparametric)
 # -------------------------------------------
-def cohens_d_independent(
-    x: "np.ndarray", y: "np.ndarray", equal_var: bool = True
-) -> float:
+def cohens_d_independent(x: "np.ndarray", y: "np.ndarray", equal_var: bool = True) -> float:
     """
     Compute Cohen's d effect size for two independent samples.
 
@@ -288,7 +268,8 @@ def cohens_d_independent(
     float
         Cohen's d value. Interpretation: |d| < 0.2 small, 0.2–0.5 medium, > 0.8 large.
     """
-    x = np.asarray(x); y = np.asarray(y)
+    x = np.asarray(x)
+    y = np.asarray(y)
     nx, ny = len(x), len(y)
     vx, vy = np.var(x, ddof=1), np.var(y, ddof=1)
     if equal_var:
@@ -299,9 +280,8 @@ def cohens_d_independent(
     d = (np.mean(x) - np.mean(y)) / s_pooled
     return d
 
-def hedges_g_independent(
-    x: "np.ndarray", y: "np.ndarray", equal_var: bool = True
-) -> float:
+
+def hedges_g_independent(x: "np.ndarray", y: "np.ndarray", equal_var: bool = True) -> float:
     """
     Compute Hedges' g effect size — a bias-corrected version of Cohen's d.
 
@@ -322,12 +302,11 @@ def hedges_g_independent(
     """
     d = cohens_d_independent(x, y, equal_var=equal_var)
     n = len(x) + len(y)
-    J = 1 - (3 / (4*n - 9))
+    J = 1 - (3 / (4 * n - 9))
     return J * d
 
-def glass_delta(
-    x: "np.ndarray", y: "np.ndarray", ref: str = "y"
-) -> float:
+
+def glass_delta(x: "np.ndarray", y: "np.ndarray", ref: str = "y") -> float:
     """
     Compute Glass's delta effect size using only the control group SD.
 
@@ -346,9 +325,11 @@ def glass_delta(
         Glass's delta value. Preferred when variances are unequal and
         one group is clearly the control.
     """
-    x = np.asarray(x); y = np.asarray(y)
+    x = np.asarray(x)
+    y = np.asarray(y)
     sd_ref = np.std(y, ddof=1) if ref == "y" else np.std(x, ddof=1)
     return (np.mean(x) - np.mean(y)) / sd_ref
+
 
 def cliffs_delta(x: "np.ndarray", y: "np.ndarray") -> float:
     """
@@ -373,12 +354,14 @@ def cliffs_delta(x: "np.ndarray", y: "np.ndarray") -> float:
     larger than values in another. It is robust to non-normality.
     """
     # Nonparametric effect size (|δ| thresholds: 0.147 small, 0.33 medium, 0.474 large)
-    x = np.asarray(x); y = np.asarray(y)
+    x = np.asarray(x)
+    y = np.asarray(y)
     nx, ny = len(x), len(y)
     greater = sum((xi > y).sum() for xi in x)
     less = sum((xi < y).sum() for xi in x)
     delta = (greater - less) / (nx * ny)
     return delta
+
 
 # -------------------------------------------
 # 🧪 MULTIPLE TESTING CORRECTION (Benjamini–Hochberg)
@@ -414,8 +397,8 @@ def p_adjust_bh(pvals: list[float] | "np.ndarray") -> "np.ndarray":
     ranked = p[order]
     adj = np.empty(n, dtype=float)
     cummin = 1.0
-    for i in range(n-1, -1, -1):
-        frac = ranked[i] * n / (i+1)
+    for i in range(n - 1, -1, -1):
+        frac = ranked[i] * n / (i + 1)
         cummin = min(cummin, frac)
         adj[i] = cummin
     out = np.empty(n, dtype=float)
@@ -423,7 +406,7 @@ def p_adjust_bh(pvals: list[float] | "np.ndarray") -> "np.ndarray":
     return out
 
 
-def run_mannwhitney_u_test(group1, group2, alternative='two-sided'):
+def run_mannwhitney_u_test(group1, group2, alternative="two-sided"):
     """
     Perform Mann–Whitney U test (non-parametric test for two independent samples).
 
@@ -436,20 +419,16 @@ def run_mannwhitney_u_test(group1, group2, alternative='two-sided'):
     - dict: { 'statistic': float, 'p_value': float, 'alternative': str }
     """
     stat, p = mannwhitneyu(group1, group2, alternative=alternative)
-    return {
-        'statistic': stat,
-        'p_value': p,
-        'alternative': alternative
-    }
+    return {"statistic": stat, "p_value": p, "alternative": alternative}
 
 
 def format_mannwhitney_result(result_dict, test_name="Mann–Whitney U Test"):
     """
     Format the result dictionary from run_mannwhitney_u_test for readable output.
     """
-    stat = result_dict['statistic']
-    p = result_dict['p_value']
-    alt = result_dict['alternative']
+    stat = result_dict["statistic"]
+    p = result_dict["p_value"]
+    alt = result_dict["alternative"]
     print(f"{test_name} ({alt}): stat = {stat:.3f}, p = {p:.4f}")
 
 
@@ -462,9 +441,7 @@ def format_effect_sizes(cohens_d: float, hedges_g: float, cliffs_delta: float):
 
 
 # Wilcoxon Signed-Rank Test (Paired, non-parametric)
-def run_wilcoxon_signedrank(
-    x: "np.ndarray", y: "np.ndarray"
-) -> dict[str, float]:
+def run_wilcoxon_signedrank(x: "np.ndarray", y: "np.ndarray") -> dict[str, float]:
     """
     Perform Wilcoxon signed-rank test for paired samples (non-parametric).
 
@@ -489,10 +466,9 @@ def run_wilcoxon_signedrank(
     stat, p = wilcoxon(x, y)
     return {"statistic": stat, "p_value": p}
 
+
 # Spearman Rank Correlation
-def run_spearman_correlation(
-    x: "np.ndarray", y: "np.ndarray"
-) -> dict[str, float]:
+def run_spearman_correlation(x: "np.ndarray", y: "np.ndarray") -> dict[str, float]:
     """
     Compute Spearman rank correlation coefficient between two variables.
 
@@ -512,10 +488,9 @@ def run_spearman_correlation(
     corr, p = spearmanr(x, y)
     return {"spearman_r": corr, "p_value": p}
 
+
 # Kendall’s Tau
-def run_kendall_tau(
-    x: "np.ndarray", y: "np.ndarray"
-) -> dict[str, float]:
+def run_kendall_tau(x: "np.ndarray", y: "np.ndarray") -> dict[str, float]:
     """
     Compute Kendall's tau rank correlation coefficient.
 
@@ -535,10 +510,9 @@ def run_kendall_tau(
     tau, p = kendalltau(x, y)
     return {"kendall_tau": tau, "p_value": p}
 
+
 # Rank-Biserial Effect Size (for Mann–Whitney or Wilcoxon)
-def rank_biserial_effect_size(
-    x: "np.ndarray", y: "np.ndarray"
-) -> float:
+def rank_biserial_effect_size(x: "np.ndarray", y: "np.ndarray") -> float:
     """
     Compute rank-biserial correlation effect size for Mann-Whitney U or Wilcoxon test.
 
@@ -572,15 +546,16 @@ def compute_trimmed_stats(series, trim=0.1):
     """
     series = pd.Series(series).dropna()
     trimmed_mean = stats.trim_mean(series, proportiontocut=trim)
-    lower, upper = np.percentile(series, [100*trim, 100*(1-trim)])
+    lower, upper = np.percentile(series, [100 * trim, 100 * (1 - trim)])
     trimmed_std = series[(series >= lower) & (series <= upper)].std()
 
     return {
         "trim_percentage": trim,
         "trimmed_mean": round(trimmed_mean, 4),
         "trimmed_std": round(trimmed_std, 4),
-        "n_after_trim": len(series[(series >= lower) & (series <= upper)])
+        "n_after_trim": len(series[(series >= lower) & (series <= upper)]),
     }
+
 
 def compute_robust_summaries(series):
     """
@@ -590,7 +565,7 @@ def compute_robust_summaries(series):
     """
     series = pd.Series(series).dropna()
     median = series.median()
-    mad = stats.median_abs_deviation(series, scale='normal')
+    mad = stats.median_abs_deviation(series, scale="normal")
     q1, q3 = np.percentile(series, [25, 75])
     iqr = q3 - q1
 
@@ -599,7 +574,7 @@ def compute_robust_summaries(series):
         "mad": round(mad, 4),
         "iqr": round(iqr, 4),
         "q1": round(q1, 4),
-        "q3": round(q3, 4)
+        "q3": round(q3, 4),
     }
 
 
@@ -618,7 +593,9 @@ def perform_shapiro_test(data):
         "test": "Shapiro-Wilk",
         "statistic": round(stat, 4),
         "p_value": round(p, 4),
-        "interpretation": "Data looks normal (p > 0.05)" if p > 0.05 else "Data is likely non-normal (p ≤ 0.05)"
+        "interpretation": (
+            "Data looks normal (p > 0.05)" if p > 0.05 else "Data is likely non-normal (p ≤ 0.05)"
+        ),
     }
 
 
@@ -634,12 +611,13 @@ def levene_variance_test(group1, group2):
     """
     stat, p = levene(
         group1.dropna() if hasattr(group1, "dropna") else group1,
-        group2.dropna() if hasattr(group2, "dropna") else group2
+        group2.dropna() if hasattr(group2, "dropna") else group2,
     )
     return {
         "test": "Levene's Test",
         "statistic": round(stat, 4),
         "p_value": round(p, 4),
-        "interpretation": "Variances are equal (p > 0.05)" if p > 0.05 else "Variances are unequal (p ≤ 0.05)"
+        "interpretation": (
+            "Variances are equal (p > 0.05)" if p > 0.05 else "Variances are unequal (p ≤ 0.05)"
+        ),
     }
-

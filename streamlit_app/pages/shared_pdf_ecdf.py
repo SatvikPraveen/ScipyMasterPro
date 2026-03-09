@@ -1,29 +1,30 @@
 # streamlit_app/pages/shared_pdf_ecdf.py
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
 
-import streamlit as st
 import numpy as np
 import pandas as pd
-from scipy.stats import norm, gamma, lognorm, kstest, shapiro, anderson
+import streamlit as st
+from scipy.stats import anderson, gamma, kstest, lognorm, norm, shapiro
 from statsmodels.distributions.empirical_distribution import ECDF
 
+from streamlit_app.ui_components import (
+    add_sidebar_notes,
+    load_synthetic_distribution_data,
+    select_distribution_column,
+)
 from utils.distribution_utils import fit_distribution
 from utils.pdf_ecdf_utils import (
     compute_manual_ecdf,
     compute_statsmodels_ecdf,
-    run_goodness_of_fit_tests,
+    plot_enhanced_ecdf_comparison,
     plot_pdf_ecdf_overlay,
-    plot_enhanced_ecdf_comparison
-)
-from streamlit_app.ui_components import (
-    load_synthetic_distribution_data,
-    select_distribution_column,
-    add_sidebar_notes
+    run_goodness_of_fit_tests,
 )
 
 # -------------------------------
@@ -42,11 +43,7 @@ data = df[col].dropna()
 # -------------------------------
 # 🔹 Auto map column to SciPy distribution
 # -------------------------------
-dist_map = {
-    "normal": norm,
-    "gamma": gamma,
-    "lognorm": lognorm
-}
+dist_map = {"normal": norm, "gamma": gamma, "lognorm": lognorm}
 dist = dist_map.get(col.lower(), norm)
 
 # -------------------------------
@@ -74,10 +71,7 @@ x_manual, y_manual = compute_manual_ecdf(data)
 x_sm, y_sm = compute_statsmodels_ecdf(data)
 
 fig_ecdf = plot_enhanced_ecdf_comparison(
-    data,
-    dist_list=[dist],
-    dist_labels=[col.title()],
-    title="Manual vs Statsmodels ECDF"
+    data, dist_list=[dist], dist_labels=[col.title()], title="Manual vs Statsmodels ECDF"
 )
 st.pyplot(fig_ecdf)
 
@@ -89,7 +83,7 @@ fig_multi = plot_enhanced_ecdf_comparison(
     data,
     dist_list=[norm, gamma, lognorm],
     dist_labels=["Normal", "Gamma", "LogNorm"],
-    title="ECDF vs Multiple Distribution Fits"
+    title="ECDF vs Multiple Distribution Fits",
 )
 st.pyplot(fig_multi)
 
@@ -110,9 +104,11 @@ st.dataframe(results_df)
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Summary")
-st.markdown("""
+st.markdown(
+    """
 - **Empirical CDF (ECDF)** compared against fitted PDFs from SciPy  
 - Manual vs statsmodels ECDF provides sanity check for computation methods  
 - Goodness-of-fit tests (KS, Shapiro, Anderson) indicate statistical fit quality  
 - Visual overlays combined with test results help validate distribution assumptions
-""")
+"""
+)

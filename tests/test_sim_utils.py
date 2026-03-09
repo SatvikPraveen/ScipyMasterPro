@@ -11,17 +11,17 @@ import pytest
 
 from utils.sim_utils import (
     bootstrap_sample,
-    sample_uniform,
-    weighted_sample,
-    stratified_sample,
-    draw_multinomial_sample,
-    draw_dirichlet_sample,
-    sample_custom_discrete,
-    resample_with_replacement,
-    compute_ecdf,
     bootstrap_statistic,
     compute_bootstrap_ci,
+    compute_ecdf,
+    draw_dirichlet_sample,
+    draw_multinomial_sample,
+    resample_with_replacement,
+    sample_custom_discrete,
+    sample_uniform,
+    stratified_sample,
     summarize_bootstrap,
+    weighted_sample,
 )
 
 
@@ -35,10 +35,12 @@ def population(random_seed):
 def groups_df():
     """DataFrame with two groups for stratified sampling."""
     rng = np.random.default_rng(0)
-    return pd.DataFrame({
-        "value": rng.normal(0, 1, 200),
-        "group": ["A"] * 100 + ["B"] * 100,
-    })
+    return pd.DataFrame(
+        {
+            "value": rng.normal(0, 1, 200),
+            "group": ["A"] * 100 + ["B"] * 100,
+        }
+    )
 
 
 class TestBootstrapSample:

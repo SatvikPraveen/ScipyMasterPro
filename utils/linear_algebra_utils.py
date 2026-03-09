@@ -2,12 +2,8 @@
 
 import numpy as np
 import pandas as pd
-from numpy.linalg import (eig, 
-                          svd, 
-                          lstsq, 
-                          inv, 
-                          det, 
-                          matrix_rank)
+from numpy.linalg import det, eig, inv, lstsq, matrix_rank, svd
+
 
 def compute_eigen(
     matrix: "np.ndarray",
@@ -34,6 +30,7 @@ def compute_eigen(
     values, vectors = eig(matrix)
     return {"eigenvalues": values, "eigenvectors": vectors}
 
+
 def compute_svd(
     matrix: "np.ndarray",
 ) -> dict[str, "np.ndarray"]:
@@ -54,9 +51,8 @@ def compute_svd(
     U, S, Vt = svd(matrix)
     return {"U": U, "S": S, "Vt": Vt}
 
-def solve_least_squares(
-    A: "np.ndarray", b: "np.ndarray"
-) -> dict[str, "np.ndarray"]:
+
+def solve_least_squares(A: "np.ndarray", b: "np.ndarray") -> dict[str, "np.ndarray"]:
     """
     Solve the least-squares problem: minimize ||Ax - b||^2.
 
@@ -75,6 +71,7 @@ def solve_least_squares(
     x, residuals, rank, s = lstsq(A, b, rcond=None)
     return {"solution": x, "residuals": residuals, "rank": rank, "singular_values": s}
 
+
 def compute_determinant(matrix: "np.ndarray") -> float:
     """
     Compute the determinant of a square matrix.
@@ -90,6 +87,7 @@ def compute_determinant(matrix: "np.ndarray") -> float:
         Determinant value. Zero indicates a singular (non-invertible) matrix.
     """
     return det(matrix)
+
 
 def compute_inverse(matrix: "np.ndarray") -> "np.ndarray":
     """
@@ -112,6 +110,7 @@ def compute_inverse(matrix: "np.ndarray") -> "np.ndarray":
     """
     return inv(matrix)
 
+
 def matrix_summary_df(matrix: "np.ndarray") -> "pd.DataFrame":
     """
     Compute a summary of key matrix properties.
@@ -131,7 +130,7 @@ def matrix_summary_df(matrix: "np.ndarray") -> "pd.DataFrame":
         "Shape": [matrix.shape],
         "Rank": [matrix_rank(matrix)],
         "Determinant": [det(matrix) if matrix.shape[0] == matrix.shape[1] else None],
-        "Condition Number": [np.linalg.cond(matrix)]
+        "Condition Number": [np.linalg.cond(matrix)],
     }
     return pd.DataFrame(data)
 
@@ -166,9 +165,7 @@ def generate_matrix(matrix_type: str = "Random Symmetric", dim: int = 4) -> pd.D
     return pd.DataFrame(A, columns=[f"x{i+1}" for i in range(A.shape[1])])
 
 
-def least_squares_solution(
-    A: "np.ndarray", b: "np.ndarray"
-) -> tuple["np.ndarray", "np.ndarray"]:
+def least_squares_solution(A: "np.ndarray", b: "np.ndarray") -> tuple["np.ndarray", "np.ndarray"]:
     """
     Solve the least-squares problem and return solution and residuals.
 
@@ -232,8 +229,8 @@ def compute_svd_adv(
         matrix = matrix.to_numpy(dtype=float)
     else:
         matrix = np.asarray(matrix, dtype=float)
-    
+
     # Perform SVD
     U, S, Vt = svd(matrix)
-    
+
     return U, S, Vt

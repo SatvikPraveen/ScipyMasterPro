@@ -1,19 +1,23 @@
 # streamlit_app/streamlit_utils.py
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
-import streamlit as st
+from pathlib import Path
+
 import pandas as pd
 import plotly.io as pio
-from pathlib import Path
+import streamlit as st
+
 from streamlit_app.config import DATA_PATH, EXPORT_PLOTS, EXPORT_TABLES
 
 # Ensure directories exist
 EXPORT_PLOTS.mkdir(parents=True, exist_ok=True)
 EXPORT_TABLES.mkdir(parents=True, exist_ok=True)
+
 
 # -------------------------------
 # 📁 Dataset Loader
@@ -29,6 +33,7 @@ def load_dataset(filename: str) -> pd.DataFrame:
     except Exception as e:
         st.error(f"⚠️ Error loading {filename}: {e}")
         return pd.DataFrame()
+
 
 # -------------------------------
 # 💾 Save & Show Plot
@@ -52,6 +57,7 @@ def save_plot(fig, save_path: Path, format="png", show=True):
     if show:
         st.plotly_chart(fig, use_container_width=True)
 
+
 # -------------------------------
 # 📊 Display & Export Tables
 # -------------------------------
@@ -71,6 +77,7 @@ def display_and_export_table(df: pd.DataFrame, save_path: Path, show_index=False
         st.error(f"⚠️ Could not export CSV: {e}")
 
     st.dataframe(df)
+
 
 # -------------------------------
 # 📌 Sidebar Section UI
