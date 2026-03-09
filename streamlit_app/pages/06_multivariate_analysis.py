@@ -1,30 +1,25 @@
 # streamlit_app/pages/06_multivariate_analysis.py
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
 
-import streamlit as st
 import numpy as np
 import pandas as pd
+import streamlit as st
 from scipy.stats import chi2
 
-from utils.sim_utils import (
-    compute_mahalanobis_distances,
-    evaluate_mahalanobis_outliers
-)
+from streamlit_app.streamlit_utils import load_dataset, sidebar_section
+from utils.sim_utils import compute_mahalanobis_distances, evaluate_mahalanobis_outliers
 from utils.viz_utils import (
+    plot_correlation_heatmap,
     plot_covariance_heatmap,
-    plot_correlation_heatmap, 
     plot_mahalanobis_distance_distribution,
     plot_mahalanobis_outliers,
-    plot_mahalanobis_outliers_3d
-)
-from streamlit_app.streamlit_utils import (
-    load_dataset,
-    sidebar_section
+    plot_mahalanobis_outliers_3d,
 )
 
 # -------------------------------
@@ -36,7 +31,9 @@ sidebar_section("Multivariate Settings")
 # -------------------------------
 # 🎛️ User Inputs
 # -------------------------------
-dataset_name = st.sidebar.selectbox("Select Dataset", ["multivariate_gaussian.csv", "mixed_distributions.csv"])
+dataset_name = st.sidebar.selectbox(
+    "Select Dataset", ["multivariate_gaussian.csv", "mixed_distributions.csv"]
+)
 df = load_dataset(dataset_name)
 
 if df.empty:
@@ -47,7 +44,7 @@ numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
 selected_features = st.sidebar.multiselect(
     "Select 2 or 3 Features for Analysis",
     options=numeric_cols,
-    default=numeric_cols[:3] if len(numeric_cols) >= 3 else numeric_cols
+    default=numeric_cols[:3] if len(numeric_cols) >= 3 else numeric_cols,
 )
 
 alpha = st.sidebar.select_slider("Significance Level (α)", options=[0.10, 0.05, 0.01], value=0.01)
@@ -67,7 +64,9 @@ st.subheader("📌 Covariance / Correlation Structure")
 matrix_type = st.radio("Choose Matrix Type:", ["Covariance", "Correlation"], horizontal=True)
 
 if matrix_type == "Covariance":
-    fig_cov = plot_covariance_heatmap(df[selected_features], title="Covariance Matrix of Selected Features")
+    fig_cov = plot_covariance_heatmap(
+        df[selected_features], title="Covariance Matrix of Selected Features"
+    )
     st.pyplot(fig_cov, use_container_width=True)
 else:
     fig_corr = plot_correlation_heatmap(df[selected_features], annot=True, cmap="coolwarm")
@@ -92,13 +91,17 @@ st.dataframe(result_df.head())
 # 📊 Summary Table
 # -------------------------------
 outlier_percentage = mask_outliers.mean() * 100
-summary_df = pd.DataFrame([{
-    "Total Points": len(result_df),
-    "Outliers Detected": mask_outliers.sum(),
-    "Alpha": alpha,
-    "Chi-Square Threshold": round(threshold, 3),
-    "Percent Outliers": round(outlier_percentage, 2)
-}])
+summary_df = pd.DataFrame(
+    [
+        {
+            "Total Points": len(result_df),
+            "Outliers Detected": mask_outliers.sum(),
+            "Alpha": alpha,
+            "Chi-Square Threshold": round(threshold, 3),
+            "Percent Outliers": round(outlier_percentage, 2),
+        }
+    ]
+)
 
 st.subheader("📋 Outlier Detection Summary")
 st.dataframe(summary_df)
@@ -107,14 +110,16 @@ st.download_button(
     "⬇️ Download Annotated Results (CSV)",
     data=result_df.to_csv(index=False),
     file_name=f"mahalanobis_outlier_results.csv",
-    mime="text/csv"
+    mime="text/csv",
 )
 
 # -------------------------------
 # 📉 Visualizations
 # -------------------------------
 st.subheader("📈 Mahalanobis Distance Distribution")
-fig_dist = plot_mahalanobis_distance_distribution(result_df, distance_col="Mahalanobis", threshold=threshold)
+fig_dist = plot_mahalanobis_distance_distribution(
+    result_df, distance_col="Mahalanobis", threshold=threshold
+)
 st.plotly_chart(fig_dist, use_container_width=True)
 
 st.subheader("🔹 2D Scatterplot of Outliers")
@@ -131,9 +136,11 @@ if len(selected_features) == 3:
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Interpretation")
-st.markdown(f"""
+st.markdown(
+    f"""
 - Mahalanobis distance identifies points far from the multivariate mean while accounting for covariance.
 - Threshold is based on **Chi-Square distribution (α = {alpha})**, degrees of freedom = `{data.shape[1]}`.
 - **Detected Outliers:** `{mask_outliers.sum()}` out of `{len(result_df)}` points ({outlier_percentage:.2f}%).
 - Use this module to validate multivariate assumptions and flag anomalies interactively.
-""")
+"""
+)

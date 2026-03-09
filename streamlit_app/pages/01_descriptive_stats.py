@@ -1,37 +1,42 @@
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
-import streamlit as st
-import pandas as pd
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import plotly.express as px
 import seaborn as sns
-import matplotlib.pyplot as plt
+import streamlit as st
 
-from streamlit_app.streamlit_utils import sidebar_section, load_dataset
+from streamlit_app.streamlit_utils import load_dataset, sidebar_section
 from utils.stats_tests_utils import (
-    compute_trimmed_stats, 
     compute_robust_summaries,
     compute_skewness_kurtosis,
-    summarize_descriptive_statistics
+    compute_trimmed_stats,
+    summarize_descriptive_statistics,
 )
 
 # ------------------------------
 # Config
 # ------------------------------
 MODULE_ID = "01_descriptive_stats"
-sidebar_section("📊 Descriptive Statistics Explorer", 
-                "Explore summary statistics, distribution shapes, and relationships interactively.")
+sidebar_section(
+    "📊 Descriptive Statistics Explorer",
+    "Explore summary statistics, distribution shapes, and relationships interactively.",
+)
 
 st.title("📊 Descriptive Statistics Explorer")
 
 # ------------------------------
 # Load Dataset
 # ------------------------------
-filename = st.sidebar.text_input("Enter dataset filename (default: normal_skewed.csv)", "normal_skewed.csv")
+filename = st.sidebar.text_input(
+    "Enter dataset filename (default: normal_skewed.csv)", "normal_skewed.csv"
+)
 df = load_dataset(filename)
 
 if df.empty:
@@ -103,7 +108,9 @@ st.subheader("📈 Empirical Cumulative Distribution Function (ECDF)")
 x = np.sort(df[col])
 y = np.arange(1, len(x) + 1) / len(x)
 
-fig_ecdf = px.line(x=x, y=y, title=f"ECDF of {col}", labels={"x": col, "y": "Cumulative Probability"})
+fig_ecdf = px.line(
+    x=x, y=y, title=f"ECDF of {col}", labels={"x": col, "y": "Cumulative Probability"}
+)
 st.plotly_chart(fig_ecdf, use_container_width=True)
 
 # ------------------------------
@@ -120,18 +127,20 @@ st.pyplot(pairplot_fig)
 st.write("📌 Correlation Heatmap:")
 corr = df[numeric_cols].corr()
 fig_corr, ax = plt.subplots(figsize=(6, 4))
-sns.heatmap(corr, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
+sns.heatmap(corr, annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
 st.pyplot(fig_corr)
 
 # ------------------------------
 # Summary Section
 # ------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(f"""
+st.markdown(
+    f"""
 - **Summary stats** show central tendency and dispersion for all numeric variables  
 - **Skewness & kurtosis** quantify asymmetry and tailedness of distributions  
 - **Trimmed & robust measures** provide stability against outliers  
 - **ECDF** adds deeper insight into distribution shape  
 - **Pairplot and heatmap** help visualize potential relationships between variables  
 - Use this interactive module to complement offline analysis done in the notebook
-""")
+"""
+)

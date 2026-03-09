@@ -1,12 +1,15 @@
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
-import streamlit as st
 import pandas as pd
+import streamlit as st
+
 from streamlit_app.config import DATA_PATH
+
 
 # ==================================================
 # 📂 Load Synthetic Datasets
@@ -23,6 +26,7 @@ def load_synthetic_distribution_data():
     except Exception as e:
         st.error(f"⚠️ Error loading file: {e}")
         return pd.DataFrame()
+
 
 @st.cache_data(show_spinner=False)
 def load_time_series_data():
@@ -49,11 +53,14 @@ def select_distribution_column(df: pd.DataFrame):
     columns = df.columns.tolist()
     return st.sidebar.selectbox("📂 **Choose a Distribution Column**", columns)
 
+
 def add_sidebar_notes():
     """Sidebar info block for guidance."""
     with st.sidebar:
         st.markdown("### ℹ️ Notes")
-        st.markdown("📘 *Choose a distribution column to visualize its empirical and theoretical fit.*")
+        st.markdown(
+            "📘 *Choose a distribution column to visualize its empirical and theoretical fit.*"
+        )
         st.markdown("🧪 Includes ECDF, PDF overlay, and test statistics.")
 
 
@@ -69,9 +76,10 @@ def setup_page(title: str, icon="🧠", layout="wide"):
             <h1 style="color:#f3f4f6;">{icon} {title}</h1>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
     st.write("")
+
 
 def setup_sidebar(module_title: str, description: str = ""):
     """Create a consistent sidebar structure."""
@@ -81,11 +89,13 @@ def setup_sidebar(module_title: str, description: str = ""):
     if description:
         st.sidebar.info(description)
 
+
 def handle_missing_data(df, msg="⚠️ No data available for this module."):
     """Gracefully handle empty datasets."""
     if df is None or df.empty:
         st.warning(msg)
         st.stop()
+
 
 def add_footer():
     """Add a footer for branding and navigation consistency."""
@@ -97,5 +107,5 @@ def add_footer():
             <a href="https://github.com/your-repo" target="_blank">GitHub</a>
         </div>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )

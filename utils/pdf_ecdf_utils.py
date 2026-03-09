@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import numpy as np
-from scipy.stats import norm
-import statsmodels.api as sm
-
 import os
+
+import numpy as np
+import statsmodels.api as sm
+from scipy.stats import norm
 
 
 # ✅ 1. Compute PDF from a scipy.stats distribution
@@ -41,6 +41,7 @@ def get_pdf(
         pdf = dist.pdf(x, *params)
     return x, pdf
 
+
 # ✅ 2. Compute ECDF manually (raw empirical CDF)
 def compute_manual_ecdf(
     data: "np.ndarray",
@@ -59,8 +60,9 @@ def compute_manual_ecdf(
         (x, y) where x is sorted data and y is cumulative probability in [0, 1].
     """
     x = np.sort(data)
-    y = np.arange(1, len(x)+1) / len(x)
+    y = np.arange(1, len(x) + 1) / len(x)
     return x, y
+
 
 # ✅ 3. Compute ECDF using statsmodels
 def compute_statsmodels_ecdf(
@@ -89,8 +91,10 @@ def compute_statsmodels_ecdf(
     y = ecdf_obj(x)
     return x, y
 
+
 import matplotlib.pyplot as plt
 from scipy.stats import kstest
+
 
 def plot_pdf_ecdf_overlay(
     data: "np.ndarray",
@@ -128,7 +132,7 @@ def plot_pdf_ecdf_overlay(
     fig, ax = plt.subplots(figsize=(8, 5))
 
     # Plot ECDF
-    ax.step(x_ecdf, y_ecdf, where='post', label="Empirical CDF", color='green')
+    ax.step(x_ecdf, y_ecdf, where="post", label="Empirical CDF", color="green")
 
     # Plot CDF from fitted distribution
     if params:
@@ -137,17 +141,29 @@ def plot_pdf_ecdf_overlay(
         params = dist.fit(data)
         y_theoretical = dist.cdf(x_pdf, *params)
 
-    ax.plot(x_pdf, y_theoretical, label=f"{dist.name.capitalize()} CDF", color='blue')
+    ax.plot(x_pdf, y_theoretical, label=f"{dist.name.capitalize()} CDF", color="blue")
 
     # Optional shaded area between ECDF and CDF
-    ax.fill_between(x_pdf, y_theoretical, y_ecdf[:len(y_theoretical)],
-                    color='orange', alpha=0.2, label='ECDF–CDF gap')
+    ax.fill_between(
+        x_pdf,
+        y_theoretical,
+        y_ecdf[: len(y_theoretical)],
+        color="orange",
+        alpha=0.2,
+        label="ECDF–CDF gap",
+    )
 
     # KS test annotation
     if annotate_ks:
         ks_stat, p_val = kstest(data, dist.name, args=params)
-        ax.text(0.05, 0.1, f"KS p-value: {p_val:.4f}", transform=ax.transAxes,
-                fontsize=10, bbox=dict(boxstyle="round", facecolor="white", edgecolor="gray"))
+        ax.text(
+            0.05,
+            0.1,
+            f"KS p-value: {p_val:.4f}",
+            transform=ax.transAxes,
+            fontsize=10,
+            bbox=dict(boxstyle="round", facecolor="white", edgecolor="gray"),
+        )
 
     ax.set_title(title)
     ax.set_xlabel("x")
@@ -157,13 +173,14 @@ def plot_pdf_ecdf_overlay(
 
     if save_path:
         plt.savefig(save_path, bbox_inches="tight")
-    #plt.show()
+    # plt.show()
 
     return fig
 
 
 import matplotlib.pyplot as plt
-from scipy.stats import kstest, anderson, shapiro
+from scipy.stats import anderson, kstest, shapiro
+
 
 def plot_enhanced_ecdf_comparison(
     data: "np.ndarray",
@@ -199,7 +216,7 @@ def plot_enhanced_ecdf_comparison(
     fig, ax = plt.subplots(figsize=(10, 6))
 
     # Plot ECDF
-    ax.step(x_ecdf, y_ecdf, where='post', label="Empirical CDF", color="black", linewidth=2)
+    ax.step(x_ecdf, y_ecdf, where="post", label="Empirical CDF", color="black", linewidth=2)
 
     annotations = []
 
@@ -214,20 +231,27 @@ def plot_enhanced_ecdf_comparison(
 
         if annotate_tests:
             ks_stat, ks_p = kstest(data, dist.name, args=params)
-            ad_stat = anderson(data, dist=dist.name if dist.name in ['norm', 'expon', 'logistic'] else 'norm').statistic
+            ad_stat = anderson(
+                data, dist=dist.name if dist.name in ["norm", "expon", "logistic"] else "norm"
+            ).statistic
             shapiro_stat, shapiro_p = shapiro(data[:5000])  # limit Shapiro to 5000
 
             annotations.append(
-                f"{label}:\n"
-                f"KS p={ks_p:.4f}, AD={ad_stat:.4f}, Shapiro p={shapiro_p:.4f}"
+                f"{label}:\n" f"KS p={ks_p:.4f}, AD={ad_stat:.4f}, Shapiro p={shapiro_p:.4f}"
             )
 
     # Annotate test results
     if annotate_tests:
         full_note = "\n\n".join(annotations)
-        ax.text(1.02, 0.5, full_note, transform=ax.transAxes,
-                fontsize=9, verticalalignment='center',
-                bbox=dict(boxstyle="round", facecolor="white", edgecolor="gray"))
+        ax.text(
+            1.02,
+            0.5,
+            full_note,
+            transform=ax.transAxes,
+            fontsize=9,
+            verticalalignment="center",
+            bbox=dict(boxstyle="round", facecolor="white", edgecolor="gray"),
+        )
 
     ax.set_title(title)
     ax.set_xlabel("x")
@@ -239,15 +263,14 @@ def plot_enhanced_ecdf_comparison(
         plt.savefig(save_path, bbox_inches="tight")
 
     plt.tight_layout()
-    #plt.show()
+    # plt.show()
     return fig
 
 
-from scipy.stats import kstest, anderson, shapiro
+from scipy.stats import anderson, kstest, shapiro
 
-def run_goodness_of_fit_tests(
-    data: "np.ndarray", dist: object
-) -> dict[str, float]:
+
+def run_goodness_of_fit_tests(data: "np.ndarray", dist: object) -> dict[str, float]:
     """
     Run a battery of goodness-of-fit tests against a specified distribution.
 
@@ -273,7 +296,8 @@ def run_goodness_of_fit_tests(
     ad_result = anderson(data)
     shapiro_stat, shapiro_p = shapiro(data)
     return {
-        "KS_stat": ks_stat, "KS_p": ks_p,
+        "KS_stat": ks_stat,
+        "KS_p": ks_p,
         "AD_stat": ad_result.statistic,
-        "Shapiro_p": shapiro_p
+        "Shapiro_p": shapiro_p,
     }

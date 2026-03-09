@@ -21,9 +21,7 @@ class TestConfidenceIntervals:
         # Calculate CI using scipy
         mean = np.mean(normal_data)
         sem = stats.sem(normal_data)
-        ci = stats.t.interval(
-            0.95, len(normal_data) - 1, loc=mean, scale=sem
-        )
+        ci = stats.t.interval(0.95, len(normal_data) - 1, loc=mean, scale=sem)
 
         assert len(ci) == 2
         assert ci[0] < mean < ci[1]  # Mean should be within CI
@@ -42,9 +40,7 @@ class TestConfidenceIntervals:
         """Test different confidence levels."""
         mean = np.mean(normal_data)
         sem = stats.sem(normal_data)
-        ci = stats.t.interval(
-            conf_level, len(normal_data) - 1, loc=mean, scale=sem
-        )
+        ci = stats.t.interval(conf_level, len(normal_data) - 1, loc=mean, scale=sem)
 
         width_90 = ci[1] - ci[0] if conf_level == 0.90 else None
         # Higher confidence level should give wider interval

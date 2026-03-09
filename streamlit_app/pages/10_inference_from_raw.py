@@ -1,28 +1,30 @@
 # streamlit_app/pages/10_inference_from_raw.py
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
 
-import streamlit as st
 import numpy as np
 import pandas as pd
-from streamlit_utils import sidebar_section, EXPORT_TABLES
+import streamlit as st
+from streamlit_utils import EXPORT_TABLES, sidebar_section
+
 from utils.inference_utils import (
+    compute_sample_size,
     compute_sem,
-    confidence_interval,
-    z_confidence_interval,
     compute_t_stat,
+    confidence_interval,
     manual_t_test,
     margin_of_error,
-    compute_sample_size
+    z_confidence_interval,
 )
 from utils.viz_utils import (
     plot_confidence_interval,
+    plot_multiple_confidence_intervals,
     plot_residuals_vs_population,
-    plot_multiple_confidence_intervals
 )
 
 # -------------------------------
@@ -46,12 +48,14 @@ inference_type = st.sidebar.selectbox(
         "Multiple CI Levels",
         "Margin of Error",
         "Manual t-Test",
-        "Power Analysis"
-    ]
+        "Power Analysis",
+    ],
 )
 
 st.title("🧩 Inference from Summary Statistics")
-st.markdown("Perform estimation, hypothesis testing, and sample size planning using only **mean, SD, and n** — no raw data required.")
+st.markdown(
+    "Perform estimation, hypothesis testing, and sample size planning using only **mean, SD, and n** — no raw data required."
+)
 
 # -------------------------------
 # 🔹 Input Section
@@ -76,13 +80,7 @@ if inference_type == "Confidence Interval (z)":
 # -------------------------------
 st.subheader("📊 Inference Output")
 
-result = {
-    "mean": mean,
-    "std_dev": std,
-    "n": n,
-    "confidence": confidence,
-    "type": inference_type
-}
+result = {"mean": mean, "std_dev": std, "n": n, "confidence": confidence, "type": inference_type}
 
 if inference_type == "Compute SEM":
     sem = compute_sem(std, n)
@@ -115,7 +113,7 @@ elif inference_type == "Multiple CI Levels":
     # Convert to DataFrame (convert float to string only for the table)
     df_ci = pd.DataFrame(
         [(f"{lvl:.0%}", bounds[0], bounds[1]) for lvl, bounds in ci_results.items()],
-        columns=["Confidence_Level", "CI_Low", "CI_High"]
+        columns=["Confidence_Level", "CI_Low", "CI_High"],
     )
     st.dataframe(df_ci)
 
@@ -136,12 +134,12 @@ elif inference_type == "Margin of Error":
 
 elif inference_type == "Manual t-Test":
     t_stat = compute_t_stat(mean, pop_mean, std, n)
-    
+
     # ✅ Manual t-test returns a tuple (t_statistic, p_value)
     t_stat_result, p_val = manual_t_test(t_stat, n - 1, std, n)
-    
+
     st.success(f"t-statistic = **{t_stat_result:.3f}**, p-value = **{p_val:.4f}**")
-    
+
     fig_res = plot_residuals_vs_population(mean, pop_mean, mean - pop_mean)
     st.pyplot(fig_res, use_container_width=True)
     result.update({"t_stat": t_stat_result, "p_value": p_val})
@@ -164,8 +162,10 @@ st.dataframe(df)
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Summary")
-st.markdown("""
+st.markdown(
+    """
 - Supports multiple inference tasks: **SEM, t/z confidence intervals, margin of error, manual t-tests, power analysis**  
 - Confidence intervals and test results visualized when applicable  
 - Suitable for cases where only summary statistics are available (no raw dataset)
-""")
+"""
+)

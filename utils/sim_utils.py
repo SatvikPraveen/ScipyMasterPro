@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-import numpy as np
-from scipy.stats import (rv_discrete,
-                         multinomial, 
-                         dirichlet                        
-    )
 import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import dirichlet, multinomial, rv_discrete
 
 
-def bootstrap_sample(
-    data: "np.ndarray", n_iterations: int = 1000, seed: int = 42
-) -> "np.ndarray":
+def bootstrap_sample(data: "np.ndarray", n_iterations: int = 1000, seed: int = 42) -> "np.ndarray":
     """
     Generate bootstrap distribution of sample means.
 
@@ -87,9 +82,8 @@ def stratified_sample(
     pd.DataFrame
         Stratified sample preserving group proportions.
     """
-    return (
-        df.groupby(stratify_col, group_keys=False)
-        .apply(lambda x: x.sample(frac=frac, random_state=seed))
+    return df.groupby(stratify_col, group_keys=False).apply(
+        lambda x: x.sample(frac=frac, random_state=seed)
     )
 
 
@@ -148,9 +142,8 @@ def draw_multinomial_sample(
     np.random.seed(seed)
     return multinomial.rvs(n=n, p=probs, size=size)
 
-def draw_dirichlet_sample(
-    alpha: list[float], size: int = 1, seed: int = 42
-) -> "np.ndarray":
+
+def draw_dirichlet_sample(alpha: list[float], size: int = 1, seed: int = 42) -> "np.ndarray":
     """
     Draw samples from a Dirichlet distribution.
 
@@ -196,7 +189,7 @@ def sample_custom_discrete(
         Array of sampled values from the custom distribution.
     """
     np.random.seed(seed)
-    custom_rv = rv_discrete(name='custom', values=(support_vals, probs))
+    custom_rv = rv_discrete(name="custom", values=(support_vals, probs))
     return custom_rv.rvs(size=size)
 
 
@@ -251,6 +244,7 @@ def compute_ecdf(
 # 🔁 BOOTSTRAP SIMULATION UTILITIES
 # -------------------------------------------
 
+
 # Basic Bootstrap Resample Generator
 def bootstrap_statistic(
     data: "np.ndarray",
@@ -287,9 +281,7 @@ def bootstrap_statistic(
 
 
 # Confidence Interval Calculation (Percentile Method)
-def compute_bootstrap_ci(
-    boot_stats: "np.ndarray", ci: float = 95
-) -> tuple[float, float]:
+def compute_bootstrap_ci(boot_stats: "np.ndarray", ci: float = 95) -> tuple[float, float]:
     """
     Compute percentile-method confidence interval from bootstrap distribution.
 
@@ -375,7 +367,7 @@ def plot_bootstrap_distribution(
     ax.set_title(title)
     ax.set_xlabel("Estimate")
     ax.set_ylabel("Frequency")
-    
+
     if ci_bounds:
         ax.axvline(ci_bounds[0], color="red", linestyle="--", label="CI Lower")
         ax.axvline(ci_bounds[1], color="red", linestyle="--", label="CI Upper")
@@ -386,6 +378,7 @@ def plot_bootstrap_distribution(
 
 # Mahalanobis Distance Calculator
 from scipy.spatial.distance import mahalanobis
+
 
 def compute_mahalanobis_distances(data):
     """
@@ -408,6 +401,7 @@ def compute_mahalanobis_distances(data):
 # Chi-Square Test for Mahalanobis Distances
 from scipy.stats import chi2
 
+
 def evaluate_mahalanobis_outliers(distances, df_dim, alpha=0.01):
     """
     Compares Mahalanobis distances to Chi-Square threshold for outlier detection.
@@ -422,4 +416,3 @@ def evaluate_mahalanobis_outliers(distances, df_dim, alpha=0.01):
     """
     threshold = chi2.ppf(1 - alpha, df_dim)
     return distances > threshold
-

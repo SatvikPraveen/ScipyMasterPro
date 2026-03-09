@@ -1,23 +1,19 @@
 # streamlit_app/pages/shared_statistical_power.py
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
 
 
-import streamlit as st
-import pandas as pd
 import numpy as np
+import pandas as pd
 import plotly.express as px
-
+import streamlit as st
 from streamlit_utils import sidebar_section
-from utils.power_utils import (
-    compute_cohens_d,
-    compute_power_z,
-    compute_power_t,
-    statsmodels_power
-)
+
+from utils.power_utils import compute_cohens_d, compute_power_t, compute_power_z, statsmodels_power
 
 # -------------------------------
 # 🎛️ Sidebar Configuration
@@ -25,11 +21,13 @@ from utils.power_utils import (
 sidebar_section("Statistical Power Analysis")
 
 st.title("📊 Statistical Power — Manual vs Statsmodels")
-st.markdown("""
+st.markdown(
+    """
 Explore **power analysis** interactively:
 - Compare **manual Z-test & T-test calculations** with `statsmodels` estimates
 - Understand how **effect size, alpha, and sample size** impact test sensitivity
-""")
+"""
+)
 
 # -------------------------------
 # 🔹 User Inputs
@@ -73,9 +71,10 @@ sample_sizes = np.arange(5, 300, 5)
 power_curve = [statsmodels_power(effect_size=d, alpha=alpha, n=n_val) for n_val in sample_sizes]
 
 fig_curve = px.line(
-    x=sample_sizes, y=power_curve,
-    labels={'x': 'Sample Size (n)', 'y': 'Power'},
-    title='Statistical Power Curve'
+    x=sample_sizes,
+    y=power_curve,
+    labels={"x": "Sample Size (n)", "y": "Power"},
+    title="Statistical Power Curve",
 )
 fig_curve.add_hline(y=0.8, line_dash="dash", line_color="red", annotation_text="Target Power 0.8")
 st.plotly_chart(fig_curve, use_container_width=True)
@@ -84,21 +83,25 @@ st.plotly_chart(fig_curve, use_container_width=True)
 # 🔹 Comparison Table
 # -------------------------------
 st.subheader("📊 Power Comparison Table")
-df_power = pd.DataFrame({
-    "Method": [
-        f"Manual Z-test ({'Two' if two_tailed else 'One'}-tailed)",
-        f"Manual T-test ({'Two' if two_tailed else 'One'}-tailed)",
-        "Statsmodels"
-    ],
-    "Power": [power_z, power_t, sm_power]
-})
+df_power = pd.DataFrame(
+    {
+        "Method": [
+            f"Manual Z-test ({'Two' if two_tailed else 'One'}-tailed)",
+            f"Manual T-test ({'Two' if two_tailed else 'One'}-tailed)",
+            "Statsmodels",
+        ],
+        "Power": [power_z, power_t, sm_power],
+    }
+)
 st.dataframe(df_power)
 
 # Effect size interpretation
-effect_table = pd.DataFrame({
-    "Cohen's d": [0.2, 0.5, 0.8],
-    "Interpretation": ["Small effect", "Medium effect", "Large effect"]
-})
+effect_table = pd.DataFrame(
+    {
+        "Cohen's d": [0.2, 0.5, 0.8],
+        "Interpretation": ["Small effect", "Medium effect", "Large effect"],
+    }
+)
 st.markdown("### 🎯 Effect Size Interpretation")
 st.dataframe(effect_table)
 
@@ -106,10 +109,12 @@ st.dataframe(effect_table)
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Key Takeaways")
-st.markdown("""
+st.markdown(
+    """
 - **Effect size (Cohen’s d)** standardizes the difference between observed and expected means  
 - **Manual power (Z & T-tests)** is based on normal and t-distributions  
 - `statsmodels` provides validated power estimates given test parameters  
 - **Sample size directly impacts power**, visualize this with the curve above  
 - Aim for **≥ 0.8 power** to reduce Type II errors in your study
-""")
+"""
+)

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import numpy as np
-from scipy.optimize import minimize, minimize_scalar, Bounds, LinearConstraint
 import pandas as pd
+from scipy.optimize import Bounds, LinearConstraint, minimize, minimize_scalar
 
 
 # 🔹 1. Example cost functions
@@ -13,7 +13,7 @@ def cost_quadratic(x: float) -> float:
 
 def cost_nonconvex(x: float) -> float:
     """Non-convex function for testing global vs local optimization."""
-    return np.sin(2 * x) + 0.1 * x ** 2
+    return np.sin(2 * x) + 0.1 * x**2
 
 
 def multi_var_cost(x: "np.ndarray") -> float:
@@ -30,7 +30,7 @@ def multi_var_cost(x: "np.ndarray") -> float:
     float
         Scalar cost value.
     """
-    return (x[0] - 1)**2 + (x[1] - 2.5)**2
+    return (x[0] - 1) ** 2 + (x[1] - 2.5) ** 2
 
 
 # 🔹 2. Constraint setup examples
@@ -90,13 +90,7 @@ def run_minimization(
     scipy.optimize.OptimizeResult
         Result object with attributes: x (solution), fun (min value), success, message.
     """
-    result = minimize(
-        func,
-        x0,
-        bounds=bounds,
-        constraints=constraints,
-        method=method
-    )
+    result = minimize(func, x0, bounds=bounds, constraints=constraints, method=method)
     return result
 
 
@@ -169,4 +163,3 @@ def evaluate_loss_surface(
             Z[i, j] = func([X[i, j], Y[i, j]])
 
     return X, Y, Z
-

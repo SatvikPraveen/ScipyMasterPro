@@ -5,13 +5,13 @@ This module tests the synthetic data generator to ensure
 reproducibility and correct data generation.
 """
 
-import numpy as np
-import pandas as pd
-import pytest
-
 # Since we can't directly import the main() function, we'll test
 # by loading the generated CSV files
 from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import pytest
 
 
 class TestSyntheticDataGeneration:
@@ -85,7 +85,7 @@ class TestDataQuality:
 
         # The synthetic normal column is generated with mean=50, std=10
         assert 40 < mean < 60  # Mean near 50
-        assert 5 < std < 15    # Std near 10
+        assert 5 < std < 15  # Std near 10
 
     def test_skewed_data_properties(self, skewed_data):
         """Test that skewed data is positively skewed."""

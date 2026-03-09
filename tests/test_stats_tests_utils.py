@@ -260,8 +260,7 @@ class TestMultipleTestingCorrection:
         # Adjusted values should maintain order (when sorted by original p-values)
         sorted_idx = np.argsort(pvals)
         assert all(
-            adjusted[sorted_idx[i]] <= adjusted[sorted_idx[i + 1]]
-            for i in range(len(pvals) - 1)
+            adjusted[sorted_idx[i]] <= adjusted[sorted_idx[i + 1]] for i in range(len(pvals) - 1)
         )
 
 

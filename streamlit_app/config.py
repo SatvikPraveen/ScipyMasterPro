@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT.parent) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT.parent))
@@ -33,15 +34,11 @@ COLORS = {
     "background": "#f9f9f9",
     "accent": "#ff7f0e",
     "success": "#2ca02c",
-    "error": "#d62728"
+    "error": "#d62728",
 }
 
 # Default font sizes (can be used in custom HTML)
-FONTS = {
-    "title_size": "2rem",
-    "subtitle_size": "1.3rem",
-    "text_size": "1rem"
-}
+FONTS = {"title_size": "2rem", "subtitle_size": "1.3rem", "text_size": "1rem"}
 
 # -----------------------------
 # 📦 File Handling Defaults

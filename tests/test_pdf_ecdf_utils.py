@@ -7,12 +7,12 @@ utilities.
 
 import numpy as np
 import pytest
-from scipy.stats import norm, expon
+from scipy.stats import expon, norm
 
 from utils.pdf_ecdf_utils import (
-    get_pdf,
     compute_manual_ecdf,
     compute_statsmodels_ecdf,
+    get_pdf,
 )
 
 

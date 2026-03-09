@@ -1,43 +1,51 @@
+import os
 import sys
 from pathlib import Path
-import os
+
 from streamlit_app.config import DATA_PATH
 
 # Ensure project root is on sys.path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]  # goes up from pages/ to streamlit_app
 if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT).rsplit('/', 1)[0])  # adds main project root
+    sys.path.insert(0, str(PROJECT_ROOT).rsplit("/", 1)[0])  # adds main project root
 
 
-
-import streamlit as st
-import pandas as pd
 import numpy as np
+import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import streamlit as st
 
-from streamlit_app.streamlit_utils import sidebar_section, load_dataset
+from streamlit_app.streamlit_utils import load_dataset, sidebar_section
 from utils.stats_tests_utils import (
-    perform_shapiro_test, levene_variance_test,
-    run_one_sample_ttest, run_two_sample_ttest, run_paired_ttest,
+    cliffs_delta,
+    cohens_d_independent,
+    hedges_g_independent,
+    levene_variance_test,
+    perform_shapiro_test,
+    rank_biserial_effect_size,
+    run_kendall_tau,
     run_mannwhitney_u_test,
-    cohens_d_independent, hedges_g_independent, cliffs_delta,
-    run_spearman_correlation, run_kendall_tau, run_wilcoxon_signedrank,
-    rank_biserial_effect_size
+    run_one_sample_ttest,
+    run_paired_ttest,
+    run_spearman_correlation,
+    run_two_sample_ttest,
+    run_wilcoxon_signedrank,
 )
-
 
 # ------------------------------
 # Config
 # ------------------------------
 MODULE_ID = "02_hypothesis_tests"
-sidebar_section("🔬 Hypothesis Testing Explorer", 
-                "Perform parametric and non-parametric tests with visualizations and effect size metrics.")
+sidebar_section(
+    "🔬 Hypothesis Testing Explorer",
+    "Perform parametric and non-parametric tests with visualizations and effect size metrics.",
+)
 
 st.title("🔬 Hypothesis Testing Explorer")
 
 # ----------------------
-# Load Filtered Dataset 
+# Load Filtered Dataset
 # ----------------------
 st.sidebar.markdown("### 📂 Dataset Selection")
 
@@ -47,22 +55,20 @@ allowed_datasets = {
     "mixed_distributions.csv",
     "multivariate_gaussian.csv",
     "sample_for_optimization.csv",
-    "curve_fitting_data.csv"
+    "curve_fitting_data.csv",
 }
 
 # Filter files
-available_files = [
-    f.name for f in DATA_PATH.glob("*.csv")
-    if f.name in allowed_datasets
-]
+available_files = [f.name for f in DATA_PATH.glob("*.csv") if f.name in allowed_datasets]
 
 # Default selection
 default_index = (
-    available_files.index("normal_skewed.csv")
-    if "normal_skewed.csv" in available_files else 0
+    available_files.index("normal_skewed.csv") if "normal_skewed.csv" in available_files else 0
 )
 
-dataset_choice = st.sidebar.selectbox("Choose built-in dataset", available_files, index=default_index)
+dataset_choice = st.sidebar.selectbox(
+    "Choose built-in dataset", available_files, index=default_index
+)
 
 # File upload option
 uploaded_file = st.sidebar.file_uploader("Or upload your own CSV", type=["csv"])
@@ -96,9 +102,16 @@ col1 = st.selectbox("Group 1 Column", num_cols)
 col2 = st.selectbox("Group 2 Column", num_cols, index=1 if len(num_cols) > 1 else 0)
 
 # Hypothesis Test Type
-test_type = st.radio("Choose Test", 
-                     ["One-sample t-test", "t-test (independent)", "t-test (paired)", "Mann–Whitney U", 
-                      "Rank-based Nonparametric"])
+test_type = st.radio(
+    "Choose Test",
+    [
+        "One-sample t-test",
+        "t-test (independent)",
+        "t-test (paired)",
+        "Mann–Whitney U",
+        "Rank-based Nonparametric",
+    ],
+)
 
 # Hypothesis Parameters
 pop_mean = None
@@ -112,8 +125,12 @@ equal_var = st.checkbox("✅ Assume Equal Variance (Levene's Test)", value=False
 # Visualization
 # ------------------------------
 st.subheader("📊 Distribution Comparison")
-stacked_df = pd.DataFrame({col1: df[col1], col2: df[col2]}).melt(var_name="Group", value_name="Value")
-fig_box = px.box(stacked_df, x="Group", y="Value", points="all", title="Group Comparison with Data Points")
+stacked_df = pd.DataFrame({col1: df[col1], col2: df[col2]}).melt(
+    var_name="Group", value_name="Value"
+)
+fig_box = px.box(
+    stacked_df, x="Group", y="Value", points="all", title="Group Comparison with Data Points"
+)
 st.plotly_chart(fig_box, use_container_width=True)
 
 # ------------------------------
@@ -147,15 +164,15 @@ else:
     kendall_res = run_kendall_tau(df[col1], df[col2])
     wilcoxon_res = run_wilcoxon_signedrank(df[col1], df[col2])
     rb_effect = rank_biserial_effect_size(df[col1], df[col2])
-    
+
     result = {
-        "Spearman_rho": round(spearman_res['spearman_r'], 3),
-        "Spearman_p": round(spearman_res['p_value'], 4),
-        "Kendall_tau": round(kendall_res['kendall_tau'], 3),
-        "Kendall_p": round(kendall_res['p_value'], 4),
-        "Wilcoxon_stat": round(wilcoxon_res['statistic'], 3),
-        "Wilcoxon_p": round(wilcoxon_res['p_value'], 4),
-        "Rank-Biserial": round(rb_effect, 3)
+        "Spearman_rho": round(spearman_res["spearman_r"], 3),
+        "Spearman_p": round(spearman_res["p_value"], 4),
+        "Kendall_tau": round(kendall_res["kendall_tau"], 3),
+        "Kendall_p": round(kendall_res["p_value"], 4),
+        "Wilcoxon_stat": round(wilcoxon_res["statistic"], 3),
+        "Wilcoxon_p": round(wilcoxon_res["p_value"], 4),
+        "Rank-Biserial": round(rb_effect, 3),
     }
 
 st.json(result)
@@ -168,12 +185,16 @@ if test_type in ["t-test (independent)", "t-test (paired)"]:
     effect_d = cohens_d_independent(df[col1], df[col2])
     effect_g = hedges_g_independent(df[col1], df[col2])
     effect_delta = cliffs_delta(df[col1], df[col2])
-    
-    effect_df = pd.DataFrame([{
-        "Cohen’s d": round(effect_d, 3),
-        "Hedges’ g": round(effect_g, 3),
-        "Cliff’s Delta": round(effect_delta, 3)
-    }])
+
+    effect_df = pd.DataFrame(
+        [
+            {
+                "Cohen’s d": round(effect_d, 3),
+                "Hedges’ g": round(effect_g, 3),
+                "Cliff’s Delta": round(effect_delta, 3),
+            }
+        ]
+    )
     st.dataframe(effect_df)
 
 # ------------------------------
@@ -184,17 +205,19 @@ st.download_button(
     "⬇️ Download Result as CSV",
     data=res_df.to_csv(index=False),
     file_name=f"{col1}_vs_{col2}_test_result.csv",
-    mime="text/csv"
+    mime="text/csv",
 )
 
 # ------------------------------
 # Summary
 # ------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(f"""
+st.markdown(
+    f"""
 - **Parametric tests (t-tests)** require normality and sometimes equal variances  
 - **Non-parametric tests** (Mann–Whitney, Wilcoxon) are robust alternatives  
 - **Effect sizes** complement p-values by quantifying practical significance  
 - **Rank-based tests** handle ordinal or non-normal data scenarios  
 - Use this module to **test hypotheses interactively** and compare results visually
-""")
+"""
+)

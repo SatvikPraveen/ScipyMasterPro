@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import numpy as np
 from scipy.stats import norm, t
 from statsmodels.stats.power import TTestPower
-import numpy as np
+
 
 # ✅ 1. Manual Power Calculation for One-Sample Z-test
 def compute_power_z(
@@ -35,10 +36,11 @@ def compute_power_z(
     Uses the normal distribution (appropriate when population variance is known
     or n is large enough for CLT to apply).
     """
-    z_alpha = norm.ppf(1 - alpha/2 if two_tailed else 1 - alpha)
+    z_alpha = norm.ppf(1 - alpha / 2 if two_tailed else 1 - alpha)
     z_power = z_alpha - (effect_size * np.sqrt(n))
     power = 1 - norm.cdf(z_power)
     return power
+
 
 # ✅ 2. Manual Power Calculation for One-Sample T-test
 def compute_power_t(
@@ -72,10 +74,11 @@ def compute_power_t(
     when population variance is unknown.
     """
     df = n - 1
-    t_alpha = t.ppf(1 - alpha/2 if two_tailed else 1 - alpha, df)
+    t_alpha = t.ppf(1 - alpha / 2 if two_tailed else 1 - alpha, df)
     t_power = t_alpha - (effect_size * np.sqrt(n))
     power = 1 - t.cdf(t_power, df)
     return power
+
 
 # ✅ 3. Use Statsmodels API to compute power
 def statsmodels_power(
@@ -107,10 +110,9 @@ def statsmodels_power(
     power = power_obj.power(effect_size=effect_size, nobs=n, alpha=alpha, alternative=alternative)
     return power
 
+
 # ✅ 4. Compute Cohen's d for mean difference
-def compute_cohens_d(
-    mean1: float, mean2: float, std_dev: float
-) -> float:
+def compute_cohens_d(mean1: float, mean2: float, std_dev: float) -> float:
     """
     Compute Cohen's d effect size from two group means.
 

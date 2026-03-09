@@ -24,6 +24,7 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # Test Configuration
 # ============================================================================
 
+
 def pytest_configure(config: Any) -> None:
     """Configure pytest with custom markers."""
     config.addinivalue_line("markers", "slow: marks tests as slow")
@@ -34,6 +35,7 @@ def pytest_configure(config: Any) -> None:
 # ============================================================================
 # Random Seed Fixtures
 # ============================================================================
+
 
 @pytest.fixture(scope="session")
 def random_seed() -> int:
@@ -50,6 +52,7 @@ def set_random_seed(random_seed: int) -> None:
 # ============================================================================
 # Sample Size Fixtures
 # ============================================================================
+
 
 @pytest.fixture(params=[10, 50, 100])
 def small_sample_size(request: pytest.FixtureRequest) -> int:
@@ -72,6 +75,7 @@ def large_sample_size() -> int:
 # ============================================================================
 # Synthetic Data Fixtures
 # ============================================================================
+
 
 @pytest.fixture
 def normal_data(medium_sample_size: int, random_seed: int) -> np.ndarray:
@@ -115,9 +119,7 @@ def paired_data(medium_sample_size: int, random_seed: int) -> tuple[np.ndarray, 
 
 
 @pytest.fixture
-def two_group_data(
-    medium_sample_size: int, random_seed: int
-) -> tuple[np.ndarray, np.ndarray]:
+def two_group_data(medium_sample_size: int, random_seed: int) -> tuple[np.ndarray, np.ndarray]:
     """Generate two independent groups with different means."""
     np.random.seed(random_seed)
     group1 = np.random.normal(loc=5, scale=2, size=medium_sample_size)
@@ -128,6 +130,7 @@ def two_group_data(
 # ============================================================================
 # DataFrame Fixtures
 # ============================================================================
+
 
 @pytest.fixture
 def simple_dataframe(medium_sample_size: int, random_seed: int) -> pd.DataFrame:
@@ -169,6 +172,7 @@ def categorical_dataframe(medium_sample_size: int, random_seed: int) -> pd.DataF
 # Distribution Fixtures
 # ============================================================================
 
+
 @pytest.fixture
 def distribution_params() -> Dict[str, Dict[str, Any]]:
     """Common distribution parameters for testing."""
@@ -197,6 +201,7 @@ def common_distributions() -> list[Any]:
 # ============================================================================
 # Optimization Fixtures
 # ============================================================================
+
 
 @pytest.fixture
 def simple_quadratic() -> tuple:
@@ -231,6 +236,7 @@ def rosenbrock_function() -> tuple:
 # Linear Algebra Fixtures
 # ============================================================================
 
+
 @pytest.fixture
 def square_matrix(random_seed: int) -> np.ndarray:
     """Generate a random square matrix."""
@@ -257,6 +263,7 @@ def rectangular_matrix(random_seed: int) -> np.ndarray:
 # Interpolation Fixtures
 # ============================================================================
 
+
 @pytest.fixture
 def interpolation_data(random_seed: int) -> tuple[np.ndarray, np.ndarray]:
     """Generate data for interpolation testing."""
@@ -280,6 +287,7 @@ def curve_fitting_data(random_seed: int) -> tuple[np.ndarray, np.ndarray]:
 # Temporary Directory Fixtures
 # ============================================================================
 
+
 @pytest.fixture
 def temp_export_dir(tmp_path: Path) -> Path:
     """Create a temporary directory for export files."""
@@ -293,6 +301,7 @@ def temp_export_dir(tmp_path: Path) -> Path:
 # ============================================================================
 # Tolerance Fixtures
 # ============================================================================
+
 
 @pytest.fixture
 def numerical_tolerance() -> float:
@@ -309,6 +318,7 @@ def statistical_significance() -> float:
 # ============================================================================
 # Utility Functions
 # ============================================================================
+
 
 @pytest.fixture
 def assert_arrays_close():
