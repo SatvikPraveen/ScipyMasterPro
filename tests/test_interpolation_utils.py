@@ -5,6 +5,8 @@ Covers linear, cubic, and spline interpolation, exponential and Gaussian
 curve fitting, 2D griddata interpolation, and RBF interpolation.
 """
 
+from typing import Callable
+
 import numpy as np
 import pytest
 
@@ -57,13 +59,13 @@ class TestLinearInterpolation:
     def test_interpolates_at_known_points(self, smooth_xy):
         """Interpolated values at known x points should match original y."""
         x, y = smooth_xy
-        f = linear_interpolate(x, y)
+        f: Callable = linear_interpolate(x, y)  # type: ignore[assignment]
         np.testing.assert_allclose(f(x), y, atol=1e-10)
 
     def test_interpolates_midpoints(self, smooth_xy):
         """Interpolated values at midpoints should be between neighbours."""
         x, y = smooth_xy
-        f = linear_interpolate(x, y)
+        f: Callable = linear_interpolate(x, y)  # type: ignore[assignment]
         x_mid = (x[:-1] + x[1:]) / 2
         y_mid = f(x_mid)
         assert y_mid.shape == x_mid.shape
@@ -79,14 +81,14 @@ class TestCubicInterpolation:
 
     def test_interpolates_at_known_points(self, smooth_xy):
         x, y = smooth_xy
-        f = cubic_interpolate(x, y)
+        f: Callable = cubic_interpolate(x, y)  # type: ignore[assignment]
         np.testing.assert_allclose(f(x), y, atol=1e-10)
 
     def test_smoother_than_linear(self, smooth_xy):
         """Cubic interpolation should differ from linear at midpoints."""
         x, y = smooth_xy
-        f_lin = linear_interpolate(x, y)
-        f_cub = cubic_interpolate(x, y)
+        f_lin: Callable = linear_interpolate(x, y)  # type: ignore[assignment]
+        f_cub: Callable = cubic_interpolate(x, y)  # type: ignore[assignment]
         x_mid = (x[:-1] + x[1:]) / 2
         # They won't be identical (cubic is smoother)
         assert not np.allclose(f_lin(x_mid), f_cub(x_mid))
@@ -103,14 +105,14 @@ class TestSplineInterpolation:
     def test_s0_interpolates_exactly(self, smooth_xy):
         """With s=0, spline should pass through data points exactly."""
         x, y = smooth_xy
-        spl = spline_interpolate(x, y, s=0)
+        spl: Callable = spline_interpolate(x, y, s=0)  # type: ignore[assignment]
         np.testing.assert_allclose(spl(x), y, atol=1e-6)
 
     def test_smoothing_reduces_oscillation(self, smooth_xy):
         """Smoothing spline (s>0) should differ from exact spline."""
         x, y = smooth_xy
-        spl_exact = spline_interpolate(x, y, s=0)
-        spl_smooth = spline_interpolate(x, y, s=1.0)
+        spl_exact: Callable = spline_interpolate(x, y, s=0)  # type: ignore[assignment]
+        spl_smooth: Callable = spline_interpolate(x, y, s=1.0)  # type: ignore[assignment]
         x_test = np.linspace(x[1], x[-2], 50)
         # With smoothing the values differ from exact interpolation
         assert not np.allclose(spl_exact(x_test), spl_smooth(x_test))
@@ -127,7 +129,7 @@ class TestModelFunctions:
 
     def test_exponential_model_at_zero(self):
         """At x=0: f(0) = a*exp(0)+c = a + c."""
-        assert np.isclose(exponential_model(0.0, a=2.0, b=-1.0, c=0.5), 2.5)
+        assert np.isclose(exponential_model(np.array([0.0]), a=2.0, b=-1.0, c=0.5)[0], 2.5)
 
     def test_gaussian_model_peak_at_mu(self):
         """Gaussian should reach its peak A at x=mu."""
