@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -248,7 +250,7 @@ def compute_ecdf(
 # Basic Bootstrap Resample Generator
 def bootstrap_statistic(
     data: np.ndarray,
-    stat_func: callable = np.mean,
+    stat_func: Callable[..., float] = np.mean,
     n_resamples: int = 1000,
     seed: int = 42,
 ) -> np.ndarray:

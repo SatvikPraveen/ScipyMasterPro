@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+
 import numpy as np
 from scipy.optimize import Bounds, LinearConstraint, minimize, minimize_scalar
 
@@ -62,7 +64,7 @@ def get_bounds_2d() -> Bounds:
 
 # 🔹 3. Wrapper to run minimization
 def run_minimization(
-    func: callable,
+    func: Callable[..., float],
     x0: np.ndarray,
     bounds: Bounds | None = None,
     constraints: LinearConstraint | dict | list | None = None,
@@ -95,7 +97,7 @@ def run_minimization(
 
 # 🔹 4. Scalar minimization wrapper
 def run_scalar_minimization(
-    func: callable,
+    func: Callable[..., float],
     bracket: tuple[float, float] = (0, 5),
     method: str = "Brent",
 ) -> object:
@@ -122,7 +124,7 @@ def run_scalar_minimization(
 
 # 🔹 5. Create grid and evaluate loss for surface visualization
 def evaluate_loss_surface(
-    func: callable,
+    func: Callable[..., float],
     x_range: tuple[float, float] = (0, 5),
     y_range: tuple[float, float] = (0, 5),
     steps: int = 50,

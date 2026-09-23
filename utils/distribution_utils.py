@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from scipy.stats import anderson, beta, expon, gamma, kstest, lognorm, norm
+from scipy.stats import anderson, beta, expon, gamma, kstest, lognorm, norm, rv_continuous
 
 
 def fit_named_distribution(data: "np.ndarray", dist_name: str) -> tuple:
@@ -39,7 +39,7 @@ def fit_named_distribution(data: "np.ndarray", dist_name: str) -> tuple:
 
 
 # Fit Distribution to Data
-def fit_distribution(data: "np.ndarray", dist_obj: object) -> tuple:
+def fit_distribution(data: "np.ndarray", dist_obj: rv_continuous) -> tuple:
     """
     Fit a scipy.stats distribution object to the data using MLE.
 
@@ -70,7 +70,7 @@ def fit_distribution(data: "np.ndarray", dist_obj: object) -> tuple:
 
 # Compute PDF & CDF from Fitted Parameters
 def compute_pdf(
-    data: "np.ndarray", dist_obj: object, params: tuple
+    data: "np.ndarray", dist_obj: rv_continuous, params: tuple
 ) -> tuple["np.ndarray", "np.ndarray"]:
     """
     Compute PDF values over the data range using fitted distribution parameters.
@@ -95,7 +95,7 @@ def compute_pdf(
 
 
 def compute_cdf(
-    data: "np.ndarray", dist_obj: object, params: tuple
+    data: "np.ndarray", dist_obj: rv_continuous, params: tuple
 ) -> tuple["np.ndarray", "np.ndarray"]:
     """
     Compute CDF values over the data range using fitted distribution parameters.
@@ -120,7 +120,7 @@ def compute_cdf(
 
 
 # Perform Goodness-of-Fit Test (e.g., KS)
-def perform_ks_test(data: "np.ndarray", dist_obj: object, params: tuple) -> dict[str, float]:
+def perform_ks_test(data: "np.ndarray", dist_obj: rv_continuous, params: tuple) -> dict[str, float]:
     """
     Perform a Kolmogorov-Smirnov goodness-of-fit test.
 
@@ -186,7 +186,7 @@ def fit_multiple_distributions(data: "np.ndarray", dist_list: list) -> list[dict
     return results
 
 
-def compute_nll(dist: object, data: "np.ndarray", params: tuple) -> float:
+def compute_nll(dist: rv_continuous, data: "np.ndarray", params: tuple) -> float:
     """
     Compute Negative Log-Likelihood for a fitted distribution.
 

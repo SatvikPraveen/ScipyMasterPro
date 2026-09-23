@@ -3,13 +3,13 @@ from __future__ import annotations
 import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
-from scipy.stats import anderson, kstest, shapiro
+from scipy.stats import anderson, kstest, rv_continuous, shapiro
 
 
 # ✅ 1. Compute PDF from a scipy.stats distribution
 def get_pdf(
     data: np.ndarray,
-    dist: object,
+    dist: rv_continuous,
     params: tuple | None = None,
     num_points: int = 100,
 ) -> tuple[np.ndarray, np.ndarray]:
@@ -93,7 +93,7 @@ def compute_statsmodels_ecdf(
 
 def plot_pdf_ecdf_overlay(
     data: np.ndarray,
-    dist: object,
+    dist: rv_continuous,
     params: tuple | None = None,
     title: str = "",
     annotate_ks: bool = True,
@@ -258,7 +258,7 @@ def plot_enhanced_ecdf_comparison(
     return fig
 
 
-def run_goodness_of_fit_tests(data: np.ndarray, dist: object) -> dict[str, float]:
+def run_goodness_of_fit_tests(data: np.ndarray, dist: rv_continuous) -> dict[str, float]:
     """
     Run a battery of goodness-of-fit tests against a specified distribution.
 

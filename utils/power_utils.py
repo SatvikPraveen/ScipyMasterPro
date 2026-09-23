@@ -36,6 +36,8 @@ def compute_power_z(
     Uses the normal distribution (appropriate when population variance is known
     or n is large enough for CLT to apply).
     """
+    if n is None:
+        raise ValueError("n (sample size) is required")
     z_alpha = norm.ppf(1 - alpha / 2 if two_tailed else 1 - alpha)
     z_power = z_alpha - (effect_size * np.sqrt(n))
     power = 1 - norm.cdf(z_power)
@@ -73,6 +75,8 @@ def compute_power_t(
     Uses the t-distribution with df = n - 1. Preferred over Z-test power
     when population variance is unknown.
     """
+    if n is None:
+        raise ValueError("n (sample size) is required")
     df = n - 1
     t_alpha = t.ppf(1 - alpha / 2 if two_tailed else 1 - alpha, df)
     t_power = t_alpha - (effect_size * np.sqrt(n))
@@ -106,6 +110,8 @@ def statsmodels_power(
     float
         Statistical power in [0, 1].
     """
+    if n is None:
+        raise ValueError("n (sample size) is required")
     power_obj = TTestPower()
     power = power_obj.power(effect_size=effect_size, nobs=n, alpha=alpha, alternative=alternative)
     return power

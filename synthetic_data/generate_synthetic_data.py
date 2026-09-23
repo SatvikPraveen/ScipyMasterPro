@@ -87,7 +87,7 @@ def generate_poisson_data(seed=42, n=500, lam=4):
 def generate_grouped_continuous(seed=42, n_per_group=300):
     np.random.seed(seed)
     groups = ["A", "B", "C"]
-    data = []
+    data: list[tuple[str, float]] = []
 
     for group in groups:
         if group == "A":

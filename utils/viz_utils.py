@@ -6,6 +6,7 @@ import pandas as pd
 import plotly.express as px
 import seaborn as sns
 from scipy import stats
+from scipy.stats import rv_continuous
 
 
 def apply_theme(
@@ -217,7 +218,7 @@ def plot_ecdf(df: pd.DataFrame, column: str, color: str = "darkorange") -> plt.F
 # PDF Overlay Plot
 def plot_pdf_overlay(
     data: np.ndarray,
-    dist_obj: object,
+    dist_obj: rv_continuous,
     params: tuple,
     title: str = "PDF Overlay",
 ) -> plt.Figure:
@@ -280,7 +281,7 @@ def plot_pdf_overlay(
 # CDF vs ECDF Overlay Plot
 def plot_cdf_overlay(
     data: np.ndarray,
-    dist_obj: object,
+    dist_obj: rv_continuous,
     params: tuple,
     title: str = "CDF vs ECDF",
 ) -> plt.Figure:
@@ -582,7 +583,7 @@ def plot_multi_distribution_overlay(
 def plot_ecdf_comparison_multi(
     ecdf_data: dict,
     title: str = "ECDF Comparison",
-    figsize: tuple[int, int] | None = None,
+    figsize: tuple[float, float] | None = None,
     palette: list | None = None,
 ) -> plt.Figure:
     """
