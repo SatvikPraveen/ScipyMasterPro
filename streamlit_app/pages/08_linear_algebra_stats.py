@@ -2,9 +2,11 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
@@ -52,7 +54,7 @@ if matrix_type == "Random Symmetric":
     st.dataframe(pd.DataFrame(eigvecs, columns=[f"v{i+1}" for i in range(len(eigvals))]))
 
     fig_eigen = plot_eigenvectors_safe(A, eigvals, eigvecs)
-    st.pyplot(fig_eigen, use_container_width=True)
+    st.pyplot(fig_eigen, width="stretch")
 
 # -------------------------------
 # 🔹 Singular Value Decomposition
@@ -61,7 +63,7 @@ st.subheader("🔬 Singular Value Decomposition")
 U, s, VT = compute_svd_adv(A)
 st.write("Singular Values:", np.round(s, 4))
 fig_svd = plot_singular_values_safe(s, title="Singular Values")
-st.pyplot(fig_svd, use_container_width=True)
+st.pyplot(fig_svd, width="stretch")
 
 # -------------------------------
 # 🔹 Least Squares Solution
@@ -74,7 +76,7 @@ if matrix_type == "Tall Matrix":
     st.write("Residual Norm:", np.linalg.norm(residuals))
 
     fig_res = plot_residuals(A @ x, b)
-    st.plotly_chart(fig_res, use_container_width=True)
+    st.plotly_chart(fig_res, width="stretch")
 
     df_res = pd.DataFrame({"Predicted": A @ x, "Actual": b})
     st.dataframe(df_res)

@@ -2,16 +2,16 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
-import numpy as np
 import pandas as pd
 import streamlit as st
-from scipy.stats import anderson, gamma, kstest, lognorm, norm, shapiro
-from statsmodels.distributions.empirical_distribution import ECDF
+from scipy.stats import gamma, lognorm, norm
 
 from streamlit_app.ui_components import (
     add_sidebar_notes,
@@ -106,9 +106,9 @@ st.dataframe(results_df)
 st.markdown("## ✅ Summary")
 st.markdown(
     """
-- **Empirical CDF (ECDF)** compared against fitted PDFs from SciPy  
-- Manual vs statsmodels ECDF provides sanity check for computation methods  
-- Goodness-of-fit tests (KS, Shapiro, Anderson) indicate statistical fit quality  
+- **Empirical CDF (ECDF)** compared against fitted PDFs from SciPy
+- Manual vs statsmodels ECDF provides sanity check for computation methods
+- Goodness-of-fit tests (KS, Shapiro, Anderson) indicate statistical fit quality
 - Visual overlays combined with test results help validate distribution assumptions
 """
 )

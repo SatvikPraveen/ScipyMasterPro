@@ -1,9 +1,11 @@
 import sys
 from pathlib import Path
 
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import streamlit as st
 
@@ -26,18 +28,18 @@ st.markdown(
     }
 
     /* Sidebar text */
-    section[data-testid="stSidebar"] .css-1d391kg, 
+    section[data-testid="stSidebar"] .css-1d391kg,
     section[data-testid="stSidebar"] .css-1v3fvcr,
-    section[data-testid="stSidebar"] div, 
-    section[data-testid="stSidebar"] p, 
+    section[data-testid="stSidebar"] div,
+    section[data-testid="stSidebar"] p,
     section[data-testid="stSidebar"] span {
         color: #222222 !important;
         font-weight: 500 !important;
     }
 
     /* Sidebar titles */
-    section[data-testid="stSidebar"] h1, 
-    section[data-testid="stSidebar"] h2, 
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
     section[data-testid="stSidebar"] h3 {
         color: #1f77b4 !important;
         font-weight: 700 !important;

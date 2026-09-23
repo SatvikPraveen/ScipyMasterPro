@@ -2,16 +2,17 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
-import numpy as np
 import pandas as pd
 import streamlit as st
-from streamlit_utils import EXPORT_TABLES, sidebar_section
 
+from streamlit_app.streamlit_utils import EXPORT_TABLES, sidebar_section
 from utils.inference_utils import (
     compute_sample_size,
     compute_sem,
@@ -91,7 +92,7 @@ elif inference_type == "Confidence Interval (t)":
     lower, upper = confidence_interval(mean, std, n, confidence)
     st.success(f"t-Confidence Interval: **[{lower:.2f}, {upper:.2f}]**")
     fig = plot_confidence_interval(mean, (lower, upper), pop_mean=None)
-    st.pyplot(fig, use_container_width=True)
+    st.pyplot(fig, width="stretch")
     result.update({"lower_bound": lower, "upper_bound": upper})
 
 elif inference_type == "Confidence Interval (z)":
@@ -101,7 +102,7 @@ elif inference_type == "Confidence Interval (z)":
         lower, upper = z_confidence_interval(mean, pop_std, n, confidence)
         st.success(f"z-Confidence Interval: **[{lower:.2f}, {upper:.2f}]**")
         fig = plot_confidence_interval(mean, (lower, upper), pop_mean=None)
-        st.pyplot(fig, use_container_width=True)
+        st.pyplot(fig, width="stretch")
         result.update({"lower_bound": lower, "upper_bound": upper})
 
 
@@ -119,7 +120,7 @@ elif inference_type == "Multiple CI Levels":
 
     # Plot using float keys
     fig = plot_multiple_confidence_intervals(mean, ci_results)
-    st.pyplot(fig, use_container_width=True)
+    st.pyplot(fig, width="stretch")
 
     # Save results
     df_ci.to_csv(TABLE_PATH / "multiple_confidence_intervals.csv", index=False)
@@ -141,7 +142,7 @@ elif inference_type == "Manual t-Test":
     st.success(f"t-statistic = **{t_stat_result:.3f}**, p-value = **{p_val:.4f}**")
 
     fig_res = plot_residuals_vs_population(mean, pop_mean, mean - pop_mean)
-    st.pyplot(fig_res, use_container_width=True)
+    st.pyplot(fig_res, width="stretch")
     result.update({"t_stat": t_stat_result, "p_value": p_val})
 
 

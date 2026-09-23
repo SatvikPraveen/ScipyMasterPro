@@ -2,9 +2,11 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
@@ -67,10 +69,10 @@ if matrix_type == "Covariance":
     fig_cov = plot_covariance_heatmap(
         df[selected_features], title="Covariance Matrix of Selected Features"
     )
-    st.pyplot(fig_cov, use_container_width=True)
+    st.pyplot(fig_cov, width="stretch")
 else:
     fig_corr = plot_correlation_heatmap(df[selected_features], annot=True, cmap="coolwarm")
-    st.pyplot(fig_corr, use_container_width=True)
+    st.pyplot(fig_corr, width="stretch")
 
 # -------------------------------
 # 🔁 Mahalanobis Distances
@@ -109,7 +111,7 @@ st.dataframe(summary_df)
 st.download_button(
     "⬇️ Download Annotated Results (CSV)",
     data=result_df.to_csv(index=False),
-    file_name=f"mahalanobis_outlier_results.csv",
+    file_name="mahalanobis_outlier_results.csv",
     mime="text/csv",
 )
 
@@ -120,17 +122,17 @@ st.subheader("📈 Mahalanobis Distance Distribution")
 fig_dist = plot_mahalanobis_distance_distribution(
     result_df, distance_col="Mahalanobis", threshold=threshold
 )
-st.plotly_chart(fig_dist, use_container_width=True)
+st.plotly_chart(fig_dist, width="stretch")
 
 st.subheader("🔹 2D Scatterplot of Outliers")
 x_col, y_col = selected_features[:2]
 fig_scatter = plot_mahalanobis_outliers(result_df, x_col=x_col, y_col=y_col, outlier_col="Outlier")
-st.plotly_chart(fig_scatter, use_container_width=True)
+st.plotly_chart(fig_scatter, width="stretch")
 
 if len(selected_features) == 3:
     st.subheader("🔹 3D Visualization of Outliers")
     fig_3d = plot_mahalanobis_outliers_3d(result_df, *selected_features, outlier_col="Outlier")
-    st.plotly_chart(fig_3d, use_container_width=True)
+    st.plotly_chart(fig_3d, width="stretch")
 
 # -------------------------------
 # ✅ Summary

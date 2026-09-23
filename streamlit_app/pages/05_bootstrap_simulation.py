@@ -2,9 +2,11 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
@@ -107,7 +109,7 @@ st.download_button(
 fig = plot_bootstrap_distribution(
     boot_samples, ci_bounds, title=f"Bootstrap {statistic_choice} Distribution (CI {ci_level}%)"
 )
-st.pyplot(fig, use_container_width=True)
+st.pyplot(fig, width="stretch")
 
 # -------------------------------
 # ✅ Summary Section
@@ -115,11 +117,11 @@ st.pyplot(fig, use_container_width=True)
 st.markdown("## ✅ Interpretation")
 st.markdown(
     f"""
-- Bootstrapping resamples data **with replacement** to estimate the distribution of a statistic.  
-- Here we calculated **{statistic_choice}** across `{n_iterations}` resamples.  
-- **True Value:** `{true_val:.4f}`  
-- **{ci_level}% Confidence Interval:** `({ci_bounds[0]:.4f}, {ci_bounds[1]:.4f})`  
-- Non-parametric approach → no distribution assumptions.  
+- Bootstrapping resamples data **with replacement** to estimate the distribution of a statistic.
+- Here we calculated **{statistic_choice}** across `{n_iterations}` resamples.
+- **True Value:** `{true_val:.4f}`
+- **{ci_level}% Confidence Interval:** `({ci_bounds[0]:.4f}, {ci_bounds[1]:.4f})`
+- Non-parametric approach → no distribution assumptions.
 - You can **download summary results** above for reporting.
 """
 )

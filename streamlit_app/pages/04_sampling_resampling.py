@@ -2,9 +2,11 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
@@ -181,7 +183,7 @@ if sampling_type != "Bootstrap (Poisson)" and result is not None:
         xaxis_title="Category",
         yaxis_title="Relative Frequency",
     )
-    st.plotly_chart(fig_freq, use_container_width=True)
+    st.plotly_chart(fig_freq, width="stretch")
 
 
 # -------------------------------------
@@ -198,7 +200,7 @@ if sampling_type == "Bootstrap (Poisson)":
     fig_ecdf.update_layout(
         title="ECDF Comparison", xaxis_title="Value", yaxis_title="Cumulative Probability"
     )
-    st.plotly_chart(fig_ecdf, use_container_width=True)
+    st.plotly_chart(fig_ecdf, width="stretch")
 
 # -------------------------------------
 # SUMMARY

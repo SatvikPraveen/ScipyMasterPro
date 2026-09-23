@@ -1,9 +1,11 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -91,14 +93,14 @@ st.json(robust_stats)
 # ------------------------------
 st.subheader("📊 Histogram")
 fig_hist = px.histogram(df, x=col, nbins=30, title=f"Histogram of {col}")
-st.plotly_chart(fig_hist, use_container_width=True)
+st.plotly_chart(fig_hist, width="stretch")
 
 # ------------------------------
 # Boxplots
 # ------------------------------
 st.subheader("📦 Boxplot")
 fig_box = px.box(df, y=col, title=f"Boxplot of {col}")
-st.plotly_chart(fig_box, use_container_width=True)
+st.plotly_chart(fig_box, width="stretch")
 
 # ------------------------------
 # ECDF Plot
@@ -111,7 +113,7 @@ y = np.arange(1, len(x) + 1) / len(x)
 fig_ecdf = px.line(
     x=x, y=y, title=f"ECDF of {col}", labels={"x": col, "y": "Cumulative Probability"}
 )
-st.plotly_chart(fig_ecdf, use_container_width=True)
+st.plotly_chart(fig_ecdf, width="stretch")
 
 # ------------------------------
 # Pairplot & Correlation Heatmap
@@ -135,12 +137,12 @@ st.pyplot(fig_corr)
 # ------------------------------
 st.markdown("## ✅ Summary")
 st.markdown(
-    f"""
-- **Summary stats** show central tendency and dispersion for all numeric variables  
-- **Skewness & kurtosis** quantify asymmetry and tailedness of distributions  
-- **Trimmed & robust measures** provide stability against outliers  
-- **ECDF** adds deeper insight into distribution shape  
-- **Pairplot and heatmap** help visualize potential relationships between variables  
+    """
+- **Summary stats** show central tendency and dispersion for all numeric variables
+- **Skewness & kurtosis** quantify asymmetry and tailedness of distributions
+- **Trimmed & robust measures** provide stability against outliers
+- **ECDF** adds deeper insight into distribution shape
+- **Pairplot and heatmap** help visualize potential relationships between variables
 - Use this interactive module to complement offline analysis done in the notebook
 """
 )

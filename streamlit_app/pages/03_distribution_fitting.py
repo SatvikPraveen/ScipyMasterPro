@@ -1,16 +1,18 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-from scipy.stats import beta, expon, gamma, kstest, lognorm, norm
+from scipy.stats import beta, expon, gamma, lognorm, norm
 from statsmodels.distributions.empirical_distribution import ECDF
 
 from streamlit_app.ui_components import (
@@ -22,7 +24,6 @@ from utils.distribution_utils import (
     compute_cdf,
     compute_pdf,
     fit_distribution,
-    fit_distributions_all_columns,
     fit_multiple_distributions,
     perform_ks_test,
 )
@@ -89,7 +90,7 @@ fig_pdf.add_trace(
     go.Scatter(x=x, y=pdf_vals, mode="lines", name=f"{dist_name} PDF", line=dict(color="red"))
 )
 fig_pdf.update_layout(title=f"{dist_name} PDF Overlay", xaxis_title="Value", yaxis_title="Density")
-st.plotly_chart(fig_pdf, use_container_width=True)
+st.plotly_chart(fig_pdf, width="stretch")
 
 # -------------------------------------
 # CDF vs ECDF Plot
@@ -105,7 +106,7 @@ fig_cdf.add_trace(
 fig_cdf.update_layout(
     title=f"{dist_name} CDF vs ECDF", xaxis_title="Value", yaxis_title="Probability"
 )
-st.plotly_chart(fig_cdf, use_container_width=True)
+st.plotly_chart(fig_cdf, width="stretch")
 
 # KS Test for goodness-of-fit
 ks = perform_ks_test(data, dist, params)
@@ -142,7 +143,7 @@ for d in distribution_list:
 fig_multi.update_layout(
     title=f"{col}: Multiple Distribution Fits", xaxis_title="Value", yaxis_title="Density"
 )
-st.plotly_chart(fig_multi, use_container_width=True)
+st.plotly_chart(fig_multi, width="stretch")
 
 # -------------------------------------
 # PDF & CDF VALUE EXPORT (for selected distribution)
@@ -164,11 +165,11 @@ st.download_button(
 # -------------------------------------
 st.markdown("## ✅ Summary")
 st.markdown(
-    f"""
-- **Fit parametric distributions** (Normal, Gamma, Lognorm, Beta, Exponential) to your data  
-- Visualize **PDF overlays** and **ECDF vs CDF fits**  
-- Run **KS test** for statistical goodness-of-fit  
-- Compare multiple distributions to identify the **best candidate model**  
-- Export fitted values for further analysis  
+    """
+- **Fit parametric distributions** (Normal, Gamma, Lognorm, Beta, Exponential) to your data
+- Visualize **PDF overlays** and **ECDF vs CDF fits**
+- Run **KS test** for statistical goodness-of-fit
+- Compare multiple distributions to identify the **best candidate model**
+- Export fitted values for further analysis
 """
 )

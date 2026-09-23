@@ -1,19 +1,19 @@
-import os
 import sys
 from pathlib import Path
 
 from streamlit_app.config import DATA_PATH
 
 # Ensure project root is on sys.path
-PROJECT_ROOT = Path(__file__).resolve().parents[1]  # goes up from pages/ to streamlit_app
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT).rsplit("/", 1)[0])  # adds main project root
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
 
 from streamlit_app.streamlit_utils import load_dataset, sidebar_section
@@ -131,7 +131,7 @@ stacked_df = pd.DataFrame({col1: df[col1], col2: df[col2]}).melt(
 fig_box = px.box(
     stacked_df, x="Group", y="Value", points="all", title="Group Comparison with Data Points"
 )
-st.plotly_chart(fig_box, use_container_width=True)
+st.plotly_chart(fig_box, width="stretch")
 
 # ------------------------------
 # Normality & Variance Checks
@@ -213,11 +213,11 @@ st.download_button(
 # ------------------------------
 st.markdown("## ✅ Summary")
 st.markdown(
-    f"""
-- **Parametric tests (t-tests)** require normality and sometimes equal variances  
-- **Non-parametric tests** (Mann–Whitney, Wilcoxon) are robust alternatives  
-- **Effect sizes** complement p-values by quantifying practical significance  
-- **Rank-based tests** handle ordinal or non-normal data scenarios  
+    """
+- **Parametric tests (t-tests)** require normality and sometimes equal variances
+- **Non-parametric tests** (Mann–Whitney, Wilcoxon) are robust alternatives
+- **Effect sizes** complement p-values by quantifying practical significance
+- **Rank-based tests** handle ordinal or non-normal data scenarios
 - Use this module to **test hypotheses interactively** and compare results visually
 """
 )
