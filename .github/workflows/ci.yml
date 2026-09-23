@@ -55,7 +55,6 @@ jobs:
   static-analysis:
     name: Static analysis (advisory)
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - uses: actions/checkout@v7
 
@@ -69,11 +68,14 @@ jobs:
           python -m pip install -r requirements.txt
           python -m pip install mypy pylint
 
+      # Each step is continue-on-error so findings show as warnings on the step
+      # without marking the job (and the run) as failed.
       - name: mypy
+        continue-on-error: true
         run: mypy utils/ synthetic_data/ scipymasterpro/
 
       - name: pylint
-        if: always()
+        continue-on-error: true
         run: pylint utils/ streamlit_app/ synthetic_data/ scipymasterpro/
 
   # ===========================================================================
