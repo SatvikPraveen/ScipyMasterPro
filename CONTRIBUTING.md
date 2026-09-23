@@ -1,109 +1,69 @@
 # 🤝 Contributing to SciPyMasterPro
 
-Thank you for your interest in contributing! 🚀
-SciPyMasterPro is a modular learning project aimed at mastering **SciPy for statistics, optimization, linear algebra, and simulations** through reusable utilities, synthetic datasets, interactive apps, and notebooks.
+Thanks for your interest! SciPyMasterPro is a modular learning project for mastering
+**SciPy for statistics, optimisation, linear algebra and simulation** through reusable
+utilities, synthetic datasets, an interactive app and notebooks. Contributions that improve
+functionality, correctness, documentation or educational clarity are all welcome.
 
-We welcome contributions that improve **functionality, performance, documentation, or educational clarity** of this project.
+## 📌 Ways to contribute
 
----
+- 🛠 **Utilities** – new functions in `utils/`, with docstrings and tests.
+- 🧪 **Notebooks** – new or improved demonstrations (they must execute cleanly: `make test-notebooks`).
+- 🎨 **App pages** – Streamlit pages in `streamlit_app/pages/` (they are smoke-tested: `make test-app`).
+- 📚 **Docs** – tutorials and guides in `docs/`; code samples there are executed by the test suite.
+- 🐞 **Bug reports and fixes** – open an issue with a minimal reproduction, or a PR with a regression test.
 
-## 📌 How You Can Contribute
+## 🛠 Development setup
 
-- 🛠 **New Features** – Add utilities, helper functions, or workflow enhancements.
-- 📚 **Documentation** – Improve the README, cheatsheets, or add learning notes.
-- 🧪 **Notebooks** – Create or improve Jupyter notebooks with practical demonstrations.
-- 🐞 **Bug Fixes** – Identify and fix issues in code, visualizations, or logic.
-- 🎨 **UX Improvements** – Enhance Streamlit dashboards, plots, or exports.
-- 🧹 **Refactoring** – Clean up code for readability and maintainability.
+```bash
+git clone https://github.com/<you>/ScipyMasterPro.git
+cd ScipyMasterPro
+python -m venv .venv && source .venv/bin/activate     # or: uv venv && source .venv/bin/activate
+pip install -e ".[dev,docs]"                           # or: uv pip install -e ".[dev,docs]"
+pre-commit install
+scipymasterpro info                                    # sanity check
+```
 
----
+Useful targets (`make help` lists them all):
 
-## 🛠 Project Setup
+| Command | Purpose |
+| --- | --- |
+| `make format` | ruff --fix, black, isort |
+| `make lint` | the blocking CI checks |
+| `make test` | unit + property + plot tests |
+| `make test-app` | Streamlit page smoke tests |
+| `make test-notebooks` | execute all notebooks |
+| `make docs-serve` | live documentation preview |
+| `make freeze-deps` | regenerate `requirements_dev.txt` after changing `pyproject.toml` |
 
-1. **Fork the Repository**
-   Click the "Fork" button on the top-right of this page.
+## ✅ Guidelines
 
-2. **Clone Your Fork**
+1. **Branch** from `main`: `git checkout -b feat/short-description`.
+2. **Style**: black (line length 100), isort, ruff. `make format` before committing.
+3. **Docstrings**: NumPy style on every public function; they feed the API reference.
+4. **Tests**: add or update tests for behaviour you change. Prefer a Hypothesis property test
+   when the behaviour is an invariant.
+5. **Determinism**: functions that draw random numbers take a `seed` argument.
+6. **Dependencies**: add them to `pyproject.toml`, then run `make freeze-deps`.
+7. **Changelog**: add a line under `## [Unreleased]` in `docs/CHANGELOG.md`.
+8. **Commits**: focused, descriptive messages (`fix:`, `feat:`, `docs:`, `ci:` prefixes are used).
 
-   ```bash
-   git clone https://github.com/SatvikPraveen/SciPyMasterPro.git
-   cd SciPyMasterPro
-   ```
+## 🔄 Pull requests
 
-3. **Create a Virtual Environment**
+1. Run `make lint test test-app` locally; CI runs the same plus notebooks, build and docs.
+2. Open the PR against `main` and fill in the template (what, why, how it was tested).
+3. Include screenshots for UI or plot changes.
+4. The `All checks passed` job must be green before merge.
 
-   ```bash
-   python3 -m venv scipy_env
-   source scipy_env/bin/activate
-   pip install -r requirements_dev.txt
-   ```
+## 📦 Releases (maintainers)
 
-4. **Run Streamlit App**
+Bump `version` in `pyproject.toml`, move the `[Unreleased]` notes into a new section in
+`docs/CHANGELOG.md`, merge, then tag `vX.Y.Z` and push the tag. The release workflow builds the
+package, creates the GitHub Release and (when enabled) publishes to PyPI.
 
-   ```bash
-   streamlit run streamlit_app/app.py
-   ```
+## 📝 Code of conduct
 
-5. **Run Jupyter Lab**
+This project follows the [Code of Conduct](CODE_OF_CONDUCT.md). Be kind, constructive and
+credit others where due.
 
-   ```bash
-   jupyter lab --allow-root --ip=0.0.0.0 --no-browser
-   ```
-
----
-
-## ✅ Contribution Guidelines
-
-1. **Fork** the repository and create your branch:
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. Follow **PEP8 coding style** and keep code modular.
-3. Add **docstrings** for all new functions or modules.
-4. If your contribution changes outputs or adds new functionality:
-
-   - Update the relevant **Jupyter notebooks** or **Streamlit app pages** to demonstrate usage.
-   - Update **cheatsheets or utility references** if necessary.
-
-5. Use **descriptive commit messages** and keep commits focused.
-
----
-
-## 🔄 Pull Request (PR) Process
-
-1. **Test your changes locally**:
-
-   - Run the Streamlit app (`streamlit run streamlit_app/app.py`)
-   - Open and validate relevant notebooks in JupyterLab.
-
-2. Check that:
-
-   - No existing functionality is broken.
-   - Exports, plots, and computed outputs remain correct.
-
-3. Push your branch and open a PR to the `main` branch of this repository.
-4. Include in your PR:
-
-   - A **clear description** of what you changed or added.
-   - Any **dependencies** introduced (if applicable).
-   - Screenshots or sample outputs (for UI or visualization changes).
-
-5. Wait for code review and feedback. 🎉
-
----
-
-## 📝 Code of Conduct
-
-We follow a **friendly and inclusive collaboration style**:
-
-- Respect all contributors and their time.
-- Keep discussions constructive and focused on the project.
-- Credit others where due.
-
----
-
-💡 **Tip:** If you are unsure whether a feature or idea fits the project, feel free to open an **issue** first to discuss it.
-
----
+💡 Unsure whether an idea fits? Open an issue first and we will figure it out together.

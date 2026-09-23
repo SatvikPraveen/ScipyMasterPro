@@ -108,12 +108,12 @@ from utils.my_module import my_function
 
 class TestMyFunction:
     """Test my_function."""
-    
+
     def test_basic_case(self, normal_data):
         """Test basic functionality."""
         result = my_function(normal_data)
         assert result > 0
-    
+
     @pytest.mark.parametrize("value", [1, 2, 3])
     def test_multiple_values(self, value):
         """Test with different values."""
@@ -218,7 +218,7 @@ def calculate_effect_size(
 ) -> Dict[str, Union[float, str]]:
     """
     Calculate effect size between two groups.
-    
+
     Parameters
     ----------
     group1 : np.ndarray
@@ -227,14 +227,14 @@ def calculate_effect_size(
         Second group data.
     method : str, default="cohen_d"
         Effect size method: "cohen_d", "hedges_g", or "glass_delta".
-    
+
     Returns
     -------
     Dict[str, Union[float, str]]
         Dictionary containing:
         - 'effect_size': Calculated effect size
         - 'interpretation': Size interpretation (small/medium/large)
-    
+
     Examples
     --------
     >>> group1 = np.array([1, 2, 3, 4, 5])
@@ -242,14 +242,14 @@ def calculate_effect_size(
     >>> result = calculate_effect_size(group1, group2)
     >>> print(result['effect_size'])
     1.414
-    
+
     Notes
     -----
     Cohen's d interpretation:
     - Small: 0.2
     - Medium: 0.5
     - Large: 0.8
-    
+
     See Also
     --------
     cohens_d_independent : Raw Cohen's d calculation
@@ -436,7 +436,7 @@ make all
 
 # This runs:
 # - install-dev
-# - generate-data  
+# - generate-data
 # - test
 # - lint
 ```

@@ -1,105 +1,91 @@
-# ScipyMasterPro Documentation
+# SciPyMasterPro
 
-Welcome to the **ScipyMasterPro** documentation!
+**A hands-on toolkit for mastering SciPy**: ten concept notebooks, an interactive Streamlit
+app, a tested utility library and reproducible synthetic datasets, all wired into a modern
+CI/CD pipeline.
 
-## 📚 Overview
+[![CI](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/ci.yml/badge.svg)](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/ci.yml)
+[![Docker](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/docker.yml/badge.svg)](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/docker.yml)
+[![Python](https://img.shields.io/badge/python-3.11%20|%203.12%20|%203.13-blue)](https://www.python.org/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-ScipyMasterPro is a comprehensive toolkit for mastering the SciPy library through hands-on practice with synthetic datasets, interactive notebooks, and a professional web application.
+## Start here
 
-## 🚀 Quick Start
+<div class="grid cards" markdown>
 
-### Installation
+-   :material-rocket-launch: **Getting Started**
 
-```bash
-# Clone the repository
-git clone https://github.com/SatvikPraveen/ScipyMasterPro.git
-cd ScipyMasterPro
+    ---
 
-# Create virtual environment
-python3 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+    Install with pip, uv or Docker and run your first analysis in five minutes.
 
-# Install dependencies
-pip install -r requirements.txt
+    [:octicons-arrow-right-24: Getting started](tutorials/getting_started.md)
 
-# Or install in development mode
-pip install -e ".[dev]"
+-   :material-notebook: **Notebooks**
+
+    ---
+
+    Ten notebooks from descriptive statistics to curve fitting, each executed in CI.
+
+    [:octicons-arrow-right-24: Notebook guide](user_guide/notebooks.md)
+
+-   :material-application: **Streamlit App**
+
+    ---
+
+    Twelve interactive pages covering every module.
+
+    [:octicons-arrow-right-24: App guide](user_guide/streamlit_app.md)
+
+-   :material-api: **API Reference**
+
+    ---
+
+    Every utility function, generated from its docstring.
+
+    [:octicons-arrow-right-24: API reference](api_reference/index.md)
+
+</div>
+
+## What is inside
+
+| Layer | Contents |
+| --- | --- |
+| `notebooks/`, `shared_notebooks/` | 10 concept notebooks + 2 SciPy-vs-statsmodels comparisons |
+| `streamlit_app/` | landing page + 12 interactive pages |
+| `utils/` | 10 modules, ~4,300 lines, NumPy-style docstrings, type hints |
+| `synthetic_data/` | 9 reproducible datasets and their generator |
+| `tests/` | unit, Hypothesis property, plot smoke, app, CLI and docs-example tests |
+| `scipymasterpro/` | the `scipymasterpro` command line |
+
+## Quick taste
+
+```python
+import numpy as np
+from scipy import stats
+
+from utils.distribution_utils import fit_distribution, perform_ks_test
+from utils.sim_utils import bootstrap_sample, compute_bootstrap_ci
+
+data = np.random.default_rng(0).gamma(2.0, 1.5, size=400)
+
+params = fit_distribution(data, stats.gamma)
+print(perform_ks_test(data, stats.gamma, params))
+
+boots = bootstrap_sample(data, n_iterations=2000, seed=0)
+print(compute_bootstrap_ci(boots, ci=95))
 ```
 
-### Running the Application
+## Why synthetic data?
 
-**Streamlit App:**
-```bash
-streamlit run streamlit_app/app.py
-```
+- concepts stay in focus, not domain noise
+- every experiment is repeatable
+- assumption violations can be constructed on purpose
+- edge cases needed for tests are one function call away
 
-**JupyterLab:**
-```bash
-jupyter lab
-```
+## Project links
 
-**Docker:**
-```bash
-docker-compose up
-```
-
-## 📖 Documentation Sections
-
-### User Guide
-- [Notebooks](user_guide/notebooks.md) - Working with the Jupyter notebooks
-- [Streamlit App](user_guide/streamlit_app.md) - Using the interactive web application
-- [Utilities](user_guide/utilities.md) - Understanding the utility modules
-
-### API Reference
-- [Statistical Tests](api_reference/stats_tests.md)
-- [Distribution Fitting](api_reference/distribution.md)
-- [Optimization](api_reference/optimization.md)
-- [Linear Algebra](api_reference/linear_algebra.md)
-- [Visualization](api_reference/visualization.md)
-
-### Tutorials
-- [Getting Started with SciPy](tutorials/getting_started.md)
-- [Statistical Testing Workflow](tutorials/statistical_testing.md)
-- [Distribution Fitting Guide](tutorials/distribution_fitting.md)
-- [Optimization Examples](tutorials/optimization.md)
-
-### Developer Guide
-- [Contributing](../CONTRIBUTING.md)
-- [Development Setup](developer/setup.md)
-- [Testing](developer/testing.md)
-- [Code Style](developer/code_style.md)
-
-## 🔗 External Resources
-
-- [SciPy Official Documentation](https://docs.scipy.org/doc/scipy/)
-- [NumPy Documentation](https://numpy.org/doc/)
-- [Pandas Documentation](https://pandas.pydata.org/docs/)
-- [Matplotlib Documentation](https://matplotlib.org/stable/contents.html)
-
-## 📊 Project Structure
-
-```
-ScipyMasterPro/
-├── notebooks/               # 10 core concept notebooks
-├── shared_notebooks/        # Comparison notebooks
-├── streamlit_app/          # Interactive web app
-├── utils/                  # Reusable utility modules
-├── synthetic_data/         # Data generation
-├── tests/                  # Test suite
-├── docs/                   # Documentation
-└── exports/                # Generated outputs
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guide](../CONTRIBUTING.md) for details.
-
-## 📜 License
-
-This project is licensed under the GPL-3.0 License - see the [LICENSE](../LICENSE) file for details.
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/SatvikPraveen/ScipyMasterPro/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/SatvikPraveen/ScipyMasterPro/discussions)
-- **Email**: satvikpraveen@example.com
+- [Repository](https://github.com/SatvikPraveen/ScipyMasterPro)
+- [Issues](https://github.com/SatvikPraveen/ScipyMasterPro/issues)
+- [Container image](https://github.com/SatvikPraveen/ScipyMasterPro/pkgs/container/scipymasterpro)
+- [Changelog](about/changelog.md)

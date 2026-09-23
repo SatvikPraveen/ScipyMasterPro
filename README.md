@@ -1,229 +1,196 @@
 # 🧠 SciPyMasterPro
 
+[![CI](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/ci.yml/badge.svg)](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/ci.yml)
+[![Docker](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/docker.yml/badge.svg)](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/docker.yml)
+[![Docs](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/docs.yml/badge.svg)](https://satvikpraveen.github.io/ScipyMasterPro/)
+[![CodeQL](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/codeql.yml/badge.svg)](https://github.com/SatvikPraveen/ScipyMasterPro/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/SatvikPraveen/ScipyMasterPro/branch/main/graph/badge.svg)](https://codecov.io/gh/SatvikPraveen/ScipyMasterPro)
+[![Python](https://img.shields.io/badge/python-3.11%20|%203.12%20|%203.13-blue.svg)](https://www.python.org/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-darkgreen.svg)](https://www.python.org/)
-[![Notebooks](https://img.shields.io/badge/Jupyter-Notebook-orange.svg)](https://jupyter.org/)
-[![SciPy Focused](https://img.shields.io/badge/SciPy-100%25-brightgreen.svg)](https://docs.scipy.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Interactive_App-ff4b4b.svg)](https://streamlit.io/)
-[![Synthetic Data](https://img.shields.io/badge/Data-Synthetic-lightblue.svg)](./synthetic_data/)
-[![Portfolio Ready](https://img.shields.io/badge/Project-Portfolio--Ready-blueviolet.svg)](./README.md)
+
+**A hands-on, production-grade toolkit for mastering [SciPy](https://docs.scipy.org/doc/scipy/).**
+Ten concept notebooks, a twelve-page Streamlit app, a tested utility library, reproducible synthetic
+datasets, a CLI, a Docker image and a documentation site, all validated by CI on every push.
+
+📖 **Documentation:** <https://satvikpraveen.github.io/ScipyMasterPro/>
 
 ---
 
-## 🎯 Project Goal
-
-**SciPyMasterPro** is a hands-on, deep-dive project built to master the complete range of functionality offered by [`SciPy`](https://docs.scipy.org/doc/scipy/). It emphasizes **numerical computing**, **distribution fitting**, **hypothesis testing**, **optimization**, and **simulation** through **clean, synthetic data**.
-
-This project helps you build deep fluency with `scipy.stats`, `scipy.optimize`, `scipy.interpolate`, and `scipy.linalg` — and supporting libraries.
-
----
-
-## 🚀 Key Features
-
-✅ 10 concept-driven Jupyter notebooks <br>
-✅ Interactive **Streamlit web application** for live statistical exploration <br>
-✅ All statistical logic done with pure **SciPy** (no heavy reliance on statsmodels) <br>
-✅ Modular utility functions for resampling, optimization, diagnostics <br>
-✅ Synthetic data generator for reproducible, controlled experiments <br>
-✅ Shared notebooks comparing **SciPy vs Statsmodels** <br>
-✅ Markdown cheatsheet and mastery checklist for fast recall <br>
-✅ **Docker-ready** for seamless environment setup (Jupyter + Streamlit in one container) <br>
-✅ Perfect for **interview prep**, **portfolio building**, and **teaching use cases** <br>
-
----
-
-## 🌱 Why Synthetic?
-
-This project uses synthetic datasets to:
-
-- ✨ Focus on **concepts**, not domain-specific noise
-- 🔁 Enable **repeatable simulation and inference**
-- 🧪 Make assumption validation crystal clear
-- 📐 Generate precise shapes and edge cases needed for testing
-
----
-
-## 🧱 Project Structure
+## 🚀 Quick start
 
 ```bash
-SciPyMasterPro/
-├── notebooks/               # Core concept notebooks (distribution fitting, optimization, etc.)
-├── shared_notebooks/        # Comparison notebooks with statsmodels (PDF/ECDF, power analysis)
-├── streamlit_app/           # Interactive Streamlit web app (hypothesis tests, inference tools)
-├── synthetic_data/          # Scripts + outputs for synthetic datasets
-├── utils/                   # Reusable code: bootstrapping, fitting, plotting, diagnostics
-├── cheatsheets/             # Markdown cheatsheet + mastery checklist
-├── exports/                 # All plots and tabular results from notebooks and app
-│   ├── plots/
-│   └── tables/
-├── requirements.txt         # Main dependencies
-├── requirements_dev.txt     # Full development environment
-├── Dockerfile               # Docker environment for Jupyter + Streamlit
-├── README.md                # This file
+git clone https://github.com/SatvikPraveen/ScipyMasterPro.git
+cd ScipyMasterPro
+python -m venv .venv && source .venv/bin/activate     # or: uv venv && source .venv/bin/activate
+pip install -e ".[dev]"                                # or: uv pip install -e ".[dev]"
+
+scipymasterpro info            # versions of Python, NumPy, SciPy, pandas, ...
+scipymasterpro app             # Streamlit app on http://localhost:8501
+scipymasterpro generate-data   # regenerate the synthetic CSVs
+make jupyter                   # JupyterLab for the notebooks
+```
+
+Or skip the install entirely:
+
+```bash
+docker run -p 8501:8501 -p 8888:8888 ghcr.io/satvikpraveen/scipymasterpro:latest both
 ```
 
 ---
 
-## 📘 Notebook Modules
+## ✨ What you get
 
-| Notebook                        | Conceptual Focus                                           |
-| ------------------------------- | ---------------------------------------------------------- |
-| `01_descriptive_stats`          | Moments, trimmed stats, robust summaries                   |
-| `02_hypothesis_tests`           | Parametric and nonparametric tests, assumption checks      |
-| `03_distribution_fitting`       | `.fit()`, `.pdf()`, `.cdf()`, MLE                          |
-| `04_sampling_resampling`        | Stratified sampling, `rv_discrete`, Dirichlet, multinomial |
-| `05_bootstrap_simulation`       | Manual bootstrapping, CI, distribution shape checking      |
-| `06_multivariate_analysis`      | Mahalanobis, covariance, chi², permutation tests           |
-| `07_optimization_minimization`  | Minimize functions, constraints, real-world losses         |
-| `08_linear_algebra_stats`       | SVD, eigen, least squares, matrix ops                      |
-| `09_interpolation_curvefitting` | Splines, interpolators, `curve_fit()`                      |
-| `10_inference_from_raw`         | Inference from summary stats, `sem()`, interval estimation |
-
----
-
-## 🔁 Shared Notebooks with Statsmodels
-
-| Notebook                         | Topics Compared                                    |
-| -------------------------------- | -------------------------------------------------- |
-| `shared_pdf_ecdf.ipynb`          | ECDF, fitted PDFs, visual fit quality              |
-| `shared_statistical_power.ipynb` | Manual power analysis using SciPy vs `statsmodels` |
+| Layer | Contents |
+| --- | --- |
+| **Notebooks** | 10 concept notebooks + 2 SciPy-vs-statsmodels comparisons, every one executed in CI |
+| **Streamlit app** | landing page + 12 interactive pages, each smoke-tested headlessly |
+| **`utils/` library** | 10 modules, NumPy-style docstrings, type hints, pure SciPy statistics |
+| **Synthetic data** | 9 seeded datasets and a path-independent generator |
+| **Tests** | 240+ tests: unit, [Hypothesis](https://hypothesis.readthedocs.io/) property tests, plot smoke tests, app tests, CLI tests, and tests that execute the docs' code samples |
+| **CLI** | `scipymasterpro {info,app,generate-data}` |
+| **Docker** | multi-stage, non-root image with health checks; multi-arch (amd64/arm64) on GHCR |
+| **Docs** | MkDocs Material site with API reference generated from docstrings |
+| **CI/CD** | lint, tests on Linux/macOS/Windows and Python 3.11-3.13 (+3.14 experimental), notebook execution, package build, docs build, CodeQL, Trivy, tag-driven releases |
 
 ---
 
-## 🧬 Synthetic Data Preview
+## 📘 Modules
 
-| Dataset Source                        | Use Case                                       |
-| ------------------------------------- | ---------------------------------------------- |
-| `generate_normal_skewed()`            | Skew/kurtosis comparison and descriptive stats |
-| `generate_mixed_distributions()`      | Distribution fitting & tail analysis           |
-| `generate_multivariate_gaussian()`    | Mahalanobis distance, PCA                      |
-| `generate_sample_for_optimization()`  | Optimization curve, cost function              |
-| `generate_noisy_curve_fitting_data()` | Model calibration and smoothing                |
-| `generate_poisson_data()`             | Discrete probability testing                   |
+| Notebook | App page | Concepts | Key SciPy APIs |
+| --- | --- | --- | --- |
+| `01_descriptive_stats` | Descriptive Stats | moments, trimmed stats, robust summaries, ECDF | `stats.describe`, `skew`, `kurtosis`, `trim_mean` |
+| `02_hypothesis_tests` | Hypothesis Tests | parametric and non-parametric tests, assumption checks, effect sizes, BH correction | `ttest_*`, `mannwhitneyu`, `wilcoxon`, `shapiro`, `levene` |
+| `03_distribution_fitting` | Distribution Fitting | MLE fitting, PDF/CDF, goodness-of-fit | `rv_continuous.fit`, `kstest`, `anderson` |
+| `04_sampling_resampling` | Sampling and Resampling | stratified, weighted, multinomial, Dirichlet, custom discrete RVs | `rv_discrete`, `dirichlet`, `multinomial` |
+| `05_bootstrap_simulation` | Bootstrap Simulation | bootstrap distributions and percentile CIs | `stats.bootstrap` |
+| `06_multivariate_analysis` | Multivariate Analysis | covariance, Mahalanobis distance, chi-square outlier thresholds | `spatial.distance.mahalanobis`, `stats.chi2` |
+| `07_optimization_minimalization` | Optimization | unconstrained, bounded and constrained minimisation, loss surfaces | `optimize.minimize`, `minimize_scalar`, `LinearConstraint` |
+| `08_linear_algebra_stats` | Linear Algebra | eigen, SVD, least squares, condition numbers | `linalg.eig`, `linalg.svd`, `linalg.lstsq` |
+| `09_interpolation_curvefitting` | Interpolation and Curve Fitting | 1-D/2-D interpolation, splines, RBF, `curve_fit` | `interpolate.*`, `optimize.curve_fit` |
+| `10_inference_from_raw` | Inference from Raw | CIs and t-tests from summary statistics | `stats.sem`, `stats.t`, `stats.norm` |
+| `shared_pdf_ecdf` | Shared: PDF and ECDF | ECDF/PDF overlays, SciPy vs statsmodels | `kstest`, `ECDF` |
+| `shared_statistical_power` | Shared: Statistical Power | power by hand vs statsmodels | `stats.norm`, `stats.t`, `TTestIndPower` |
 
 ---
 
-## 📊 Exports Example
+## 🛠 Using the library
 
-```bash
-exports/
-├── plots/
-│   ├── ecdf_vs_pdf.png
-│   ├── bootstrap_distribution.png
-│   └── optimization_convergence.png
-├── tables/
-│   ├── fitted_parameters_gamma.csv
-│   ├── mahalanobis_distances.csv
-│   └── power_curve_results.csv
+```python
+import numpy as np
+from scipy import stats
+
+from utils.distribution_utils import fit_distribution, perform_ks_test
+from utils.sim_utils import bootstrap_sample, compute_bootstrap_ci
+from utils.stats_tests_utils import cohens_d_independent, run_two_sample_ttest
+
+rng = np.random.default_rng(0)
+a, b = rng.normal(5, 2, 200), rng.normal(6, 2, 200)
+
+print(run_two_sample_ttest(a, b, equal_var=False))   # Welch t-test -> {'t_stat': ..., 'p_value': ...}
+print(cohens_d_independent(a, b))                    # effect size
+
+params = fit_distribution(a, stats.norm)             # MLE (loc, scale)
+print(perform_ks_test(a, stats.norm, params))        # {'KS_stat': ..., 'p_value': ...}
+
+boots = bootstrap_sample(a, n_iterations=2000, seed=0)
+print(compute_bootstrap_ci(boots, ci=95))            # percentile CI for the mean
+```
+
+| Module | Purpose |
+| --- | --- |
+| `utils/stats_tests_utils.py` | t-tests, Mann-Whitney, Wilcoxon, normality and variance tests, effect sizes, Benjamini-Hochberg |
+| `utils/distribution_utils.py` | MLE fitting, PDF/CDF evaluation, KS and Anderson goodness-of-fit, AIC/BIC |
+| `utils/pdf_ecdf_utils.py` | manual and statsmodels ECDFs, PDF/ECDF overlays |
+| `utils/sim_utils.py` | bootstrap, stratified and weighted sampling, Mahalanobis outliers |
+| `utils/inference_utils.py` | SEM, confidence intervals, margin of error, sample size |
+| `utils/power_utils.py` | power of z- and t-tests, Cohen's d |
+| `utils/optimization_utils.py` | cost functions, constraints, `minimize` wrappers, loss surfaces |
+| `utils/linear_algebra_utils.py` | eigen, SVD, least squares, matrix diagnostics |
+| `utils/interpolation_utils.py` | interpolation, RBF, `curve_fit` models |
+| `utils/viz_utils.py` | every plotting helper (Matplotlib, Seaborn, Plotly) |
+
+Full API reference: <https://satvikpraveen.github.io/ScipyMasterPro/api_reference/>
+
+---
+
+## 🧱 Project structure
+
+```
+ScipyMasterPro/
+├── notebooks/               # 10 concept notebooks
+├── shared_notebooks/        # SciPy vs statsmodels comparisons
+├── streamlit_app/           # app.py + pages/ (12 pages)
+├── utils/                   # reusable statistics, optimisation, viz
+├── scipymasterpro/          # package metadata + `scipymasterpro` CLI
+├── synthetic_data/          # generator + committed CSV exports
+├── tests/                   # unit, property, app, CLI, docs-example tests
+├── docs/ + mkdocs.yml       # documentation site
+├── exports/                 # plots and tables produced by the notebooks
+├── cheatsheets/             # SciPy cheatsheet
+├── docker/ + Dockerfile     # multi-stage image, entrypoint (app | jupyter | both)
+├── docker-compose.yml       # Streamlit + JupyterLab services
+├── .github/workflows/       # ci, docker, docs, codeql, release
+├── pyproject.toml           # packaging, extras, tool config
+├── requirements.txt         # loose runtime pins
+└── requirements_dev.txt     # resolved lock used by the Docker image
 ```
 
 ---
 
-## ✅ Cheatsheet & Mastery Checklist
+## 🧪 Development
 
-📁 `cheatsheets/` includes:
+```bash
+pip install -e ".[dev,docs]"
+pre-commit install
 
-- `scipy_cheatsheet.md` → syntax, use cases, formulas
+make lint             # black, isort, ruff, bandit (what CI blocks on)
+make test             # unit + property + plot tests
+make test-app         # Streamlit pages
+make test-notebooks   # execute every notebook
+make docs-serve       # live docs at http://127.0.0.1:8000
+make docker-build && make docker-up
+```
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md), and the
+[developer guide](https://satvikpraveen.github.io/ScipyMasterPro/developer/setup/) for the full
+setup, testing and release process.
 
 ---
 
-## 🛠 Utilities in `utils/`
+## 🐳 Docker
 
-- **`stats_tests_utils.py`** → Wrapper for t-tests, chi², normality tests, rank-based methods
-- **`distribution_utils.py`** → Fit, sample, evaluate PDFs/CDFs for multiple distributions
-- **`sim_utils.py`** → Bootstrap, permutation tests, resampling utilities
-- **`viz_utils.py`** → ECDF, diagnostic plots, confidence bands, linear algebra plots
-- **`inference_utils.py`** → Compute SEM, confidence intervals, t-tests from summary stats
-- **`linear_algebra_utils.py`** → Matrix generation, eigen decomposition, SVD, least squares solutions
-- **`optimization_utils.py`** → Solve constrained and unconstrained optimization problems
-- **`pdf_ecdf_utils.py`** → Manual ECDF computation, PDF–ECDF overlays, fit quality visualization
-- **`power_utils.py`** → Statistical power analysis, effect size estimation, sample size planning
-- **`interpolation_utils.py`** → Curve fitting, splines, polynomial interpolation
+```bash
+docker build -t scipymasterpro .
+docker run -p 8501:8501 scipymasterpro                 # Streamlit
+docker run -p 8888:8888 scipymasterpro jupyter         # JupyterLab
+docker run -p 8501:8501 -p 8888:8888 scipymasterpro both
+docker compose up -d                                   # both as separate services
+```
+
+Pre-built multi-arch images are published to
+[`ghcr.io/satvikpraveen/scipymasterpro`](https://github.com/SatvikPraveen/ScipyMasterPro/pkgs/container/scipymasterpro)
+on every push to `main` and every release tag.
 
 ---
 
-All results export to `exports/` automatically with timestamp/version control.
+## 🌱 Why synthetic data?
 
----
-
-## 📦 Installation Instructions
-
-```bash
-# Clone repo
-git clone https://github.com/SatvikPraveen/SciPyMasterPro.git
-cd SciPyMasterPro
-
-# Create virtualenv
-python3 -m venv scipy_env
-source scipy_env/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-```
-
----
-
-## 🐳 Docker Setup
-
-Build Docker image:
-
-```bash
-docker build -t scipy-masterpro .
-```
-
-Run **Streamlit app**:
-
-```bash
-docker run -p 8501:8501 scipy-masterpro
-```
-
-Run **JupyterLab**:
-
-```bash
-docker run -p 8888:8888 scipy-masterpro
-```
-
-Run **both Streamlit + Jupyter in background**:
-
-```bash
-docker run -d -p 8501:8501 -p 8888:8888 scipy-masterpro
-```
-
----
-
-## 💼 Portfolio Impact
-
-This project was designed to:
-
-- ✅ Fill gaps from `statsmodels` and `NumPy`
-- ✅ Build working fluency with `SciPy`'s major submodules
-- ✅ Provide clean synthetic demonstrations of core stats ideas
-- ✅ Enable faster recall via organized notebooks, exports, and cheatsheets
-- ✅ Become your go-to resource for reviewing stats & optimization in interviews
+Synthetic datasets keep the focus on **concepts** rather than domain noise, make every
+simulation and inference **repeatable**, let assumption violations be **constructed on purpose**,
+and provide the exact edge cases the test suite needs.
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **GNU General Public License v3.0**.
+GNU General Public License v3.0. See [LICENSE](LICENSE).
 
-> You are free to **use, study, share, and modify** this project under the terms of the GPLv3.
-> Contributions are welcome and must also be licensed under GPLv3.
+## 🔗 Related projects
 
----
-
-## 🙌 Acknowledgements
-
-Thanks to the contributors of the SciPy ecosystem — especially the authors behind `scipy.stats`, `scipy.optimize`, and `scipy.linalg` — for making scientific computing accessible and extensible in Python.
-
----
-
-## 🔗 Related Projects
-
-- 📊 [PandasPlayground](https://github.com/SatvikPraveen/PandasPlayground) — Data manipulation workflows with pandas
-- 🔢 [NumPyMasterPro](https://github.com/SatvikPraveen/NumPyMasterPro) — Deep dive into vectorization and broadcasting
-- 📘 [StatsmodelsMasterPro](https://github.com/SatvikPraveen/StatsmodelsMasterPro) — Modeling & inference with `statsmodels`
-- 🎨 [SeabornMasterPro](https://github.com/SatvikPraveen/SeabornMasterPro) — Statistical plotting with Seaborn
-- 🌐 [PlotlyVizPro](https://github.com/SatvikPraveen/PlotlyVizPro) — Interactive dashboards with Plotly
-
----
+- [PandasPlayground](https://github.com/SatvikPraveen/PandasPlayground) — data manipulation with pandas
+- [NumPyMasterPro](https://github.com/SatvikPraveen/NumPyMasterPro) — vectorisation and broadcasting
+- [StatsmodelsMasterPro](https://github.com/SatvikPraveen/StatsmodelsMasterPro) — modelling and inference with statsmodels
+- [SeabornMasterPro](https://github.com/SatvikPraveen/SeabornMasterPro) — statistical plotting with Seaborn
+- [PlotlyVizPro](https://github.com/SatvikPraveen/PlotlyVizPro) — interactive dashboards with Plotly

@@ -7,28 +7,52 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-23
+
 ### Added
-- Comprehensive testing infrastructure with pytest
-- Type hints across all utility modules
-- Detailed docstrings for all public functions
-- CI/CD pipeline with GitHub Actions
-- Pre-commit hooks for code quality
-- Package configuration with pyproject.toml
-- Docker Compose for multi-service orchestration
-- MkDocs documentation site
-- Code quality tools (black, isort, pylint, mypy)
-- Security scanning with bandit
-- Dependabot for automated dependency updates
-- Issue and PR templates
-- Makefile for common development tasks
+- `scipymasterpro` command line (`info`, `app`, `generate-data`) and a `scipymasterpro` package
+  holding the version; the previous `scipy-app` / `scipy-generate-data` entry points now work.
+- Streamlit smoke tests: every page is executed headlessly with `streamlit.testing.v1.AppTest`.
+- Plot smoke tests covering every helper in `utils/viz_utils.py`.
+- Hypothesis property tests (ECDF monotonicity, bootstrap bounds, effect-size antisymmetry,
+  confidence-interval containment, interpolation at knots, SVD reconstruction).
+- Tests that execute every Python code block in the tutorials and API overview.
+- Notebook execution job in CI (`nbmake`) for all 12 notebooks.
+- Documentation site content: user guide, tutorials, developer guide, per-module API reference
+  generated from docstrings; deployed to GitHub Pages by `docs.yml`.
+- CodeQL workflow, tag-driven release workflow (GitHub Release + optional PyPI trusted publishing).
+- Multi-stage, non-root Docker image with health check and an entrypoint that runs
+  `app`, `jupyter` or `both`; multi-arch (amd64/arm64) publishing to GHCR.
+- `requirements_dev.txt` is now a fully resolved lock (`make freeze-deps`).
+- ruff linting; Makefile targets `test-app`, `test-notebooks`, `test-all`, `lint-advisory`,
+  `docker-test`.
 
 ### Changed
-- Enhanced Docker configuration with health checks
-- Improved .dockerignore for optimal build context
-- Updated documentation with API reference
+- Minimum Python is 3.11; CI tests 3.11-3.13 with 3.14 as an experimental job.
+- Dependency floors raised (numpy>=1.26, pandas>=2.0, scipy>=1.11, streamlit>=1.50) and the
+  Dependabot updates for pandas, matplotlib, plotly, jupyter-core, jupyterlab-server, pyarrow,
+  cffi, executing, narwhals, ipykernel and wcwidth applied via the new lock.
+- GitHub Actions updated to current majors (checkout v7, setup-python v7, upload-artifact v7,
+  codecov v7, build-push-action v7, metadata-action v6, CodeQL v4); Docker workflow uses
+  `docker compose` v2.
+- CI lint job is now blocking (black, isort, ruff, bandit); mypy and pylint report as advisory.
+- Streamlit pages use a single, cross-platform `PROJECT_ROOT` bootstrap and package-qualified
+  imports; `use_container_width` replaced by `width="stretch"`.
+- Synthetic data generator writes next to its own file instead of relative to the working
+  directory, and exposes `main()`.
+- Coverage is no longer forced through `pytest` `addopts`; use `make test-cov`.
+- pre-commit configuration modernised (ruff, current hook versions, no `types-all`).
 
 ### Fixed
-- N/A
+- `perform_ks_test`, `fit_multiple_distributions*` and the ECDF goodness-of-fit helpers failed
+  on SciPy >= 1.18 (`ndtr() takes from 1 to 2 positional arguments`); they now test against the
+  frozen distribution.
+- `stratified_sample` dropped the stratification column on pandas >= 3; it now uses
+  `GroupBy.sample`.
+- Three Streamlit pages imported `streamlit_utils` unqualified and failed outside `streamlit run`.
+- Duplicate `fit_distribution` definition (the name-based variant is now `fit_named_distribution`).
+- Mid-module imports, unused imports and an unused walrus assignment in `utils`.
+- Docker workflow failed on current runners (`docker-compose: command not found`).
 
 ## [1.0.0] - 2026-03-09
 
