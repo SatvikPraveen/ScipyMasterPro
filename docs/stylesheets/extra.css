@@ -1,0 +1,7 @@
+:root {
+  --md-primary-fg-color: #1f77b4;
+  --md-accent-fg-color: #ff4b4b;
+}
+.md-typeset table:not([class]) {
+  font-size: 0.8rem;
+}

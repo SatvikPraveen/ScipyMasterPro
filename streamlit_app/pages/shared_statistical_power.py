@@ -2,17 +2,19 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
-from streamlit_utils import sidebar_section
 
+from streamlit_app.streamlit_utils import sidebar_section
 from utils.power_utils import compute_cohens_d, compute_power_t, compute_power_z, statsmodels_power
 
 # -------------------------------
@@ -77,7 +79,7 @@ fig_curve = px.line(
     title="Statistical Power Curve",
 )
 fig_curve.add_hline(y=0.8, line_dash="dash", line_color="red", annotation_text="Target Power 0.8")
-st.plotly_chart(fig_curve, use_container_width=True)
+st.plotly_chart(fig_curve, width="stretch")
 
 # -------------------------------
 # 🔹 Comparison Table
@@ -111,10 +113,10 @@ st.dataframe(effect_table)
 st.markdown("## ✅ Key Takeaways")
 st.markdown(
     """
-- **Effect size (Cohen’s d)** standardizes the difference between observed and expected means  
-- **Manual power (Z & T-tests)** is based on normal and t-distributions  
-- `statsmodels` provides validated power estimates given test parameters  
-- **Sample size directly impacts power**, visualize this with the curve above  
+- **Effect size (Cohen’s d)** standardizes the difference between observed and expected means
+- **Manual power (Z & T-tests)** is based on normal and t-distributions
+- `statsmodels` provides validated power estimates given test parameters
+- **Sample size directly impacts power**, visualize this with the curve above
 - Aim for **≥ 0.8 power** to reduce Type II errors in your study
 """
 )

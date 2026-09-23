@@ -85,3 +85,15 @@ build/
 # Others (Optional)
 # ===========================
 nohup.out
+
+# ===========================
+# Tool caches and build output
+# ===========================
+.ruff_cache/
+.hypothesis/
+.mypy_cache/
+htmlcov/
+site/
+build/
+dist/
+*.egg-info/

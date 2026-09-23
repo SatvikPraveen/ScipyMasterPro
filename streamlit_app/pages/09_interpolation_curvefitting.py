@@ -2,17 +2,19 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
 import numpy as np
 import pandas as pd
 import streamlit as st
 from sklearn.metrics import r2_score, root_mean_squared_error
-from streamlit_utils import sidebar_section
 
+from streamlit_app.streamlit_utils import sidebar_section
 from utils.interpolation_utils import (
     cubic_interpolate,
     exponential_model,
@@ -27,7 +29,6 @@ from utils.interpolation_utils import (
 from utils.viz_utils import (
     plot_all_fits_comparison,
     plot_curve_fits_with_bands,
-    plot_gaussian_fit_with_band,
     plot_interpolation_comparison,
     plot_multivariate_griddata,
     plot_polynomial_fit,
@@ -70,7 +71,7 @@ if demo_type == "1D Curve Fitting & Interpolation":
     y_spl = spl_fn(x_new)
 
     fig_interp = plot_interpolation_comparison(x, y, x_new, y_lin, y_cub, y_spl)
-    st.pyplot(fig_interp, use_container_width=True)
+    st.pyplot(fig_interp, width="stretch")
 
     # RMSE for methods
     rmse_lin = root_mean_squared_error(y, lin_fn(x))
@@ -91,7 +92,7 @@ if demo_type == "1D Curve Fitting & Interpolation":
     y_gauss = gaussian_model(x_new, *popt_gauss)
 
     fig_curve = plot_curve_fits_with_bands(x, y, x_new, y_exp, y_exp - 0.5, y_exp + 0.5, y_gauss)
-    st.pyplot(fig_curve, use_container_width=True)
+    st.pyplot(fig_curve, width="stretch")
 
     # Weighted fit
     weights = np.linspace(1, 3, len(x))
@@ -103,13 +104,13 @@ if demo_type == "1D Curve Fitting & Interpolation":
     y_weighted = exponential_model(x_new, *popt_weighted)
 
     fig_weighted = plot_weighted_vs_unweighted_fit(x, y, x_new, y_exp, y_weighted)
-    st.pyplot(fig_weighted, use_container_width=True)
+    st.pyplot(fig_weighted, width="stretch")
 
     # Polynomial fit
     coeffs = np.polyfit(x, y, deg=2)
     y_poly = np.poly1d(coeffs)(x_new)
     fig_poly = plot_polynomial_fit(x, y, x_new, y_poly, degree=2)
-    st.pyplot(fig_poly, use_container_width=True)
+    st.pyplot(fig_poly, width="stretch")
 
     # Residuals comparison
     res_exp = y - exponential_model(x, *popt_exp)
@@ -118,11 +119,11 @@ if demo_type == "1D Curve Fitting & Interpolation":
     res_weighted = y - exponential_model(x, *popt_weighted)
 
     fig_res = plot_residuals_comparison(x, res_exp, res_gauss, res_poly, res_weighted)
-    st.pyplot(fig_res, use_container_width=True)
+    st.pyplot(fig_res, width="stretch")
 
     # Overlay of all fits
     fig_all = plot_all_fits_comparison(x, y, x_new, y_lin, y_cub, y_spl, y_exp, y_gauss, y_poly)
-    st.pyplot(fig_all, use_container_width=True)
+    st.pyplot(fig_all, width="stretch")
 
     # Metrics
     summary = pd.DataFrame(
@@ -172,11 +173,11 @@ else:
 
     grid_x, grid_y, grid_z = interpolate_2d(x, y, z, method="linear")
     fig2d = plot_multivariate_griddata(grid_x, grid_y, grid_z)
-    st.pyplot(fig2d, use_container_width=True)
+    st.pyplot(fig2d, width="stretch")
 
     z_rbf = rbf_interpolation(x, y, z)
     fig_rbf = plot_rbf_interpolation(grid_x, grid_y, z_rbf)
-    st.pyplot(fig_rbf, use_container_width=True)
+    st.pyplot(fig_rbf, width="stretch")
 
     error_grid = np.abs(np.sin(grid_x * 4) * np.cos(grid_y * 4) - grid_z)
     st.markdown("### 🔎 Approximation Error (Linear vs True Surface)")

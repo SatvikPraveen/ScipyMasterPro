@@ -7,8 +7,6 @@ normality tests, effect sizes, and non-parametric tests.
 
 import numpy as np
 import pandas as pd
-import pytest
-from scipy import stats
 
 from utils.stats_tests_utils import (
     cliffs_delta,

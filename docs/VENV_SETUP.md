@@ -2,8 +2,8 @@
 
 ## 🎯 Setup Status
 
-**Virtual Environment Created:** ✅ `/Users/satvikpraveen/Desktop/Github_projects/ScipyMasterPro/venv/`  
-**Dependencies Installed:** ✅ All packages from `requirements.txt` installed successfully  
+**Virtual Environment Created:** ✅ `/Users/satvikpraveen/Desktop/Github_projects/ScipyMasterPro/venv/`
+**Dependencies Installed:** ✅ All packages from `requirements.txt` installed successfully
 **Git Tracking:** ✅ `venv/` is properly excluded in `.gitignore`
 
 ---

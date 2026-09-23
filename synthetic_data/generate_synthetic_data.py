@@ -7,14 +7,14 @@ All data is created to focus on statistical clarity, simulation control, and fun
 Author: Satvik Praveen
 """
 
-import os
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy.stats import beta, expon, gamma, multivariate_normal, norm, poisson, skewnorm
 
-# Ensure export directory exists
-os.makedirs("synthetic_data/exports", exist_ok=True)
+# Export directory lives next to this file, so the script works from any working directory.
+EXPORT_DIR = Path(__file__).resolve().parent / "exports"
 
 
 # 🔹 1. Basic descriptive statistics (normal + skewed)
@@ -113,35 +113,34 @@ def generate_bootstrap_sample_data(seed=42, n=200):
 
 
 # Save all to destined location in .csv format
-def export_all_datasets():
-    print("Saving all datasets to /synthetic_data/exports/")
+def export_all_datasets(export_dir: Path | str = EXPORT_DIR) -> Path:
+    """Generate every synthetic dataset and write it as CSV into ``export_dir``."""
+    export_dir = Path(export_dir)
+    export_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Saving all datasets to {export_dir}/")
 
-    generate_normal_skewed().to_csv("synthetic_data/exports/normal_skewed.csv", index=False)
-    generate_mixed_distributions().to_csv(
-        "synthetic_data/exports/mixed_distributions.csv", index=False
-    )
-    generate_multivariate_gaussian().to_csv(
-        "synthetic_data/exports/multivariate_gaussian.csv", index=False
-    )
+    generate_normal_skewed().to_csv(export_dir / "normal_skewed.csv", index=False)
+    generate_mixed_distributions().to_csv(export_dir / "mixed_distributions.csv", index=False)
+    generate_multivariate_gaussian().to_csv(export_dir / "multivariate_gaussian.csv", index=False)
     generate_sample_for_optimization().to_csv(
-        "synthetic_data/exports/sample_for_optimization.csv", index=False
+        export_dir / "sample_for_optimization.csv", index=False
     )
-    generate_noisy_curve_fitting_data().to_csv(
-        "synthetic_data/exports/curve_fitting_data.csv", index=False
-    )
-    generate_poisson_data().to_csv("synthetic_data/exports/poisson_data.csv", index=False)
-    generate_grouped_continuous().to_csv(
-        "synthetic_data/exports/grouped_continuous.csv", index=False
-    )
-    generate_bootstrap_sample_data().to_csv(
-        "synthetic_data/exports/bootstrap_sample_data.csv", index=False
-    )
+    generate_noisy_curve_fitting_data().to_csv(export_dir / "curve_fitting_data.csv", index=False)
+    generate_poisson_data().to_csv(export_dir / "poisson_data.csv", index=False)
+    generate_grouped_continuous().to_csv(export_dir / "grouped_continuous.csv", index=False)
+    generate_bootstrap_sample_data().to_csv(export_dir / "bootstrap_sample_data.csv", index=False)
 
     cat_counts = generate_categorical_counts()
-    cat_counts.to_csv("synthetic_data/exports/categorical_counts.csv", header=True)
+    cat_counts.to_csv(export_dir / "categorical_counts.csv", header=True)
 
     print("All synthetic datasets exported successfully!")
+    return export_dir
+
+
+def main() -> None:
+    """Console-script entry point (``scipy-generate-data``)."""
+    export_all_datasets()
 
 
 if __name__ == "__main__":
-    export_all_datasets()
+    main()

@@ -1,4 +1,4 @@
-.PHONY: help install install-dev install-docs test test-fast test-cov lint format type-check clean docker-build docker-up docker-down docker-logs jupyter streamlit generate-data run-notebooks pre-commit-install pre-commit-run security-check
+.PHONY: test-app test-notebooks test-all lint-advisory ruff docker-test help install install-dev install-docs test test-fast test-cov lint format type-check clean docker-build docker-up docker-down docker-logs jupyter streamlit generate-data run-notebooks pre-commit-install pre-commit-run security-check
 
 help:  ## Show this help message
 	@echo '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
@@ -36,17 +36,22 @@ install-all:  ## Install all dependencies (prod + dev + docs)
 # Testing
 # ============================================================================
 
-test:  ## Run all tests with coverage report
-	pytest --cov=utils --cov=streamlit_app --cov=synthetic_data \
-	       --cov-report=html --cov-report=term-missing --cov-report=xml \
-	       -v
+test:  ## Run unit, property and plot tests (everything except the Streamlit pages)
+	MPLBACKEND=Agg pytest tests/ -m "not app" -n auto
 
-test-fast:  ## Run tests without coverage (faster)
-	pytest -v
+test-app:  ## Run the Streamlit page smoke tests
+	MPLBACKEND=Agg pytest tests/ -m app -n 2
 
-test-cov:  ## Run tests and open HTML coverage report
-	pytest --cov=utils --cov=streamlit_app --cov=synthetic_data \
-	       --cov-report=html --cov-report=term-missing
+test-notebooks:  ## Execute every notebook with nbmake (same as CI)
+	MPLBACKEND=Agg pytest --nbmake --nbmake-timeout=900 notebooks/ shared_notebooks/ -n 4
+
+test-all: test test-app test-notebooks  ## Run every test layer
+
+test-fast:  ## Run tests without xdist (useful for debugging)
+	MPLBACKEND=Agg pytest tests/ -m "not app" -x
+
+test-cov:  ## Run tests with an HTML + XML coverage report
+	MPLBACKEND=Agg pytest tests/ -m "not app" -n auto --cov --cov-report=html --cov-report=term-missing --cov-report=xml
 	@echo "Opening coverage report..."
 	@open htmlcov/index.html || xdg-open htmlcov/index.html || echo "Please open htmlcov/index.html manually"
 
@@ -63,28 +68,30 @@ test-watch:  ## Run tests in watch mode
 # Code Quality
 # ============================================================================
 
-lint:  ## Run all linting checks (pylint, black, isort, mypy)
-	@echo "Running pylint..."
-	pylint utils/ streamlit_app/ synthetic_data/ || true
-	@echo "\nChecking black formatting..."
-	black --check . || true
-	@echo "\nChecking isort..."
-	isort --check . || true
-	@echo "\nRunning mypy type checking..."
-	mypy utils/ streamlit_app/ synthetic_data/ || true
+lint:  ## Run the blocking CI checks (black, isort, ruff, bandit)
+	black --check --diff .
+	isort --check --diff .
+	ruff check .
+	bandit -c pyproject.toml -r utils/ streamlit_app/ synthetic_data/ scipymasterpro/ -q
 
-format:  ## Format code with black and isort
-	@echo "Formatting with black..."
+lint-advisory:  ## Run the advisory checks (mypy, pylint)
+	-mypy utils/ synthetic_data/ scipymasterpro/
+	-pylint utils/ streamlit_app/ synthetic_data/ scipymasterpro/
+
+format:  ## Format code with black, isort and ruff --fix
+	ruff check --fix .
 	black .
-	@echo "Sorting imports with isort..."
 	isort .
 	@echo "✓ Code formatted successfully!"
 
 type-check:  ## Run mypy type checking
-	mypy utils/ streamlit_app/ synthetic_data/
+	mypy utils/ synthetic_data/ scipymasterpro/
 
 pylint:  ## Run pylint only
-	pylint utils/ streamlit_app/ synthetic_data/
+	pylint utils/ streamlit_app/ synthetic_data/ scipymasterpro/
+
+ruff:  ## Run ruff only
+	ruff check .
 
 black-check:  ## Check black formatting without making changes
 	black --check .
@@ -151,28 +158,31 @@ docker-build-no-cache:  ## Build Docker image without cache
 	docker build --no-cache -t scipymasterpro:latest .
 
 docker-up:  ## Start all Docker containers (Jupyter + Streamlit)
-	docker-compose up -d
+	docker compose up -d
 
 docker-down:  ## Stop all Docker containers
-	docker-compose down
+	docker compose down
 
 docker-restart:  ## Restart all Docker containers
-	docker-compose restart
+	docker compose restart
 
 docker-logs:  ## View Docker container logs
-	docker-compose logs -f
+	docker compose logs -f
 
 docker-logs-jupyter:  ## View Jupyter container logs
-	docker-compose logs -f jupyter
+	docker compose logs -f jupyter
 
 docker-logs-streamlit:  ## View Streamlit container logs
-	docker-compose logs -f streamlit
+	docker compose logs -f streamlit
 
-docker-shell:  ## Open shell in running container
-	docker-compose exec jupyter /bin/bash
+docker-shell:  ## Open shell in the running Streamlit container
+	docker compose exec streamlit /bin/bash
+
+docker-test:  ## Run the unit tests inside the image
+	docker run --rm scipymasterpro:latest python -m pytest tests/ -m "not app" -q
 
 docker-clean:  ## Remove all containers and images
-	docker-compose down -v
+	docker compose down -v
 	docker rmi scipymasterpro:latest || true
 
 # ============================================================================
@@ -188,10 +198,7 @@ streamlit:  ## Start Streamlit app locally
 generate-data:  ## Generate synthetic datasets
 	python synthetic_data/generate_synthetic_data.py
 
-run-notebooks:  ## Execute all notebooks (requires jupyter nbconvert)
-	@echo "Executing all notebooks..."
-	jupyter nbconvert --to notebook --execute notebooks/*.ipynb --output-dir=notebooks/
-	@echo "✓ All notebooks executed!"
+run-notebooks: test-notebooks  ## Execute all notebooks (alias for test-notebooks)
 
 validate-notebooks:  ## Validate notebook execution without saving
 	@for notebook in notebooks/*.ipynb; do \
@@ -256,9 +263,11 @@ update-deps:  ## Update all dependencies
 	pip list --outdated
 	@echo "\nTo update all packages, run: pip install --upgrade -r requirements.txt"
 
-freeze-deps:  ## Freeze current dependencies
-	pip freeze > requirements_frozen.txt
-	@echo "✓ Dependencies frozen to requirements_frozen.txt"
+freeze-deps:  ## Re-resolve requirements_dev.txt (the lock used by Docker) from pyproject.toml
+	uv pip compile requirements.txt pyproject.toml --extra dev --extra docs --extra notebook \
+	    --python-version 3.11 --python-platform linux -o requirements_dev.txt \
+	    --no-header --annotation-style line --custom-compile-command "make freeze-deps"
+	@echo "✓ requirements_dev.txt updated"
 
 check-deps:  ## Check for outdated dependencies
 	pip list --outdated
@@ -291,8 +300,8 @@ start: docker-up  ## Quick start with Docker
 
 stop: docker-down  ## Quick stop Docker containers
 
-check: lint test  ## Quick quality check (lint + test)
+check: lint test test-app  ## Quick quality check (lint + tests)
 
-all: install-dev generate-data test lint  ## Do everything (install, generate, test, lint)
+all: install-dev generate-data lint test-all  ## Do everything (install, generate, lint, all tests)
 
 .DEFAULT_GOAL := help

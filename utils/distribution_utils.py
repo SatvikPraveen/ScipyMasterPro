@@ -3,7 +3,7 @@ import pandas as pd
 from scipy.stats import anderson, beta, expon, gamma, kstest, lognorm, norm
 
 
-def fit_distribution(data: "np.ndarray", dist_name: str) -> tuple:
+def fit_named_distribution(data: "np.ndarray", dist_name: str) -> tuple:
     """
     Fit a named distribution to data using MLE.
 
@@ -39,7 +39,7 @@ def fit_distribution(data: "np.ndarray", dist_name: str) -> tuple:
 
 
 # Fit Distribution to Data
-def fit_distribution(data: "np.ndarray", dist_obj: object) -> tuple:  # type: ignore[misc]
+def fit_distribution(data: "np.ndarray", dist_obj: object) -> tuple:
     """
     Fit a scipy.stats distribution object to the data using MLE.
 
@@ -139,8 +139,11 @@ def perform_ks_test(data: "np.ndarray", dist_obj: object, params: tuple) -> dict
         {'KS_stat': float, 'p_value': float}
         Large KS stat or small p-value indicates poor fit.
     """
-    D, p = kstest(data, dist_obj.name, args=params)
-    return {"KS_stat": D, "p_value": p}
+    # Use the frozen distribution CDF: robust across SciPy versions (the string-name
+    # form with ``args`` broke for some distributions in SciPy >= 1.18).
+    frozen = dist_obj(*params)
+    D, p = kstest(data, frozen.cdf)
+    return {"KS_stat": float(D), "p_value": float(p)}
 
 
 # Wrapper to Fit Multiple Distributions
@@ -169,7 +172,7 @@ def fit_multiple_distributions(data: "np.ndarray", dist_list: list) -> list[dict
     for dist in dist_list:
         try:
             params = dist.fit(data)
-            D, p = kstest(data, dist.name, args=params)
+            D, p = kstest(data, dist(*params).cdf)
             results.append(
                 {
                     "distribution": dist.name,
@@ -293,7 +296,7 @@ def fit_multiple_distributions_extended(data: "np.ndarray", distribution_list: l
         k = len(params)
 
         # KS Test
-        ks_stat, ks_p = kstest(data, dist.name, args=params)
+        ks_stat, ks_p = kstest(data, dist(*params).cdf)
 
         # Anderson-Darling (only for normal)
         ad_result = perform_anderson_darling(data, dist="norm") if dist.name == "norm" else None

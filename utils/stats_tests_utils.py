@@ -23,9 +23,7 @@ from scipy.stats import (
 )
 
 
-def compute_skewness_kurtosis(
-    df: "pd.DataFrame", columns: list[str]
-) -> dict[str, dict[str, float]]:
+def compute_skewness_kurtosis(df: pd.DataFrame, columns: list[str]) -> dict[str, dict[str, float]]:
     """
     Compute skewness and excess kurtosis for specified columns.
 
@@ -57,7 +55,7 @@ def compute_skewness_kurtosis(
 
 
 # Summary Stats Function
-def summarize_descriptive_statistics(df: "pd.DataFrame", columns: list[str]) -> "pd.DataFrame":
+def summarize_descriptive_statistics(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     """
     Compute a descriptive statistics summary table for selected columns.
 
@@ -98,7 +96,7 @@ def summarize_descriptive_statistics(df: "pd.DataFrame", columns: list[str]) -> 
 
 
 # One-sample t-test
-def run_one_sample_ttest(data: "np.ndarray", popmean: float) -> dict[str, float]:
+def run_one_sample_ttest(data: np.ndarray, popmean: float) -> dict[str, float]:
     """
     Perform a one-sample t-test to determine if the sample mean differs from a population mean.
 
@@ -128,7 +126,7 @@ def run_one_sample_ttest(data: "np.ndarray", popmean: float) -> dict[str, float]
 
 # Two-sample t-test (equal/unequal variance)
 def run_two_sample_ttest(
-    data1: "np.ndarray", data2: "np.ndarray", equal_var: bool = True
+    data1: np.ndarray, data2: np.ndarray, equal_var: bool = True
 ) -> dict[str, float]:
     """
     Perform an independent two-sample t-test.
@@ -153,7 +151,7 @@ def run_two_sample_ttest(
 
 
 # Paired t-test
-def run_paired_ttest(before: "np.ndarray", after: "np.ndarray") -> dict[str, float]:
+def run_paired_ttest(before: np.ndarray, after: np.ndarray) -> dict[str, float]:
     """
     Perform a paired (related samples) t-test.
 
@@ -175,7 +173,7 @@ def run_paired_ttest(before: "np.ndarray", after: "np.ndarray") -> dict[str, flo
 
 
 # Normality Tests
-def run_normality_tests(data: "np.ndarray") -> dict[str, object]:
+def run_normality_tests(data: np.ndarray) -> dict[str, object]:
     """
     Run a battery of normality tests on the data.
 
@@ -203,7 +201,7 @@ def run_normality_tests(data: "np.ndarray") -> dict[str, object]:
 
 
 # Variance Equality Tests
-def run_variance_tests(data1: "np.ndarray", data2: "np.ndarray") -> dict[str, object]:
+def run_variance_tests(data1: np.ndarray, data2: np.ndarray) -> dict[str, object]:
     """
     Test equality of variances between two samples using three methods.
 
@@ -249,7 +247,7 @@ def format_test_result(result_dict: dict[str, float], test_name: str) -> None:
 # -------------------------------------------
 # 📏 EFFECT SIZE UTILITIES (parametric & nonparametric)
 # -------------------------------------------
-def cohens_d_independent(x: "np.ndarray", y: "np.ndarray", equal_var: bool = True) -> float:
+def cohens_d_independent(x: np.ndarray, y: np.ndarray, equal_var: bool = True) -> float:
     """
     Compute Cohen's d effect size for two independent samples.
 
@@ -281,7 +279,7 @@ def cohens_d_independent(x: "np.ndarray", y: "np.ndarray", equal_var: bool = Tru
     return d
 
 
-def hedges_g_independent(x: "np.ndarray", y: "np.ndarray", equal_var: bool = True) -> float:
+def hedges_g_independent(x: np.ndarray, y: np.ndarray, equal_var: bool = True) -> float:
     """
     Compute Hedges' g effect size — a bias-corrected version of Cohen's d.
 
@@ -306,7 +304,7 @@ def hedges_g_independent(x: "np.ndarray", y: "np.ndarray", equal_var: bool = Tru
     return J * d
 
 
-def glass_delta(x: "np.ndarray", y: "np.ndarray", ref: str = "y") -> float:
+def glass_delta(x: np.ndarray, y: np.ndarray, ref: str = "y") -> float:
     """
     Compute Glass's delta effect size using only the control group SD.
 
@@ -331,7 +329,7 @@ def glass_delta(x: "np.ndarray", y: "np.ndarray", ref: str = "y") -> float:
     return (np.mean(x) - np.mean(y)) / sd_ref
 
 
-def cliffs_delta(x: "np.ndarray", y: "np.ndarray") -> float:
+def cliffs_delta(x: np.ndarray, y: np.ndarray) -> float:
     """
     Compute Cliff's delta — a non-parametric effect size measure.
 
@@ -366,7 +364,7 @@ def cliffs_delta(x: "np.ndarray", y: "np.ndarray") -> float:
 # -------------------------------------------
 # 🧪 MULTIPLE TESTING CORRECTION (Benjamini–Hochberg)
 # -------------------------------------------
-def p_adjust_bh(pvals: list[float] | "np.ndarray") -> "np.ndarray":
+def p_adjust_bh(pvals: list[float] | np.ndarray) -> np.ndarray:
     """
     Apply Benjamini-Hochberg (BH) False Discovery Rate correction to p-values.
 
@@ -441,7 +439,7 @@ def format_effect_sizes(cohens_d: float, hedges_g: float, cliffs_delta: float):
 
 
 # Wilcoxon Signed-Rank Test (Paired, non-parametric)
-def run_wilcoxon_signedrank(x: "np.ndarray", y: "np.ndarray") -> dict[str, float]:
+def run_wilcoxon_signedrank(x: np.ndarray, y: np.ndarray) -> dict[str, float]:
     """
     Perform Wilcoxon signed-rank test for paired samples (non-parametric).
 
@@ -468,7 +466,7 @@ def run_wilcoxon_signedrank(x: "np.ndarray", y: "np.ndarray") -> dict[str, float
 
 
 # Spearman Rank Correlation
-def run_spearman_correlation(x: "np.ndarray", y: "np.ndarray") -> dict[str, float]:
+def run_spearman_correlation(x: np.ndarray, y: np.ndarray) -> dict[str, float]:
     """
     Compute Spearman rank correlation coefficient between two variables.
 
@@ -490,7 +488,7 @@ def run_spearman_correlation(x: "np.ndarray", y: "np.ndarray") -> dict[str, floa
 
 
 # Kendall’s Tau
-def run_kendall_tau(x: "np.ndarray", y: "np.ndarray") -> dict[str, float]:
+def run_kendall_tau(x: np.ndarray, y: np.ndarray) -> dict[str, float]:
     """
     Compute Kendall's tau rank correlation coefficient.
 
@@ -512,7 +510,7 @@ def run_kendall_tau(x: "np.ndarray", y: "np.ndarray") -> dict[str, float]:
 
 
 # Rank-Biserial Effect Size (for Mann–Whitney or Wilcoxon)
-def rank_biserial_effect_size(x: "np.ndarray", y: "np.ndarray") -> float:
+def rank_biserial_effect_size(x: np.ndarray, y: np.ndarray) -> float:
     """
     Compute rank-biserial correlation effect size for Mann-Whitney U or Wilcoxon test.
 

@@ -2,13 +2,13 @@
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT.parent) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT.parent))
+# Make the repository root importable so `utils` and `streamlit_app` resolve
+# no matter where Streamlit or the test-runner is started from.
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
 
 
-import numpy as np
-import pandas as pd
 import streamlit as st
 
 from streamlit_app.streamlit_utils import sidebar_section
@@ -97,13 +97,13 @@ if opt_type == "Multivariate (Constrained)":
 
     st.subheader("📈 Contour Plot of Loss Surface")
     fig_contour = plot_contour_loss_surface(X, Y, Z, optimum=(result_multi.x[0], result_multi.x[1]))
-    st.pyplot(fig_contour, use_container_width=True)
+    st.pyplot(fig_contour, width="stretch")
 
     st.subheader("📈 3D Loss Surface Visualization")
     fig_3d = plot_3d_loss_surface(
         X, Y, Z, optimum=(result_multi.x[0], result_multi.x[1], result_multi.fun)
     )
-    st.pyplot(fig_3d, use_container_width=True)
+    st.pyplot(fig_3d, width="stretch")
 
 # -------------------------------
 # ✅ Summary

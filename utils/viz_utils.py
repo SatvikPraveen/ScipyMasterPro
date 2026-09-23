@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import seaborn as sns
+from scipy import stats
 
 
 def apply_theme(
@@ -31,13 +32,13 @@ def apply_theme(
 
 
 def plot_histograms(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     columns: list[str],
     bins: int = 30,
     title: str | None = None,
     figsize: tuple[int, int] = (12, 6),
     palette: str = "Set2",
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot side-by-side histograms with KDE overlays for multiple columns.
 
@@ -79,12 +80,12 @@ def plot_histograms(
 
 
 def plot_boxplots(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     columns: list[str],
     title: str | None = None,
     figsize: tuple[int, int] = (8, 5),
     palette: str = "Set2",
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot a combined boxplot for multiple columns.
 
@@ -114,11 +115,11 @@ def plot_boxplots(
 
 
 def plot_pairplot(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     hue: str | None = None,
     diag_kind: str = "kde",
     palette: str = "Spectral",
-) -> "sns.PairGrid":
+) -> sns.PairGrid:
     """
     Create a Seaborn pairplot to visualize pairwise relationships.
 
@@ -142,8 +143,8 @@ def plot_pairplot(
 
 
 def plot_correlation_heatmap(
-    df: "pd.DataFrame", annot: bool = True, cmap: str = "coolwarm"
-) -> "plt.Figure":
+    df: pd.DataFrame, annot: bool = True, cmap: str = "coolwarm"
+) -> plt.Figure:
     """
     Plot a correlation heatmap for all numeric columns.
 
@@ -167,7 +168,7 @@ def plot_correlation_heatmap(
     return fig
 
 
-def save_and_show_plot(fig: "plt.Figure", filename: str) -> None:
+def save_and_show_plot(fig: plt.Figure, filename: str) -> None:
     """
     Save a matplotlib figure to disk and display it.
 
@@ -183,7 +184,7 @@ def save_and_show_plot(fig: "plt.Figure", filename: str) -> None:
 
 
 # ECDF Plotter
-def plot_ecdf(df: "pd.DataFrame", column: str, color: str = "darkorange") -> "plt.Figure":
+def plot_ecdf(df: pd.DataFrame, column: str, color: str = "darkorange") -> plt.Figure:
     """
     Plot the Empirical Cumulative Distribution Function (ECDF) for a column.
 
@@ -215,11 +216,11 @@ def plot_ecdf(df: "pd.DataFrame", column: str, color: str = "darkorange") -> "pl
 
 # PDF Overlay Plot
 def plot_pdf_overlay(
-    data: "np.ndarray",
+    data: np.ndarray,
     dist_obj: object,
     params: tuple,
     title: str = "PDF Overlay",
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot a histogram with a fitted distribution PDF overlaid.
 
@@ -278,11 +279,11 @@ def plot_pdf_overlay(
 
 # CDF vs ECDF Overlay Plot
 def plot_cdf_overlay(
-    data: "np.ndarray",
+    data: np.ndarray,
     dist_obj: object,
     params: tuple,
     title: str = "CDF vs ECDF",
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot the Empirical CDF alongside the theoretical CDF of a fitted distribution.
 
@@ -393,7 +394,6 @@ def plot_covariance_heatmap(df, title="Covariance Matrix"):
 # -------------------------------------------
 # 📈 Q–Q PLOT (Normal)
 # -------------------------------------------
-from scipy import stats
 
 
 def plot_qq(data, title="Q–Q Plot (Normal)", figsize=(6, 5), marker_color="#1f77b4"):
@@ -411,13 +411,13 @@ def plot_qq(data, title="Q–Q Plot (Normal)", figsize=(6, 5), marker_color="#1f
 # 🟣 VIOLIN + SWARM OVERLAY
 # -------------------------------------------
 def plot_violin_swarm(
-    df: "pd.DataFrame",
+    df: pd.DataFrame,
     x_col: str,
     y_col: str,
     title: str = "Violin + Swarm",
     figsize: tuple[int, int] = (7, 5),
     palette: str = "Set2",
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Create a combined violin + swarm plot for distribution visualization.
 
@@ -453,12 +453,12 @@ def plot_violin_swarm(
 # 🔹 RANKED BARPLOT DISTRIBUTIONS
 # -------------------------------------------
 def plot_ranked_barplots(
-    x_ranked: "np.ndarray",
-    y_ranked: "np.ndarray",
+    x_ranked: np.ndarray,
+    y_ranked: np.ndarray,
     title1: str = "x_ranked",
     title2: str = "y_ranked",
     figsize: tuple[int, int] = (12, 5),
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot side-by-side frequency bar charts for two ranked (e.g., Likert-scale) datasets.
 
@@ -505,11 +505,11 @@ def plot_ranked_barplots(
 # 🔹 BOX PLOT FOR RANKED DISTRIBUTIONS
 # -------------------------------------------
 def plot_ranked_boxplot(
-    x_ranked: "np.ndarray",
-    y_ranked: "np.ndarray",
+    x_ranked: np.ndarray,
+    y_ranked: np.ndarray,
     figsize: tuple[int, int] = (7, 5),
     title: str = "Boxplot of Ranked Distributions",
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot a side-by-side boxplot for two ranked datasets.
 
@@ -538,11 +538,11 @@ def plot_ranked_boxplot(
 
 
 def plot_multi_distribution_overlay(
-    data: "np.ndarray",
+    data: np.ndarray,
     distribution_list: list,
     title: str = "Multi-Distribution Fit",
     bins: int = 40,
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot histogram of data and overlay PDFs of multiple fitted distributions.
 
@@ -584,7 +584,7 @@ def plot_ecdf_comparison_multi(
     title: str = "ECDF Comparison",
     figsize: tuple[int, int] | None = None,
     palette: list | None = None,
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot ECDF curves for multiple datasets on a single figure.
 
@@ -640,7 +640,7 @@ def plot_sampling_distributions(
     bins: int = 20,
     figsize: tuple[int, int] = (12, 6),
     colors: list | None = None,
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot multiple sampling distributions overlaid as density histograms.
 
@@ -682,12 +682,12 @@ def plot_sampling_distributions(
 # 🎨 BOOTSTRAP PLOT WITH CI AND TRUE STATISTIC
 # -----------------------------------------------------
 def plot_bootstrap_distribution(
-    estimates: "np.ndarray",
+    estimates: np.ndarray,
     ci_bounds: tuple[float, float] | None = None,
     true_stat: float | None = None,
     title: str = "Bootstrap Distribution",
     bins: int = 30,
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot bootstrap distribution with CI bounds and true statistic highlighted.
 
@@ -835,9 +835,7 @@ def plot_mahalanobis_outliers(
     ax.set_ylabel(y_col, fontsize=11)
 
     # Colorbar (optional: binary mapping for clarity)
-    cbar = plt.colorbar(
-        scatter := ax.scatter(df[x_col], df[y_col], c=df[outlier_col], cmap=cmap, alpha=0)
-    )
+    cbar = plt.colorbar(ax.scatter(df[x_col], df[y_col], c=df[outlier_col], cmap=cmap, alpha=0))
     cbar.set_label("Outlier (1=True)", fontsize=10)
 
     ax.grid(True, linestyle="--", alpha=0.4)
@@ -1493,7 +1491,7 @@ def plot_multiple_confidence_intervals(mean, ci_dict, figsize=(7, 5)):
         )
         levels.append(i)
     ax.set_xticks(levels)
-    ax.set_xticklabels([f"{int(l*100)}%" for l in ci_dict.keys()])
+    ax.set_xticklabels([f"{int(level * 100)}%" for level in ci_dict])
     ax.set_title("Confidence Intervals at Multiple Levels")
     ax.legend()
     return fig

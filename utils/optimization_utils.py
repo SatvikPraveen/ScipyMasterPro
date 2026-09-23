@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import numpy as np
-import pandas as pd
 from scipy.optimize import Bounds, LinearConstraint, minimize, minimize_scalar
 
 
@@ -16,7 +15,7 @@ def cost_nonconvex(x: float) -> float:
     return np.sin(2 * x) + 0.1 * x**2
 
 
-def multi_var_cost(x: "np.ndarray") -> float:
+def multi_var_cost(x: np.ndarray) -> float:
     """
     2-variable cost function: f(x, y) = (x - 1)^2 + (y - 2.5)^2
 
@@ -64,7 +63,7 @@ def get_bounds_2d() -> Bounds:
 # 🔹 3. Wrapper to run minimization
 def run_minimization(
     func: callable,
-    x0: "np.ndarray",
+    x0: np.ndarray,
     bounds: Bounds | None = None,
     constraints: LinearConstraint | dict | list | None = None,
     method: str = "trust-constr",
@@ -127,7 +126,7 @@ def evaluate_loss_surface(
     x_range: tuple[float, float] = (0, 5),
     y_range: tuple[float, float] = (0, 5),
     steps: int = 50,
-) -> tuple["np.ndarray", "np.ndarray", "np.ndarray"]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Evaluate a 2D loss function over a grid for surface visualization.
 
