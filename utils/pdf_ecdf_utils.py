@@ -1,19 +1,18 @@
 from __future__ import annotations
 
-import os
-
+import matplotlib.pyplot as plt
 import numpy as np
 import statsmodels.api as sm
-from scipy.stats import norm
+from scipy.stats import anderson, kstest, shapiro
 
 
 # ✅ 1. Compute PDF from a scipy.stats distribution
 def get_pdf(
-    data: "np.ndarray",
+    data: np.ndarray,
     dist: object,
     params: tuple | None = None,
     num_points: int = 100,
-) -> tuple["np.ndarray", "np.ndarray"]:
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Compute PDF values for a distribution over the data range.
 
@@ -44,8 +43,8 @@ def get_pdf(
 
 # ✅ 2. Compute ECDF manually (raw empirical CDF)
 def compute_manual_ecdf(
-    data: "np.ndarray",
-) -> tuple["np.ndarray", "np.ndarray"]:
+    data: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Compute the empirical CDF from data.
 
@@ -66,8 +65,8 @@ def compute_manual_ecdf(
 
 # ✅ 3. Compute ECDF using statsmodels
 def compute_statsmodels_ecdf(
-    data: "np.ndarray",
-) -> tuple["np.ndarray", "np.ndarray"]:
+    data: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Compute the empirical CDF using the statsmodels ECDF implementation.
 
@@ -92,18 +91,14 @@ def compute_statsmodels_ecdf(
     return x, y
 
 
-import matplotlib.pyplot as plt
-from scipy.stats import kstest
-
-
 def plot_pdf_ecdf_overlay(
-    data: "np.ndarray",
+    data: np.ndarray,
     dist: object,
     params: tuple | None = None,
     title: str = "",
     annotate_ks: bool = True,
     save_path: str | None = None,
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot ECDF with theoretical CDF overlay and optional KS test annotation.
 
@@ -155,7 +150,7 @@ def plot_pdf_ecdf_overlay(
 
     # KS test annotation
     if annotate_ks:
-        ks_stat, p_val = kstest(data, dist.name, args=params)
+        ks_stat, p_val = kstest(data, dist(*params).cdf)
         ax.text(
             0.05,
             0.1,
@@ -178,18 +173,14 @@ def plot_pdf_ecdf_overlay(
     return fig
 
 
-import matplotlib.pyplot as plt
-from scipy.stats import anderson, kstest, shapiro
-
-
 def plot_enhanced_ecdf_comparison(
-    data: "np.ndarray",
+    data: np.ndarray,
     dist_list: list,
     dist_labels: list[str] | None = None,
     annotate_tests: bool = True,
     title: str = "ECDF vs Multiple Distributions",
     save_path: str | None = None,
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot ECDF alongside theoretical CDFs for multiple distributions with goodness-of-fit annotations.
 
@@ -230,7 +221,7 @@ def plot_enhanced_ecdf_comparison(
         ax.plot(x_pdf, y_theoretical, label=f"{label} CDF", color=color)
 
         if annotate_tests:
-            ks_stat, ks_p = kstest(data, dist.name, args=params)
+            ks_stat, ks_p = kstest(data, dist(*params).cdf)
             ad_stat = anderson(
                 data, dist=dist.name if dist.name in ["norm", "expon", "logistic"] else "norm"
             ).statistic
@@ -267,10 +258,7 @@ def plot_enhanced_ecdf_comparison(
     return fig
 
 
-from scipy.stats import anderson, kstest, shapiro
-
-
-def run_goodness_of_fit_tests(data: "np.ndarray", dist: object) -> dict[str, float]:
+def run_goodness_of_fit_tests(data: np.ndarray, dist: object) -> dict[str, float]:
     """
     Run a battery of goodness-of-fit tests against a specified distribution.
 
@@ -292,7 +280,7 @@ def run_goodness_of_fit_tests(data: "np.ndarray", dist: object) -> dict[str, flo
     - Anderson-Darling: weights differences more heavily in the tails.
     - Shapiro-Wilk: specifically tests for normality (not the fitted dist).
     """
-    ks_stat, ks_p = kstest(data, dist.cdf, args=dist.fit(data))
+    ks_stat, ks_p = kstest(data, dist(*dist.fit(data)).cdf)
     ad_result = anderson(data)
     shapiro_stat, shapiro_p = shapiro(data)
     return {

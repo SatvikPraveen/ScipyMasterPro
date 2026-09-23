@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import dirichlet, multinomial, rv_discrete
+import pandas as pd
+from scipy.spatial.distance import mahalanobis
+from scipy.stats import chi2, dirichlet, multinomial, rv_discrete
 
 
-def bootstrap_sample(data: "np.ndarray", n_iterations: int = 1000, seed: int = 42) -> "np.ndarray":
+def bootstrap_sample(data: np.ndarray, n_iterations: int = 1000, seed: int = 42) -> np.ndarray:
     """
     Generate bootstrap distribution of sample means.
 
@@ -33,9 +35,7 @@ def bootstrap_sample(data: "np.ndarray", n_iterations: int = 1000, seed: int = 4
 
 
 # Uniform Sampling with/without Replacement
-def sample_uniform(
-    data: "np.ndarray", n: int, replace: bool = True, seed: int = 42
-) -> "np.ndarray":
+def sample_uniform(data: np.ndarray, n: int, replace: bool = True, seed: int = 42) -> np.ndarray:
     """
     Draw a uniform random sample from data.
 
@@ -61,8 +61,8 @@ def sample_uniform(
 
 # Stratified Sampling (Basic Category Proportions)
 def stratified_sample(
-    df: "pd.DataFrame", stratify_col: str, frac: float = 0.1, seed: int = 42
-) -> "pd.DataFrame":
+    df: pd.DataFrame, stratify_col: str, frac: float = 0.1, seed: int = 42
+) -> pd.DataFrame:
     """
     Draw a proportionally stratified sample from a DataFrame.
 
@@ -82,15 +82,15 @@ def stratified_sample(
     pd.DataFrame
         Stratified sample preserving group proportions.
     """
-    return df.groupby(stratify_col, group_keys=False).apply(
-        lambda x: x.sample(frac=frac, random_state=seed)
-    )
+    # GroupBy.sample keeps every column (including the stratifying column) on all
+    # pandas versions, unlike GroupBy.apply which drops group columns in pandas >= 3.
+    return df.groupby(stratify_col, group_keys=False).sample(frac=frac, random_state=seed)
 
 
 # Weighted Sampling
 def weighted_sample(
-    data: "np.ndarray", weights: "np.ndarray", n: int, replace: bool = True, seed: int = 42
-) -> "np.ndarray":
+    data: np.ndarray, weights: np.ndarray, n: int, replace: bool = True, seed: int = 42
+) -> np.ndarray:
     """
     Draw a weighted random sample from data.
 
@@ -119,7 +119,7 @@ def weighted_sample(
 # Multinomial & Dirichlet Sampling
 def draw_multinomial_sample(
     n: int, probs: list[float], size: int = 1, seed: int = 42
-) -> "np.ndarray":
+) -> np.ndarray:
     """
     Draw samples from a multinomial distribution.
 
@@ -143,7 +143,7 @@ def draw_multinomial_sample(
     return multinomial.rvs(n=n, p=probs, size=size)
 
 
-def draw_dirichlet_sample(alpha: list[float], size: int = 1, seed: int = 42) -> "np.ndarray":
+def draw_dirichlet_sample(alpha: list[float], size: int = 1, seed: int = 42) -> np.ndarray:
     """
     Draw samples from a Dirichlet distribution.
 
@@ -168,7 +168,7 @@ def draw_dirichlet_sample(alpha: list[float], size: int = 1, seed: int = 42) -> 
 # Custom Discrete Distribution Sampling (rv_discrete)
 def sample_custom_discrete(
     support_vals: list[int], probs: list[float], size: int = 1000, seed: int = 42
-) -> "np.ndarray":
+) -> np.ndarray:
     """
     Sample from a custom discrete probability distribution.
 
@@ -195,8 +195,8 @@ def sample_custom_discrete(
 
 # Manual Resampling with Replacement (Bootstrap Base)
 def resample_with_replacement(
-    data: "np.ndarray", n_samples: int = 1000, seed: int = 42
-) -> "np.ndarray":
+    data: np.ndarray, n_samples: int = 1000, seed: int = 42
+) -> np.ndarray:
     """
     Resample from data with replacement (bootstrap base operation).
 
@@ -220,8 +220,8 @@ def resample_with_replacement(
 
 # Construct ECDF (for visual comparison)
 def compute_ecdf(
-    data: "np.ndarray",
-) -> tuple["np.ndarray", "np.ndarray"]:
+    data: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Compute the empirical cumulative distribution function.
 
@@ -247,11 +247,11 @@ def compute_ecdf(
 
 # Basic Bootstrap Resample Generator
 def bootstrap_statistic(
-    data: "np.ndarray",
+    data: np.ndarray,
     stat_func: callable = np.mean,
     n_resamples: int = 1000,
     seed: int = 42,
-) -> "np.ndarray":
+) -> np.ndarray:
     """
     Compute a bootstrap distribution for any statistic.
 
@@ -281,7 +281,7 @@ def bootstrap_statistic(
 
 
 # Confidence Interval Calculation (Percentile Method)
-def compute_bootstrap_ci(boot_stats: "np.ndarray", ci: float = 95) -> tuple[float, float]:
+def compute_bootstrap_ci(boot_stats: np.ndarray, ci: float = 95) -> tuple[float, float]:
     """
     Compute percentile-method confidence interval from bootstrap distribution.
 
@@ -304,7 +304,7 @@ def compute_bootstrap_ci(boot_stats: "np.ndarray", ci: float = 95) -> tuple[floa
 
 # Bootstrap Summary Report
 def summarize_bootstrap(
-    estimates: "np.ndarray",
+    estimates: np.ndarray,
     original_stat: float | None = None,
     ci: float = 95,
 ) -> dict[str, float]:
@@ -339,11 +339,11 @@ def summarize_bootstrap(
 
 # Bootstrap Distribution with CI
 def plot_bootstrap_distribution(
-    estimates: "np.ndarray",
+    estimates: np.ndarray,
     ci_bounds: tuple[float, float] | None = None,
     title: str = "Bootstrap Distribution",
     bins: int = 30,
-) -> "plt.Figure":
+) -> plt.Figure:
     """
     Plot a histogram of bootstrap estimates with optional CI bounds.
 
@@ -377,7 +377,6 @@ def plot_bootstrap_distribution(
 
 
 # Mahalanobis Distance Calculator
-from scipy.spatial.distance import mahalanobis
 
 
 def compute_mahalanobis_distances(data):
@@ -399,7 +398,6 @@ def compute_mahalanobis_distances(data):
 
 
 # Chi-Square Test for Mahalanobis Distances
-from scipy.stats import chi2
 
 
 def evaluate_mahalanobis_outliers(distances, df_dim, alpha=0.01):
