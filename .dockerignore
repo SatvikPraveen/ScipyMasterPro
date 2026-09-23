@@ -1,42 +1,37 @@
-# ---------------------------
-# Python cache
+# Python / tooling caches
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+htmlcov/
+.coverage
+coverage.xml
+build/
+dist/
+site/
 
-# ---------------------------
 # Virtual environments
-env/
+.venv/
 venv/
+env/
 scipy_env/
 .scipy_env/
-.venv/
-ENV/
 
-# ---------------------------
-# OS junk files
+# VCS, editors, OS
+.git/
+.github/
+.idea/
+.vscode/
 .DS_Store
-
-# ---------------------------
-# Git metadata
-.git
-.gitignore
-
-# ---------------------------
-# Cache and logs
 *.log
-*.cache
-*.egg-info
-*.pytest_cache
 
-# ---------------------------
-# Optional: Large raw data
-data/raw/*
-# (Keep synthetic_data/ because it’s part of the project)
-# synthetic_data/*
+# Notebook checkpoints
+.ipynb_checkpoints/
 
-# ---------------------------
-# Docker config files
+# Docker files themselves
 Dockerfile
+docker-compose.yml
 .dockerignore
