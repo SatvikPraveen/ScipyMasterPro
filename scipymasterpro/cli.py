@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import argparse
 import platform
-import subprocess
+import subprocess  # nosec B404 - used only to launch streamlit with a fixed argv
 import sys
 from collections.abc import Sequence
 from importlib import import_module
@@ -79,7 +79,7 @@ def cmd_app(args: argparse.Namespace) -> int:
     ]
     if args.headless:
         cmd.append("--server.headless=true")
-    return subprocess.call(cmd)  # noqa: S603 - arguments are built from validated CLI inputs
+    return subprocess.call(cmd)  # nosec B603 - fixed argv, no shell, inputs are typed CLI options
 
 
 def cmd_generate_data(args: argparse.Namespace) -> int:
