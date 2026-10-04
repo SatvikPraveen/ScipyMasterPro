@@ -28,6 +28,9 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "pandas"
         update-types: ["version-update:semver-major"]
+      # Major upgrades are done deliberately as separate migrations.
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       scipy-ecosystem:
         patterns:
@@ -62,6 +65,10 @@ updates:
       - "docker"
     commit-message:
       prefix: "docker"
+    # Major upgrades are done deliberately as separate migrations.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
