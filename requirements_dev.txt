@@ -183,7 +183,7 @@ toml==0.10.2              # via streamlit
 tomli==2.4.1              # via coverage
 tomlkit==0.15.1           # via pylint
 tornado==6.5.1            # via ipykernel, jupyter-client, jupyter-server, jupyterlab, terminado
-traitlets==5.14.3         # via ipykernel, ipython, jupyter-client, jupyter-core, jupyter-events, jupyter-server, jupyterlab, matplotlib-inline, nbclient, nbconvert, nbformat
+traitlets==5.16.1         # via ipykernel, ipython, jupyter-client, jupyter-core, jupyter-events, jupyter-server, jupyterlab, matplotlib-inline, nbclient, nbconvert, nbformat
 twine==7.0.0              # via scipymasterpro (pyproject.toml)
 types-python-dateutil==2.9.0.20250708  # via arrow
 typing-extensions==4.14.1  # via altair, anyio, beautifulsoup4, ipython, mypy, referencing, starlette, streamlit
