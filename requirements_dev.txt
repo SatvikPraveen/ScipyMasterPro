@@ -115,7 +115,7 @@ packaging==26.3           # via altair, black, build, ipykernel, jupyter-events,
 paginate==0.5.7           # via mkdocs-material
 pandas==2.3.1             # via seaborn, statsmodels, streamlit, -r requirements.txt, scipymasterpro (pyproject.toml)
 pandocfilters==1.5.1      # via nbconvert
-parso==0.8.4              # via jedi
+parso==0.8.6              # via jedi
 pathspec==1.1.1           # via black, mkdocs, mypy
 patsy==1.0.1              # via statsmodels
 pexpect==4.9.0            # via ipython
