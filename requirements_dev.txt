@@ -19,7 +19,7 @@ build==1.6.1              # via scipymasterpro (pyproject.toml)
 certifi==2025.7.14        # via httpcore, httpx, requests
 cffi==2.1.1               # via argon2-cffi-bindings, cryptography
 cfgv==3.5.0               # via pre-commit
-charset-normalizer==3.4.2  # via requests
+charset-normalizer==3.5.2  # via requests
 click==8.2.1              # via black, mkdocs, streamlit, uvicorn
 colorama==0.4.6           # via mkdocs-material
 comm==0.2.3               # via ipykernel
