@@ -84,7 +84,7 @@ librt==0.16.0             # via mypy
 markdown==3.10.3          # via mkdocs, mkdocs-autorefs, mkdocs-material, mkdocstrings, pymdown-extensions
 markdown-it-py==4.2.0     # via rich
 markupsafe==3.0.3         # via jinja2, mkdocs, mkdocs-autorefs, mkdocstrings, nbconvert
-matplotlib==3.10.3        # via seaborn, -r requirements.txt, scipymasterpro (pyproject.toml)
+matplotlib==3.11.2        # via seaborn, -r requirements.txt, scipymasterpro (pyproject.toml)
 matplotlib-inline==0.1.7  # via ipykernel, ipython
 mccabe==0.7.0             # via pylint
 mdurl==0.1.2              # via markdown-it-py
@@ -121,7 +121,7 @@ patsy==1.0.1              # via statsmodels
 pexpect==4.9.0            # via ipython
 pillow==11.3.0            # via matplotlib, streamlit
 platformdirs==4.3.8       # via black, jupyter-core, mkdocs-get-deps, pylint, virtualenv
-plotly==6.2.0             # via -r requirements.txt, scipymasterpro (pyproject.toml)
+plotly==6.9.0             # via -r requirements.txt, scipymasterpro (pyproject.toml)
 pluggy==1.6.0             # via pytest, pytest-cov
 pre-commit==4.6.2         # via scipymasterpro (pyproject.toml)
 prometheus-client==0.22.1  # via jupyter-server
