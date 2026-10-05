@@ -63,7 +63,6 @@ with warnings.catch_warnings():
     warnings.filterwarnings("ignore", category=RuntimeWarning)
     params = fit_distribution(data, dist)
 
-params = fit_distribution(data, dist)
 # Parameter labels mapping
 param_labels = {
     "norm": ["loc", "scale"],
