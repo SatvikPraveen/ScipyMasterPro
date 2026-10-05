@@ -100,7 +100,7 @@ mkdocstrings-python==2.0.9  # via mkdocstrings
 more-itertools==11.1.0    # via jaraco-classes, jaraco-functools
 mypy==2.3.1               # via scipymasterpro (pyproject.toml)
 mypy-extensions==1.1.0    # via black, mypy
-narwhals==2.0.1           # via altair, plotly
+narwhals==2.26.0           # via altair, plotly
 nbclient==0.10.2          # via nbconvert, nbmake
 nbconvert==7.16.6         # via jupyter-server, scipymasterpro (pyproject.toml)
 nbformat==5.10.4          # via jupyter-server, nbclient, nbconvert, nbmake
