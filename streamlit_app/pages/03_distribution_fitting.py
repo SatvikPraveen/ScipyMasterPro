@@ -163,12 +163,10 @@ st.download_button(
 # SUMMARY
 # -------------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    """
+st.markdown("""
 - **Fit parametric distributions** (Normal, Gamma, Lognorm, Beta, Exponential) to your data
 - Visualize **PDF overlays** and **ECDF vs CDF fits**
 - Run **KS test** for statistical goodness-of-fit
 - Compare multiple distributions to identify the **best candidate model**
 - Export fitted values for further analysis
-"""
-)
+""")

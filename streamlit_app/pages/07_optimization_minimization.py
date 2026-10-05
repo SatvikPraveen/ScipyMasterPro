@@ -109,12 +109,10 @@ if opt_type == "Multivariate (Constrained)":
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    f"""
+st.markdown(f"""
 - **Scenario:** `{opt_type}`
 - Explored scalar (convex & non-convex) and constrained multivariate optimization.
 - Used SciPy's `minimize` API for flexible optimization routines.
 - Visualized loss surfaces to understand solution landscapes.
 - Results shown interactively (no files saved locally).
-"""
-)
+""")

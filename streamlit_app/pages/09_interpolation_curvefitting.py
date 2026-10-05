@@ -188,19 +188,15 @@ else:
 # -------------------------------
 st.markdown("## ✅ Summary")
 if demo_type == "1D Curve Fitting & Interpolation":
-    st.markdown(
-        """
+    st.markdown("""
     - Compared **linear, cubic, and spline interpolation**.
     - Fitted **exponential, Gaussian, weighted, and polynomial models**.
     - Visualized residuals and overlay of all fits for quality check.
     - Displayed **RMSE and R² metrics** for all fitting methods.
-    """
-    )
+    """)
 else:
-    st.markdown(
-        """
+    st.markdown("""
     - Interpolated random 2D data using **linear griddata** and **RBF kernels**.
     - Visualized surfaces interactively.
     - Displayed approximation errors against the true function.
-    """
-    )
+    """)

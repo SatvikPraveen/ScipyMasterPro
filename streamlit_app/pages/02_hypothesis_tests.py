@@ -212,12 +212,10 @@ st.download_button(
 # Summary
 # ------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    """
+st.markdown("""
 - **Parametric tests (t-tests)** require normality and sometimes equal variances
 - **Non-parametric tests** (Mann–Whitney, Wilcoxon) are robust alternatives
 - **Effect sizes** complement p-values by quantifying practical significance
 - **Rank-based tests** handle ordinal or non-normal data scenarios
 - Use this module to **test hypotheses interactively** and compare results visually
-"""
-)
+""")

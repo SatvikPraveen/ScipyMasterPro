@@ -114,8 +114,7 @@ st.dataframe(summary_df)
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    f"""
+st.markdown(f"""
 - Matrix Type: **{matrix_type}** | Dimension: **{dim}**
 - Performed:
   - Eigen Decomposition (if symmetric)
@@ -124,5 +123,4 @@ st.markdown(
   - Matrix diagnostics: determinant, rank, trace, condition number
 - Interactive plots provided for eigenvectors, singular values, and residuals.
 - No files saved locally (interactive only).
-"""
-)
+""")

@@ -163,10 +163,8 @@ st.dataframe(df)
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    """
+st.markdown("""
 - Supports multiple inference tasks: **SEM, t/z confidence intervals, margin of error, manual t-tests, power analysis**  
 - Confidence intervals and test results visualized when applicable  
 - Suitable for cases where only summary statistics are available (no raw dataset)
-"""
-)
+""")

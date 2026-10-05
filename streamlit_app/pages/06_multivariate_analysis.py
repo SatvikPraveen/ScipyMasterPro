@@ -138,11 +138,9 @@ if len(selected_features) == 3:
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Interpretation")
-st.markdown(
-    f"""
+st.markdown(f"""
 - Mahalanobis distance identifies points far from the multivariate mean while accounting for covariance.
 - Threshold is based on **Chi-Square distribution (α = {alpha})**, degrees of freedom = `{data.shape[1]}`.
 - **Detected Outliers:** `{mask_outliers.sum()}` out of `{len(result_df)}` points ({outlier_percentage:.2f}%).
 - Use this module to validate multivariate assumptions and flag anomalies interactively.
-"""
-)
+""")

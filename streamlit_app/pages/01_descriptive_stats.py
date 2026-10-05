@@ -136,13 +136,11 @@ st.pyplot(fig_corr)
 # Summary Section
 # ------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    """
+st.markdown("""
 - **Summary stats** show central tendency and dispersion for all numeric variables
 - **Skewness & kurtosis** quantify asymmetry and tailedness of distributions
 - **Trimmed & robust measures** provide stability against outliers
 - **ECDF** adds deeper insight into distribution shape
 - **Pairplot and heatmap** help visualize potential relationships between variables
 - Use this interactive module to complement offline analysis done in the notebook
-"""
-)
+""")

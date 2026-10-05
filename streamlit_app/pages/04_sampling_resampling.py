@@ -206,8 +206,7 @@ if sampling_type == "Bootstrap (Poisson)":
 # SUMMARY
 # -------------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    f"""
+st.markdown(f"""
 - Sampling Method: **{sampling_type}**
 - Sample Size: **{sample_size}**
 - This tool demonstrates:
@@ -217,5 +216,4 @@ st.markdown(
   - **Multinomial & Dirichlet** for probabilistic modeling
   - **Bootstrap** resampling for inference and variability estimation
 - Use ECDF plots to check if your resample preserves original data characteristics.
-"""
-)
+""")

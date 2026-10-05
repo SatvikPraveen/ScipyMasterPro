@@ -23,13 +23,11 @@ from utils.power_utils import compute_cohens_d, compute_power_t, compute_power_z
 sidebar_section("Statistical Power Analysis")
 
 st.title("📊 Statistical Power — Manual vs Statsmodels")
-st.markdown(
-    """
+st.markdown("""
 Explore **power analysis** interactively:
 - Compare **manual Z-test & T-test calculations** with `statsmodels` estimates
 - Understand how **effect size, alpha, and sample size** impact test sensitivity
-"""
-)
+""")
 
 # -------------------------------
 # 🔹 User Inputs
@@ -111,12 +109,10 @@ st.dataframe(effect_table)
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Key Takeaways")
-st.markdown(
-    """
+st.markdown("""
 - **Effect size (Cohen’s d)** standardizes the difference between observed and expected means
 - **Manual power (Z & T-tests)** is based on normal and t-distributions
 - `statsmodels` provides validated power estimates given test parameters
 - **Sample size directly impacts power**, visualize this with the curve above
 - Aim for **≥ 0.8 power** to reduce Type II errors in your study
-"""
-)
+""")

@@ -115,13 +115,11 @@ st.pyplot(fig, width="stretch")
 # ✅ Summary Section
 # -------------------------------
 st.markdown("## ✅ Interpretation")
-st.markdown(
-    f"""
+st.markdown(f"""
 - Bootstrapping resamples data **with replacement** to estimate the distribution of a statistic.
 - Here we calculated **{statistic_choice}** across `{n_iterations}` resamples.
 - **True Value:** `{true_val:.4f}`
 - **{ci_level}% Confidence Interval:** `({ci_bounds[0]:.4f}, {ci_bounds[1]:.4f})`
 - Non-parametric approach → no distribution assumptions.
 - You can **download summary results** above for reporting.
-"""
-)
+""")

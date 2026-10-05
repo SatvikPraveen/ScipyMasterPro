@@ -104,11 +104,9 @@ st.dataframe(results_df)
 # ✅ Summary
 # -------------------------------
 st.markdown("## ✅ Summary")
-st.markdown(
-    """
+st.markdown("""
 - **Empirical CDF (ECDF)** compared against fitted PDFs from SciPy
 - Manual vs statsmodels ECDF provides sanity check for computation methods
 - Goodness-of-fit tests (KS, Shapiro, Anderson) indicate statistical fit quality
 - Visual overlays combined with test results help validate distribution assumptions
-"""
-)
+""")
