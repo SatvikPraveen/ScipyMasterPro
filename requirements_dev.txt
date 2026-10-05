@@ -7,7 +7,7 @@ ast-serialize==0.11.2     # via mypy
 astroid==4.0.4            # via pylint
 asttokens==3.0.0          # via stack-data
 async-lru==2.0.5          # via jupyterlab
-attrs==25.3.0             # via jsonschema, referencing
+attrs==25.4.0             # via jsonschema, referencing
 babel==2.17.0             # via jupyterlab-server, mkdocs-material
 backports-tarfile==1.2.0  # via jaraco-context
 backrefs==8.0             # via mkdocs-material
