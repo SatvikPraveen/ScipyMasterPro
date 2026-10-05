@@ -109,11 +109,11 @@ nest-asyncio==1.6.0       # via ipykernel
 nh3==0.3.7                # via readme-renderer
 nodeenv==1.10.0           # via pre-commit
 notebook-shim==0.2.4      # via jupyterlab
-numpy==2.3.2              # via contourpy, matplotlib, pandas, patsy, pydeck, scikit-learn, scipy, seaborn, statsmodels, streamlit, -r requirements.txt, scipymasterpro (pyproject.toml)
+numpy==2.4.6              # via contourpy, matplotlib, pandas, patsy, pydeck, scikit-learn, scipy, seaborn, statsmodels, streamlit, -r requirements.txt, scipymasterpro (pyproject.toml)
 overrides==7.7.0          # via jupyter-server
 packaging==26.3           # via altair, black, build, ipykernel, jupyter-events, jupyter-server, jupyterlab, jupyterlab-server, matplotlib, mkdocs, nbconvert, plotly, pytest, statsmodels, streamlit, twine
 paginate==0.5.7           # via mkdocs-material
-pandas==2.3.1             # via seaborn, statsmodels, streamlit, -r requirements.txt, scipymasterpro (pyproject.toml)
+pandas==2.3.3             # via seaborn, statsmodels, streamlit, -r requirements.txt, scipymasterpro (pyproject.toml)
 pandocfilters==1.5.1      # via nbconvert
 parso==0.8.6              # via jedi
 pathspec==1.1.1           # via black, mkdocs, mypy
@@ -162,7 +162,7 @@ rich==15.0.0              # via bandit, twine
 rpds-py==0.26.0           # via jsonschema, referencing
 ruff==0.16.8              # via scipymasterpro (pyproject.toml)
 scikit-learn==1.7.1       # via -r requirements.txt, scipymasterpro (pyproject.toml)
-scipy==1.16.1             # via scikit-learn, statsmodels, -r requirements.txt, scipymasterpro (pyproject.toml)
+scipy==1.17.1             # via scikit-learn, statsmodels, -r requirements.txt, scipymasterpro (pyproject.toml)
 seaborn==0.13.2           # via -r requirements.txt, scipymasterpro (pyproject.toml)
 secretstorage==3.5.0      # via keyring
 send2trash==1.8.3         # via jupyter-server
