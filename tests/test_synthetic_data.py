@@ -56,6 +56,8 @@ class TestSyntheticDataGeneration:
         # Generate new data with same seed
         np.random.seed(random_seed)
         normal_new = np.random.normal(0, 1, 500)
+        np.random.seed(random_seed)
+        np.testing.assert_array_equal(normal_new, np.random.normal(0, 1, 500))
 
         # First few values should match (if seed is 42)
         if random_seed == 42:

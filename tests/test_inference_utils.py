@@ -42,9 +42,10 @@ class TestConfidenceIntervals:
         sem = stats.sem(normal_data)
         ci = stats.t.interval(conf_level, len(normal_data) - 1, loc=mean, scale=sem)
 
-        width_90 = ci[1] - ci[0] if conf_level == 0.90 else None
         # Higher confidence level should give wider interval
         assert ci[0] < mean < ci[1]
+        narrower = stats.t.interval(conf_level - 0.05, len(normal_data) - 1, loc=mean, scale=sem)
+        assert (ci[1] - ci[0]) > (narrower[1] - narrower[0])
 
 
 class TestStandardErrors:
