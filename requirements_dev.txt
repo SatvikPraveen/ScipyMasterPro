@@ -76,7 +76,7 @@ jupyter-server==2.21.1    # via jupyter-lsp, jupyterlab, jupyterlab-server, note
 jupyter-server-terminals==0.5.3  # via jupyter-server
 jupyterlab==4.4.5         # via -r requirements.txt, scipymasterpro (pyproject.toml)
 jupyterlab-pygments==0.3.0  # via nbconvert
-jupyterlab-server==2.27.3  # via jupyterlab
+jupyterlab-server==2.28.1  # via jupyterlab
 keyring==25.7.0           # via twine
 kiwisolver==1.4.8         # via matplotlib
 lark==1.2.2               # via rfc3987-syntax
