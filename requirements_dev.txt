@@ -80,7 +80,7 @@ jupyterlab-server==2.27.3  # via jupyterlab
 keyring==25.7.0           # via twine
 kiwisolver==1.4.8         # via matplotlib
 lark==1.2.2               # via rfc3987-syntax
-librt==0.15.0             # via mypy
+librt==0.16.0             # via mypy
 markdown==3.10.3          # via mkdocs, mkdocs-autorefs, mkdocs-material, mkdocstrings, pymdown-extensions
 markdown-it-py==4.2.0     # via rich
 markupsafe==3.0.2         # via jinja2, mkdocs, mkdocs-autorefs, mkdocstrings, nbconvert
