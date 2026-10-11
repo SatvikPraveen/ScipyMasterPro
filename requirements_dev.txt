@@ -189,7 +189,7 @@ types-python-dateutil==2.9.0.20250708  # via arrow
 typing-extensions==4.14.1  # via altair, anyio, beautifulsoup4, ipython, mypy, referencing, starlette, streamlit
 tzdata==2025.2            # via pandas
 uri-template==1.3.0       # via jsonschema
-urllib3==2.5.0            # via id, requests, twine
+urllib3==2.8.0            # via id, requests, twine
 uvicorn==0.53.0           # via streamlit
 virtualenv==21.11.0       # via pre-commit
 watchdog==6.0.0           # via mkdocs, streamlit
