@@ -45,7 +45,7 @@ h11==0.16.0               # via httpcore, uvicorn
 httpcore==1.0.9           # via httpx
 httptools==0.8.0          # via streamlit
 httpx==0.28.1             # via jupyterlab
-hypothesis==6.168.5       # via scipymasterpro (pyproject.toml)
+hypothesis==6.169.1       # via scipymasterpro (pyproject.toml)
 id==1.6.1                 # via twine
 identify==2.6.19          # via pre-commit
 idna==3.20                # via anyio, httpx, jsonschema, requests
