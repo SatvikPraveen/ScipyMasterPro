@@ -51,7 +51,7 @@ identify==2.6.19          # via pre-commit
 idna==3.20                # via anyio, httpx, jsonschema, requests
 importlib-metadata==9.0.1  # via keyring
 iniconfig==2.3.0          # via pytest
-ipykernel==6.31.0         # via jupyterlab, nbmake, scipymasterpro (pyproject.toml)
+ipykernel==6.31.0         # via jupyterlab, nbmake, -c requirements_constraints.txt, scipymasterpro (pyproject.toml)
 ipython==9.4.0            # via ipykernel
 ipython-pygments-lexers==1.1.1  # via ipython
 isoduration==20.11.0      # via jsonschema
@@ -169,7 +169,7 @@ secretstorage==3.5.0      # via keyring
 send2trash==1.8.3         # via jupyter-server
 six==1.17.0               # via python-dateutil, rfc3339-validator
 sortedcontainers==2.4.0   # via hypothesis
-soupsieve==2.10            # via beautifulsoup4
+soupsieve==2.10           # via beautifulsoup4
 stack-data==0.6.3         # via ipython
 starlette==1.6.0          # via streamlit
 statsmodels==0.14.5       # via -r requirements.txt, scipymasterpro (pyproject.toml)
@@ -181,7 +181,7 @@ tinycss2==1.4.0           # via bleach
 toml==0.10.2              # via streamlit
 tomli==2.4.1              # via coverage
 tomlkit==0.15.1           # via pylint
-tornado==6.5.10            # via ipykernel, jupyter-client, jupyter-server, jupyterlab, terminado
+tornado==6.5.10           # via ipykernel, jupyter-client, jupyter-server, jupyterlab, terminado
 traitlets==5.16.1         # via ipykernel, ipython, jupyter-builder, jupyter-client, jupyter-core, jupyter-events, jupyter-server, jupyterlab, matplotlib-inline, nbclient, nbconvert, nbformat
 twine==7.0.0              # via scipymasterpro (pyproject.toml)
 types-python-dateutil==2.9.0.20250708  # via arrow

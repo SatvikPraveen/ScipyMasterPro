@@ -1,0 +1,7 @@
+# Constraints applied by `make freeze-deps` when resolving requirements_dev.txt.
+# They narrow the lock only; they are not dependencies of the package.
+
+# jupyterlab>=4.6 excludes ipykernel 6.30.0, and an unconstrained re-resolve
+# then jumps to ipykernel 7 (a major release). Major upgrades are done as
+# separate migrations (see .github/dependabot.yml), so stay on 6.x.
+ipykernel<7
