@@ -265,7 +265,7 @@ update-deps:  ## Update all dependencies
 
 freeze-deps:  ## Re-resolve requirements_dev.txt (the lock used by Docker) from pyproject.toml
 	uv pip compile requirements.txt pyproject.toml --extra dev --extra docs --extra notebook \
-	    --python-version 3.11 --python-platform linux -o requirements_dev.txt \
+	    -c requirements_constraints.txt --python-version 3.11 --python-platform linux -o requirements_dev.txt \
 	    --no-header --annotation-style line --custom-compile-command "make freeze-deps"
 	@echo "✓ requirements_dev.txt updated"
 
