@@ -162,7 +162,7 @@ rfc3987-syntax==1.1.0     # via jsonschema
 rich==15.0.0              # via bandit, twine
 rpds-py==0.26.0           # via jsonschema, referencing
 ruff==0.16.8              # via scipymasterpro (pyproject.toml)
-scikit-learn==1.7.1       # via -r requirements.txt, scipymasterpro (pyproject.toml)
+scikit-learn==1.9.1       # via -r requirements.txt, scipymasterpro (pyproject.toml)
 scipy==1.17.1             # via scikit-learn, statsmodels, -r requirements.txt, scipymasterpro (pyproject.toml)
 seaborn==0.13.2           # via -r requirements.txt, scipymasterpro (pyproject.toml)
 secretstorage==3.5.0      # via keyring
