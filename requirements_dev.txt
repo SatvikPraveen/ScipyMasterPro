@@ -172,7 +172,7 @@ sortedcontainers==2.4.0   # via hypothesis
 soupsieve==2.10           # via beautifulsoup4
 stack-data==0.6.3         # via ipython
 starlette==1.6.0          # via streamlit
-statsmodels==0.14.5       # via -r requirements.txt, scipymasterpro (pyproject.toml)
+statsmodels==0.15.0       # via -r requirements.txt, scipymasterpro (pyproject.toml)
 stevedore==5.9.1          # via bandit
 streamlit==1.64.0         # via -r requirements.txt, scipymasterpro (pyproject.toml)
 terminado==0.18.1         # via jupyter-server, jupyter-server-terminals
