@@ -50,7 +50,7 @@ id==1.6.1                 # via twine
 identify==2.6.19          # via pre-commit
 idna==3.20                # via anyio, httpx, jsonschema, requests
 importlib-metadata==9.0.1  # via keyring
-iniconfig==2.3.0          # via pytest
+iniconfig==2.3.1          # via pytest
 ipykernel==6.31.0         # via jupyterlab, nbmake, -c requirements_constraints.txt, scipymasterpro (pyproject.toml)
 ipython==9.4.0            # via ipykernel
 ipython-pygments-lexers==1.1.1  # via ipython
