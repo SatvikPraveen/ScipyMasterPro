@@ -120,7 +120,7 @@ parso==0.8.6              # via jedi
 pathspec==1.1.1           # via black, mkdocs, mypy
 patsy==1.0.1              # via statsmodels
 pexpect==4.9.0            # via ipython
-pillow==12.3.0            # via matplotlib, streamlit
+pillow==13.0.0            # via matplotlib, streamlit
 platformdirs==4.3.8       # via black, jupyter-core, mkdocs-get-deps, pylint, virtualenv
 plotly==6.9.0             # via -r requirements.txt, scipymasterpro (pyproject.toml)
 pluggy==1.6.0             # via pytest, pytest-cov
