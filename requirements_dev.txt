@@ -36,7 +36,7 @@ docutils==0.23            # via readme-renderer
 execnet==2.1.2            # via pytest-xdist
 executing==2.2.0          # via stack-data
 fastjsonschema==2.21.1    # via nbformat
-filelock==4.0.1           # via python-discovery, virtualenv
+filelock==4.2.1           # via python-discovery, virtualenv
 fonttools==4.67.0         # via matplotlib
 fqdn==1.5.1               # via jsonschema
 ghp-import==2.1.0         # via mkdocs
