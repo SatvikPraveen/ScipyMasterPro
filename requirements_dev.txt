@@ -3,7 +3,7 @@ anyio==4.15.1             # via httpx, jupyter-server, starlette, streamlit
 argon2-cffi==25.1.0       # via jupyter-server
 argon2-cffi-bindings==21.2.0  # via argon2-cffi
 arrow==1.3.0              # via isoduration
-ast-serialize==0.11.2     # via mypy
+ast-serialize==0.13.1     # via mypy
 astroid==4.3.4            # via pylint
 asttokens==3.0.0          # via stack-data
 async-lru==2.4.0          # via jupyterlab
