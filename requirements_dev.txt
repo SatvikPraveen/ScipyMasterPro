@@ -38,7 +38,7 @@ executing==2.2.0          # via stack-data
 fastjsonschema==2.21.1    # via nbformat
 filelock==4.0.1           # via python-discovery, virtualenv
 fonttools==4.67.0         # via matplotlib
-fqdn==1.5.1               # via jsonschema
+fqdn==1.6.0               # via jsonschema
 ghp-import==2.1.0         # via mkdocs
 griffelib==2.3.0          # via mkdocstrings-python
 h11==0.16.0               # via httpcore, uvicorn
