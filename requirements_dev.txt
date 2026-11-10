@@ -16,7 +16,7 @@ beautifulsoup4==4.13.4    # via nbconvert
 black==26.10.0            # via scipymasterpro (pyproject.toml)
 bleach==6.4.0             # via nbconvert
 build==1.6.1              # via scipymasterpro (pyproject.toml)
-certifi==2025.7.14        # via httpcore, httpx, requests
+certifi==2026.10.18        # via httpcore, httpx, requests
 cffi==2.1.1               # via argon2-cffi-bindings, cryptography
 cfgv==3.5.0               # via pre-commit
 charset-normalizer==3.5.2  # via requests
