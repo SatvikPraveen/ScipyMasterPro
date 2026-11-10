@@ -13,7 +13,7 @@ backports-tarfile==1.2.0  # via jaraco-context
 backrefs==8.0             # via mkdocs-material
 bandit==1.9.4             # via scipymasterpro (pyproject.toml)
 beautifulsoup4==4.13.4    # via nbconvert
-black==26.10.0            # via scipymasterpro (pyproject.toml)
+black==26.10.1            # via scipymasterpro (pyproject.toml)
 bleach==6.4.0             # via nbconvert
 build==1.6.1              # via scipymasterpro (pyproject.toml)
 certifi==2026.10.18        # via httpcore, httpx, requests

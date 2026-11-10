@@ -49,7 +49,7 @@ dev = [
     "pytest-xdist>=3.5",
     "hypothesis>=6.100",
     "nbmake>=1.5",
-    "black==26.10.0",
+    "black==26.10.1",
     "isort==9.0.2",
     "ruff>=0.6",
     "mypy>=1.10",
