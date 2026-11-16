@@ -145,7 +145,7 @@ pytest-xdist==3.8.0       # via scipymasterpro (pyproject.toml)
 python-dateutil==2.9.0.post0  # via arrow, ghp-import, jupyter-client, matplotlib, pandas
 python-discovery==1.6.1   # via virtualenv
 python-json-logger==3.3.0  # via jupyter-events
-python-multipart==0.0.32  # via streamlit
+python-multipart==0.0.33  # via streamlit
 pytokens==0.4.1           # via black
 pytz==2025.2              # via pandas
 pyyaml==6.0.2             # via bandit, jupyter-events, mkdocs, mkdocs-get-deps, pre-commit, pymdown-extensions, pyyaml-env-tag
